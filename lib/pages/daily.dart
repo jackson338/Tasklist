@@ -136,7 +136,7 @@ class _DailyPageState extends State<DailyPage> {
         child: Container(
           height: MediaQuery.of(context).size.height,
           child: RefreshIndicator(
-            child: TaskListWidget(_dailyList, _deleteTask, _completeTask,ValueKey(1)),
+            child: TaskListWidget(_dailyList, _deleteTask, _completeTask),
             onRefresh: refreshList,
           ),
         ),

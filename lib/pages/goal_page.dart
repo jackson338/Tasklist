@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasklist_app/models/task_mod.dart';
 import 'package:tasklist_app/widgets/task_list.dart';
+import 'package:tasklist_app/widgets/task_list_reorderable.dart';
 import 'package:tasklist_app/widgets/task_new.dart';
 
 class GoalPage extends StatefulWidget {
@@ -121,16 +122,6 @@ class _GoalPageState extends State<GoalPage> {
     return null;
   }
 
-  Widget buildGoalList(int index, TaskMod goal) => Container(
-        height: MediaQuery.of(context).size.height,
-        child: TaskListWidget(
-          _goalsList,
-          _deleteGoal,
-          _completeGoal,
-          ValueKey(goal.id),
-        ),
-      );
-
   @override
   Widget build(BuildContext context) {
     if (buildCalled == false) {
@@ -150,23 +141,7 @@ class _GoalPageState extends State<GoalPage> {
         child: Container(
           height: MediaQuery.of(context).size.height,
           child: RefreshIndicator(
-            child: ReorderableListView.builder(
-              itemCount: _goalsList.length,
-              itemBuilder: (context, index) {
-                final goal = _goalsList[index];
-                return buildGoalList(index, goal);
-              },
-              onReorder: (oldIndex, newIndex) => setState(() async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                final index = newIndex > oldIndex ? newIndex - 1 : newIndex;
-
-                final goal = _goalsList.removeAt(oldIndex);
-                _goalsList.insert(index, goal);
-                final goalID = goalsIdList.removeAt(oldIndex);
-                goalsIdList.insert(index, goalID);
-                prefs.setStringList('Goal ID List', goalsIdList);
-              }),
-            ),
+            child: TaskListWidget(_goalsList, _deleteGoal, _completeGoal),
             onRefresh: refreshList,
           ),
         ),

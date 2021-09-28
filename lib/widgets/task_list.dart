@@ -6,9 +6,9 @@ class TaskListWidget extends StatelessWidget {
   final List<TaskMod> taskItems;
   final Function _deleteTask;
   final Function _completeTask;
-  ValueKey key;
+  // ValueKey key;
 
-  TaskListWidget(this.taskItems, this._deleteTask, this._completeTask, this.key);
+  TaskListWidget(this.taskItems, this._deleteTask, this._completeTask);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +19,7 @@ class TaskListWidget extends StatelessWidget {
         : ListView.builder(
             itemBuilder: (ctx, index) {
               return TaskItem(
+                // taskKey: ValueKey(taskItems[index].id),
                 taskItem: taskItems[index],
                 deleteTask: _deleteTask,
                 completeTask: _completeTask,

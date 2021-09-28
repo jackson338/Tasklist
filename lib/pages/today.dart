@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasklist_app/models/task_mod.dart';
+import 'package:tasklist_app/widgets/task_item.dart';
 import 'package:tasklist_app/widgets/task_list.dart';
+import 'package:tasklist_app/widgets/task_list_reorderable.dart';
 import 'package:tasklist_app/widgets/task_new.dart';
 import 'package:intl/intl.dart';
 
@@ -287,7 +289,7 @@ class _TodayPageState extends State<TodayPage> {
               // Text(DateFormat.yMMMd().format(DateTime.now()).toString()),
               Container(
                 height: MediaQuery.of(context).size.height / 2.8,
-                child: TaskListWidget(_taskList, _deleteTask, _completeTask,ValueKey(1)),
+                child: TaskListWidget(_taskList, _deleteTask, _completeTask),
               ),
               Divider(
                 height: MediaQuery.of(context).size.height / 50,
@@ -298,7 +300,7 @@ class _TodayPageState extends State<TodayPage> {
               ),
               Container(
                 height: MediaQuery.of(context).size.height / 2.73,
-                child: TaskListWidget(_dailyList, _deleteTask2, _completeTask2,ValueKey(1)),
+                child: TaskListWidget(_dailyList, _deleteTask2, _completeTask2),
               ),
             ],
           ),

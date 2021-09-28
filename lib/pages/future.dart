@@ -152,7 +152,7 @@ class _FuturePageState extends State<FuturePage> {
               Container(
                 height: MediaQuery.of(context).size.height / 1.35,
                 child: TaskListWidget(
-                    calendarList, _deleteTask, _completeCalendarTask,ValueKey(1)),
+                    calendarList, _deleteTask, _completeCalendarTask),
               ),
             ],
           ),

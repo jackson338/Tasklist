@@ -10,11 +10,13 @@ class TaskItem extends StatefulWidget {
     @required this.taskItem,
     @required this.deleteTask,
     @required this.completeTask,
+    // @required this.taskKey,
   }) : super(key: key);
 
   final TaskMod taskItem;
   final Function deleteTask;
   final Function completeTask;
+  // final ValueKey taskKey;
 
   @override
   _TaskItemState createState() => _TaskItemState();
@@ -81,15 +83,19 @@ class _TaskItemState extends State<TaskItem> {
       buildList();
     }
     return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       elevation: 5,
       margin: EdgeInsets.symmetric(
         vertical: 8,
         horizontal: 5,
       ),
       child: ListTile(
+        key: ValueKey(widget.taskItem.id),
         leading: widget.taskItem.iconName == 'check_circle_outline'
             ? IconButton(
-                icon: Icon(Icons.check_circle_outline),
+                icon: Icon(
+                  Icons.check_circle_outline,
+                ),
                 color: Theme.of(context).primaryColor,
                 splashColor: Theme.of(context).primaryColor,
                 onPressed: () async {
@@ -120,7 +126,9 @@ class _TaskItemState extends State<TaskItem> {
                 },
               )
             : IconButton(
-                icon: Icon(Icons.check_circle),
+                icon: Icon(
+                  Icons.check_circle,
+                ),
                 color: Theme.of(context).primaryColor,
                 splashColor: Theme.of(context).primaryColor,
                 onPressed: () {
@@ -128,13 +136,25 @@ class _TaskItemState extends State<TaskItem> {
                 },
               ),
         title: Center(
-          child: Text('${widget.taskItem.task}'),
+          child: Text(
+            '${widget.taskItem.task}',
+          ),
         ),
         subtitle: widget.taskItem.finish == null
-            ? Center(child: Text(''))
-            : Center(child: Text(widget.taskItem.finish)),
+            ? Center(
+                child: Text(
+                  '',
+                ),
+              )
+            : Center(
+                child: Text(
+                  widget.taskItem.finish,
+                ),
+              ),
         trailing: IconButton(
-          icon: Icon(Icons.delete),
+          icon: Icon(
+            Icons.delete,
+          ),
           color: Theme.of(context).primaryColor,
           splashColor: Theme.of(context).primaryColor,
           onPressed: () {

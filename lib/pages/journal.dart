@@ -96,7 +96,7 @@ class _JournalPageState extends State<JournalPage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: TaskListWidget(_taskList, _deleteTask, _completeTask,ValueKey(1)),
+      body: TaskListWidget(_taskList, _deleteTask, _completeTask),
     );
   }
 }

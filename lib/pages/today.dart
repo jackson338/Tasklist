@@ -183,7 +183,7 @@ class _TodayPageState extends State<TodayPage> {
     List<String> calendarIdList = [];
     List<String> calendarIdList2 = [];
     String id;
-    if (prefs.getStringList('Calendaar ID List') != null) {
+    if (prefs.getStringList('Calendar ID List') != null) {
       calendarIdList = prefs.getStringList('Calendar ID List');
       calendarIdList2 = prefs.getStringList('Calendar ID List');
       for (id in calendarIdList) {

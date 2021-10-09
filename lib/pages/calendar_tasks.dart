@@ -132,16 +132,18 @@ class _FuturePageState extends State<FuturePage> {
       _buildCalendarTasks();
     }
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 15,
-        brightness: Brightness.light,
-        backgroundColor: Theme.of(context).primaryColor,
+        // brightness: Brightness.light,
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text(
           "Calendar Tasks",
-          style: TextStyle(color: Colors.black),
+          style: Theme.of(context).textTheme.headline5,
         ),
       ),
       body: RefreshIndicator(
+        color: Theme.of(context).dividerColor,
         child: Center(
           child: Column(
             children: [

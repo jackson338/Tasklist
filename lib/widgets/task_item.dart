@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 import '../models/task_mod.dart';
 
@@ -83,6 +84,7 @@ class _TaskItemState extends State<TaskItem> {
       buildList();
     }
     return Card(
+      color: Theme.of(context).primaryColorDark,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       elevation: 5,
       margin: EdgeInsets.symmetric(
@@ -99,6 +101,7 @@ class _TaskItemState extends State<TaskItem> {
                 color: Theme.of(context).primaryColor,
                 splashColor: Theme.of(context).primaryColor,
                 onPressed: () async {
+                  HapticFeedback.mediumImpact();
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   print(prefs.getStringList('Folder Names'));
@@ -132,12 +135,13 @@ class _TaskItemState extends State<TaskItem> {
                 color: Theme.of(context).primaryColor,
                 splashColor: Theme.of(context).primaryColor,
                 onPressed: () {
-                  print('this button does not do anything');
+                  widget.taskItem.iconName = 'check_circle_outline';
                 },
               ),
         title: Center(
           child: Text(
             '${widget.taskItem.task}',
+            style: Theme.of(context).textTheme.subtitle1,
           ),
         ),
         subtitle: widget.taskItem.finish == null
@@ -158,6 +162,7 @@ class _TaskItemState extends State<TaskItem> {
           color: Theme.of(context).primaryColor,
           splashColor: Theme.of(context).primaryColor,
           onPressed: () {
+            HapticFeedback.vibrate();
             widget.deleteTask(widget.taskItem.id);
           },
         ),

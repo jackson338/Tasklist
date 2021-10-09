@@ -13,6 +13,10 @@ class FolderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor:
+            MaterialStateProperty.all(Theme.of(context).primaryColorDark),
+      ),
       onPressed: () async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('Folder Name', folderItem.date);
@@ -27,11 +31,11 @@ class FolderItem extends StatelessWidget {
         children: [
           Icon(
             Icons.folder,
-            color: Colors.black,
+            color: Theme.of(context).dividerColor,
           ),
           Text(
             folderItem.date,
-            style: TextStyle(color: Colors.black),
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ],
       ),

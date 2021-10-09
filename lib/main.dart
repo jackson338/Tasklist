@@ -17,8 +17,22 @@ class MyApp extends StatelessWidget {
       title: 'ride on ohv',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        accentColor: Colors.blueAccent,
-        brightness: Brightness.light,
+        primaryColor: Colors.tealAccent,
+        primaryColorLight: Colors.lightBlue,
+        primaryColorDark: Colors.blueGrey,
+        backgroundColor: Colors.black54,
+        dividerColor: Colors.teal,
+        brightness: Brightness.dark,
+        textTheme: TextTheme(
+          bodyText1: TextStyle(color: Colors.white),
+          subtitle2: TextStyle(color: Colors.black54),
+          subtitle1: TextStyle(color: Colors.white),
+          headline2: TextStyle(color: Colors.white),
+          headline3: TextStyle(color: Colors.white),
+          headline4: TextStyle(color: Colors.white),
+          headline5: TextStyle(color: Colors.white),
+          headline6: TextStyle(color: Colors.white),
+        ),
       ),
       home: Controller(title: 'ohv home'),
     );
@@ -52,28 +66,48 @@ class _ControllerState extends State<Controller> {
         body: TabBarView(
           children: _pages,
         ),
+        backgroundColor: Theme.of(context).primaryColorDark,
         bottomNavigationBar: Container(
+          // color: Theme.of(context).primaryColorDark,
           height: MediaQuery.of(context).size.height / 15,
           margin: EdgeInsets.only(bottom: 20),
           child: new TabBar(
             tabs: [
               Tab(
-                icon: Icon(Icons.home),
+                icon: Icon(
+                  Icons.home,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
               Tab(
-                icon: Icon(Icons.flag),
+                icon: Icon(
+                  Icons.flag,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
               Tab(
-                icon: Icon(Icons.list),
+                icon: Icon(
+                  Icons.list,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
               Tab(
-                icon: Icon(Icons.event_note_outlined),
+                icon: Icon(
+                  Icons.event_note_outlined,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
               Tab(
-                icon: Icon(Icons.loop),
+                icon: Icon(
+                  Icons.loop,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
               Tab(
-                icon: Icon(Icons.sticky_note_2_outlined),
+                icon: Icon(
+                  Icons.sticky_note_2_outlined,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ],
             unselectedLabelColor: Colors.black,

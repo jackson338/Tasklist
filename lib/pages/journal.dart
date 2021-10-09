@@ -37,20 +37,20 @@ class _JournalPageState extends State<JournalPage> {
       for (id in journalidList) {
         if (prefs.getString('$id Date Finished') ==
             prefs.getString('Folder Name')) {
-              //set task text
-              String taskText;
-              if (prefs.getString('$id Task') != null) {
-                taskText = prefs.getString('$id Task');
-              }
-              if (prefs.getString('$id Daily Task') != null) {
-                taskText = prefs.getString('$id Daily Task');
-              }
-              if (prefs.getString('$id Calendar Task') != null) {
-                taskText = prefs.getString('$id Calendar Task');
-              }
-              if (prefs.getString('$id Goal Task') != null) {
-                taskText = prefs.getString('$id Goal Task');
-              }
+          //set task text
+          String taskText;
+          if (prefs.getString('$id Task') != null) {
+            taskText = prefs.getString('$id Task');
+          }
+          if (prefs.getString('$id Daily Task') != null) {
+            taskText = prefs.getString('$id Daily Task');
+          }
+          if (prefs.getString('$id Calendar Task') != null) {
+            taskText = prefs.getString('$id Calendar Task');
+          }
+          if (prefs.getString('$id Goal Task') != null) {
+            taskText = prefs.getString('$id Goal Task');
+          }
 
           final newTask = TaskMod(
             task: taskText,
@@ -88,14 +88,21 @@ class _JournalPageState extends State<JournalPage> {
       _buildTasks();
     }
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text(
-          name,
-          style: TextStyle(color: Colors.black),
-        ),
+        iconTheme: IconThemeData(color: Theme.of(context).dividerColor),
+        backgroundColor: Theme.of(context).primaryColorDark,
+        title: name != null
+            ? Text(
+                name,
+                style: Theme.of(context).textTheme.headline5,
+              )
+            : Text('hey'),
       ),
+      // bottomNavigationBar: Container(
+      //   color: Theme.of(context).primaryColorDark,
+      //   height: MediaQuery.of(context).size.height / 15,
+      // ),
       body: TaskListWidget(_taskList, _deleteTask, _completeTask),
     );
   }

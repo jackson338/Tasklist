@@ -123,19 +123,21 @@ class _DailyPageState extends State<DailyPage> {
       _buildTasks();
     }
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 15,
-        brightness: Brightness.light,
-        backgroundColor: Theme.of(context).primaryColor,
+        // brightness: Brightness.light,
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text(
           "Daily Tasks",
-          style: TextStyle(color: Colors.black),
+          style: Theme.of(context).textTheme.headline5,
         ),
       ),
       body: Center(
         child: Container(
           height: MediaQuery.of(context).size.height,
           child: RefreshIndicator(
+            color: Theme.of(context).dividerColor,
             child: TaskListWidget(_dailyList, _deleteTask, _completeTask),
             onRefresh: refreshList,
           ),

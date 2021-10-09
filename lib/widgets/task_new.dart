@@ -18,7 +18,7 @@ class _NewTaskState extends State<NewTask> {
   final _nameController = TextEditingController();
 
   void _submitData() {
-    if (  _nameController.text.isEmpty) {
+    if (_nameController.text.isEmpty) {
       return;
     }
     final _enteredName = _nameController.text;
@@ -50,8 +50,8 @@ class _NewTaskState extends State<NewTask> {
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
-            firstDate: DateTime(2021),
-            lastDate: DateTime(2022))
+            firstDate: DateTime.now(),
+            lastDate: DateTime(2030))
         .then((pickedDate) {
       if (pickedDate == null) {
         return;
@@ -71,13 +71,20 @@ class _NewTaskState extends State<NewTask> {
     return Column(
       children: [
         TextField(
-          decoration: InputDecoration(labelText: 'Enter a new task'),
+          style: Theme.of(context).textTheme.subtitle1,
+          cursorColor: Theme.of(context).primaryColor,
+          decoration: InputDecoration(
+            labelText: 'Enter a new task',
+            labelStyle: TextStyle(color: Theme.of(context).primaryColor),
+            // hintStyle: TextStyle(color: Theme.of(context).dividerColor),
+          ),
           controller: _nameController,
           onSubmitted: (_) => _submitData(),
         ),
         pageIndex == 3
             ? Container(
                 height: 70,
+                // color: Theme.of(context).backgroundColor,
                 child: Row(
                   children: [
                     Expanded(
@@ -88,20 +95,28 @@ class _NewTaskState extends State<NewTask> {
                       ),
                     ),
                     ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context).primaryColor),
+                      ),
                       onPressed: _presentDatePicker,
-                      child: Icon(Icons.calendar_today),
+                      child: Icon(Icons.calendar_today,
+                          color: Theme.of(context).backgroundColor),
                     ),
                   ],
                 ),
               )
             : Divider(
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).dividerColor,
                 thickness: MediaQuery.of(context).size.height / 50,
                 height: MediaQuery.of(context).size.height / 50,
               ),
         ElevatedButton(
           onPressed: _submitData,
-          child: Text('Add Item'),
+          child: Text(
+            'Add Task',
+            style: Theme.of(context).textTheme.subtitle2,
+          ),
           style: ElevatedButton.styleFrom(
             primary: Theme.of(context).primaryColor,
           ),

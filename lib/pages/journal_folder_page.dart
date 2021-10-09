@@ -37,13 +37,14 @@ class _JournalYearlyPageState extends State<JournalYearlyPage> {
     }
     // print(dateList);
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 15,
-        brightness: Brightness.light,
-        backgroundColor: Theme.of(context).primaryColor,
+        // brightness: Brightness.light,
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text(
           "Journal",
-          style: TextStyle(color: Colors.black),
+          style: Theme.of(context).textTheme.headline5,
         ),
       ),
       body: Container(

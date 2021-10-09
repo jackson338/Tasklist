@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasklist_app/models/task_mod.dart';
-import 'package:tasklist_app/widgets/task_item.dart';
+// import 'package:tasklist_app/widgets/task_item.dart';
 import 'package:tasklist_app/widgets/task_list.dart';
-import 'package:tasklist_app/widgets/task_list_reorderable.dart';
+// import 'package:tasklist_app/widgets/task_list_reorderable.dart';
 import 'package:tasklist_app/widgets/task_new.dart';
 import 'package:intl/intl.dart';
 
@@ -115,19 +115,25 @@ class _TodayPageState extends State<TodayPage> {
   int count = 0;
   List<String> newBuildList = [];
   void datePrefs() async {
-    setState(() {
-      _dateTime = DateFormat.yMMMd().format(DateTime.now()).toString();
-    });
+    print('Date Prefs Called');
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getStringList('Home Date List') != null) {
-      dateList = prefs.getStringList('Home Date List');
-    }
     setState(() {
+      // _dateTime = DateFormat.yMMMd().format(
+      //   DateTime.utc(2021, 10, 5),
+      // );
+      if (prefs.getStringList('Home Date List') != null) {
+        dateList = prefs.getStringList('Home Date List');
+        print('Home Date List retreived');
+      }
+      _dateTime = DateFormat.yMMMd().format(DateTime.now()).toString();
       if (prefs.getString('Home Date') != null &&
           prefs.getString('Home Date') != _dateTime) {
+            print('Home Date != to null or current date');
         if (prefs.getStringList('Daily ID List') != null) {
           dailyBuildList = prefs.getStringList('Daily ID List');
+          print('Daily Build List reset to Daily ID List');
           prefs.setStringList('Daily Build List', dailyBuildList);
+          // buildDailyListFunc();
         }
 
         // print('date prefs');
@@ -144,10 +150,12 @@ class _TodayPageState extends State<TodayPage> {
 
   bool buildDaily = false;
   void buildDailyListFunc() async {
+    print('build Daily List Called');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getStringList('Daily Build List') != null) {
       String id;
       dailyBuildList = prefs.getStringList('Daily Build List');
+      print('Daily Build List Set');
       for (id in dailyBuildList) {
         if (prefs.getString('$id Icon Name') != 'check_circle') {
           final dailyTask = TaskMod(
@@ -158,10 +166,12 @@ class _TodayPageState extends State<TodayPage> {
           );
           setState(() {
             _dailyList.add(dailyTask);
+            print('daily list added to');
             buildCalled = true;
             if (prefs.getString('${dailyTask.id} Icon Name') != null) {
               dailyTask.iconName = prefs.getString('${dailyTask.id} Icon Name');
             }
+            buildDaily = true;
           });
         } else {
           dailyBuildList.remove(id);
@@ -172,9 +182,6 @@ class _TodayPageState extends State<TodayPage> {
         }
       }
     }
-    setState(() {
-      buildDaily = true;
-    });
   }
 
   void _buildTasks() async {
@@ -269,22 +276,24 @@ class _TodayPageState extends State<TodayPage> {
       buildDailyListFunc();
     }
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 15,
-        brightness: Brightness.light,
-        backgroundColor: Theme.of(context).primaryColor,
+        // brightness: Brightness.light,
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text(
           "Today's Tasks",
-          style: TextStyle(color: Colors.black),
+          style: Theme.of(context).textTheme.headline5,
         ),
       ),
       body: RefreshIndicator(
+        color: Theme.of(context).dividerColor,
         child: Center(
           child: Column(
             children: [
               Container(
                 padding: EdgeInsets.all(10),
-                child: Text(_dateTime),
+                child: _dateTime != null ? Text(_dateTime) : Text(''),
               ),
               // Text(DateFormat.yMMMd().format(DateTime.now()).toString()),
               Container(
@@ -293,7 +302,7 @@ class _TodayPageState extends State<TodayPage> {
               ),
               Divider(
                 height: MediaQuery.of(context).size.height / 50,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).dividerColor,
                 thickness: MediaQuery.of(context).size.height / 50,
                 endIndent: 4.0,
                 indent: 4.0,
@@ -310,7 +319,7 @@ class _TodayPageState extends State<TodayPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Theme.of(context).primaryColor,
-        splashColor: Theme.of(context).accentColor,
+        splashColor: Theme.of(context).primaryColor,
         onPressed: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setInt('page index', 2);

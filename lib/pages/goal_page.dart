@@ -128,19 +128,20 @@ class _GoalPageState extends State<GoalPage> {
       _buildGoals();
     }
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 15,
-        brightness: Brightness.light,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text(
           "Goals",
-          style: TextStyle(color: Colors.black),
+          style: Theme.of(context).textTheme.headline5,
         ),
       ),
       body: Center(
         child: Container(
           height: MediaQuery.of(context).size.height,
           child: RefreshIndicator(
+            color: Theme.of(context).dividerColor,
             child: TaskListWidget(_goalsList, _deleteGoal, _completeGoal),
             onRefresh: refreshList,
           ),

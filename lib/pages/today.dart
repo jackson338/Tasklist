@@ -1,10 +1,13 @@
+// import 'dart:ffi';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tasklist_app/models/goal_mod.dart';
 import 'package:tasklist_app/models/task_mod.dart';
 // import 'package:tasklist_app/widgets/task_item.dart';
 import 'package:tasklist_app/widgets/task_list.dart';
 // import 'package:tasklist_app/widgets/task_list_reorderable.dart';
-import 'package:tasklist_app/widgets/task_new.dart';
 import 'package:intl/intl.dart';
 
 class TodayPage extends StatefulWidget {
@@ -18,14 +21,41 @@ class _TodayPageState extends State<TodayPage> {
   List<String> dateList = [];
   List<String> idList = [];
   List<String> dailyBuildList = [];
+  List<String> dailyidList = [];
+  List<String> goalsIdList = [];
+  // List<TaskMod> calendarList = [];
+  List<String> calendarIDlist = [];
   String _iconName = 'check_circle_outline';
   String _dateTime;
   bool buildCalled = false;
   bool dateCalled = false;
+  bool dailySelected = false;
+  bool todaySelected = true;
 
-  void _addNewTask(
-    String _task,
-  ) async {
+  void _addNewTask(String _task, String _date) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      String selectedList = prefs.getString('selected list');
+      if (selectedList == 'calendar') {
+        prefs.setInt('page index', 3);
+        _addNewCalendarTask(_task, _date);
+      }
+      if (selectedList == 'today') {
+        prefs.setInt('page index', 2);
+        _addTodayTask(_task);
+      }
+      if (selectedList == 'daily') {
+        prefs.setInt('page index', 4);
+        _addNewDailyTask(_task);
+      }
+      if (selectedList == 'goal') {
+        prefs.setInt('page index', 1);
+        _addNewGoal(_task);
+      }
+    });
+  }
+
+  void _addTodayTask(String _task) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final newTask = TaskMod(
       task: _task,
@@ -42,101 +72,200 @@ class _TodayPageState extends State<TodayPage> {
     });
   }
 
-  void _deleteTask(String id) async {
+  void _addNewCalendarTask(
+    String calendarTask,
+    String date,
+  ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getInt('page index') == 2) {
+    calendarIDlist = prefs.getStringList('Calendar ID List');
+    // if (prefs.getInt('page index') == 3) {
+    final newCalendarTask = TaskMod(
+      task: calendarTask,
+      iconName: _iconName,
+      finish: date,
+      id: DateTime.now().toString(),
+    );
+    prefs.setString(
+        '${newCalendarTask.id} Calendar Task', newCalendarTask.task);
+    prefs.setString(
+        '${newCalendarTask.id} Calendar Date', newCalendarTask.finish);
+    setState(() {
+      // calendarList.add(newCalendarTask);
+      calendarIDlist.add(newCalendarTask.id);
+      prefs.setStringList('Calendar ID List', calendarIDlist);
+      buildCalled = true;
+    });
+    // }
+  }
+
+  void _addNewDailyTask(
+    String _task,
+  ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    dailyidList = prefs.getStringList('Daily ID List');
+    if (prefs.getInt('page index') == 4) {
+      final newTask = TaskMod(
+        task: _task,
+        iconName: _iconName,
+        finish: null,
+        id: DateTime.now().toString(),
+      );
+      prefs.setString('${newTask.id} Daily Task', newTask.task);
       setState(() {
-        _taskList.removeWhere((taskR) => taskR.id == id);
-        idList.remove(id);
-        prefs.setStringList('ID List', idList);
-        prefs.remove('$id Task');
+        _dailyList.add(newTask);
+        dailyidList.add(newTask.id);
+        prefs.setStringList('Daily ID List', dailyidList);
+        dailyBuildList.add(newTask.id);
+        prefs.setStringList('Daily Build List', dailyBuildList);
+        buildCalled = true;
       });
     }
   }
 
-  void _deleteTask2(String id) async {
+  void _addNewGoal(
+    String _task,
+  ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getInt('page index') == 2) {
+    if (prefs.getStringList('goal id list') != null) {
+      goalsIdList = prefs.getStringList('goal id list');
+    }
+    if (prefs.getInt('page index') == 1) {
+      final newGoal = GoalMod(
+        task: _task,
+        iconName: _iconName,
+        finish: null,
+        id: DateTime.now().toString(),
+      );
+      prefs.setString('${newGoal.id} goal task', newGoal.task);
       setState(() {
-        _dailyList.removeWhere((taskR) => taskR.id == id);
-        dailyBuildList.remove(id);
-        prefs.setStringList('Daily Build List', dailyBuildList);
+        // _goalsList.add(newGoal);
+        goalsIdList.add(newGoal.id);
+        prefs.setStringList('goal id list', goalsIdList);
+        buildCalled = true;
       });
     }
+  }
+
+  void _deleteTask(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // if (prefs.getInt('page index') == 2) {
+    setState(() {
+      _taskList.removeWhere((taskR) => taskR.id == id);
+      idList.remove(id);
+      prefs.setStringList('ID List', idList);
+      prefs.remove('$id Task');
+    });
+    // }
+  }
+
+  void _deleteTask2(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // if (prefs.getInt('page index') == 2) {
+    setState(() {
+      _dailyList.removeWhere((taskR) => taskR.id == id);
+      dailyBuildList.remove(id);
+      prefs.setStringList('Daily Build List', dailyBuildList);
+    });
+    // }
   }
 
   List<String> journalidList = [];
   void _completeTask(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getInt('page index') == 2) {
-      setState(() {
-        List<String> taskidList = prefs.getStringList('ID List');
-        if (prefs.getStringList('Journal ID List') != null) {
-          journalidList = prefs.getStringList('Journal ID List');
-        }
-        prefs.setString('$id Icon Name', 'check_circle');
-        prefs.setString('$id Date Finished',
-            DateFormat.yMMMd().format(DateTime.now()).toString());
-        prefs.setString('$id Time Finished',
-            DateFormat.jm().format(DateTime.now()).toString());
-        journalidList.add(id);
-        prefs.setStringList('Journal ID List', journalidList);
-        taskidList.remove(id);
-        prefs.setStringList('ID List', taskidList);
-      });
-    }
+    setState(() {
+      List<String> taskidList = prefs.getStringList('ID List');
+      if (prefs.getStringList('Journal ID List') != null) {
+        journalidList = prefs.getStringList('Journal ID List');
+      }
+      prefs.setString('$id Icon Name', 'check_circle');
+      prefs.setString('$id Date Finished',
+          DateFormat.yMMMd().format(DateTime.now()).toString());
+      prefs.setString('$id Time Finished',
+          DateFormat.jm().format(DateTime.now()).toString());
+      journalidList.add(id);
+      prefs.setStringList('Journal ID List', journalidList);
+      taskidList.remove(id);
+      prefs.setStringList('ID List', taskidList);
+    });
   }
 
+  List<String> chartIds = [];
+  double totalCompleted = 0.0;
   void _completeTask2(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getInt('page index') == 2) {
-      setState(() {
-        List<String> dailybuildList = prefs.getStringList('Daily Build List');
-        if (prefs.getStringList('Journal ID List') != null) {
-          journalidList = prefs.getStringList('Journal ID List');
-          // print(journalidList);
-        }
-        String newId = DateTime.now().toString();
-        prefs.setString('$newId Daily Task', prefs.getString('$id Daily Task'));
-        // prefs.setString('$id Icon Name', 'check_circle');
-        prefs.setString('$newId Date Finished',
-            DateFormat.yMMMd().format(DateTime.now()).toString());
-        prefs.setString('$newId Time Finished',
-            DateFormat.jm().format(DateTime.now()).toString());
-        journalidList.add(newId);
-        prefs.setStringList('Journal ID List', journalidList);
-        // print(journalidList);
-        dailybuildList.remove(id);
-        prefs.setStringList('Daily Build List', dailybuildList);
-      });
-    }
+
+    setState(() {
+      // String idc = DateTime.now().toString();
+      if (prefs.getStringList('chart ids') != null) {
+        chartIds = prefs.getStringList('chart ids');
+      }
+      if (chartIds.contains(_dateTime) == false) {
+        chartIds.add(_dateTime);
+        prefs.setStringList('chart ids', chartIds);
+      }
+
+      if (prefs.getStringList('Daily Build List').length != null) {
+        int totalCompletedInt = prefs.getStringList('Daily ID List').length -
+            prefs.getStringList('Daily Build List').length;
+        totalCompleted = 0;
+        totalCompleted += totalCompletedInt;
+      } else {
+        int totalCompletedInt = prefs.getStringList('Daily ID List').length;
+        totalCompleted = 0;
+        totalCompleted += totalCompletedInt;
+      }
+      prefs.setInt('$_dateTime daily build count',
+          prefs.getStringList('Daily Build List').length);
+      prefs.setDouble('$_dateTime total completed', totalCompleted);
+      List<String> dailybuildList = prefs.getStringList('Daily Build List');
+      if (prefs.getStringList('Journal ID List') != null) {
+        journalidList = prefs.getStringList('Journal ID List');
+      }
+      String newId = DateTime.now().toString();
+      prefs.setString('$newId Daily Task', prefs.getString('$id Daily Task'));
+      // prefs.setString('$id Icon Name', 'check_circle');
+      prefs.setString('$newId Date Finished',
+          DateFormat.yMMMd().format(DateTime.now()).toString());
+      prefs.setString('$newId Time Finished',
+          DateFormat.jm().format(DateTime.now()).toString());
+      journalidList.add(newId);
+      prefs.setStringList('Journal ID List', journalidList);
+      dailybuildList.remove(id);
+      prefs.setStringList('Daily Build List', dailybuildList);
+    });
   }
 
   int count = 0;
   List<String> newBuildList = [];
   void datePrefs() async {
-    print('Date Prefs Called');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
+      if (prefs.getBool('today list selected') == true) {
+        todaySelected = true;
+        dailySelected = false;
+      } else {
+        todaySelected = false;
+        dailySelected = true;
+      }
       // _dateTime = DateFormat.yMMMd().format(
       //   DateTime.utc(2021, 10, 5),
       // );
       if (prefs.getStringList('Home Date List') != null) {
         dateList = prefs.getStringList('Home Date List');
-        print('Home Date List retreived');
       }
       _dateTime = DateFormat.yMMMd().format(DateTime.now()).toString();
       if (prefs.getString('Home Date') != null &&
           prefs.getString('Home Date') != _dateTime) {
-            print('Home Date != to null or current date');
+        //setting daily count max number
+        prefs.setInt('$_dateTime daily count',
+            prefs.getStringList('Daily ID List').length);
+        prefs.setInt('$_dateTime daily build count',
+            prefs.getStringList('Daily Build List').length);
         if (prefs.getStringList('Daily ID List') != null) {
           dailyBuildList = prefs.getStringList('Daily ID List');
-          print('Daily Build List reset to Daily ID List');
           prefs.setStringList('Daily Build List', dailyBuildList);
           // buildDailyListFunc();
         }
-
-        // print('date prefs');
 
         prefs.setString(
             'Home Date', DateFormat.yMMMd().format(DateTime.now()).toString());
@@ -150,12 +279,10 @@ class _TodayPageState extends State<TodayPage> {
 
   bool buildDaily = false;
   void buildDailyListFunc() async {
-    print('build Daily List Called');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getStringList('Daily Build List') != null) {
       String id;
       dailyBuildList = prefs.getStringList('Daily Build List');
-      print('Daily Build List Set');
       for (id in dailyBuildList) {
         if (prefs.getString('$id Icon Name') != 'check_circle') {
           final dailyTask = TaskMod(
@@ -166,7 +293,6 @@ class _TodayPageState extends State<TodayPage> {
           );
           setState(() {
             _dailyList.add(dailyTask);
-            print('daily list added to');
             buildCalled = true;
             if (prefs.getString('${dailyTask.id} Icon Name') != null) {
               dailyTask.iconName = prefs.getString('${dailyTask.id} Icon Name');
@@ -187,6 +313,10 @@ class _TodayPageState extends State<TodayPage> {
   void _buildTasks() async {
     buildCalled = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('$_dateTime daily build count',
+        prefs.getStringList('Daily Build List').length);
+    prefs.setInt(
+        '$_dateTime daily count', prefs.getStringList('Daily ID List').length);
     List<String> calendarIdList = [];
     List<String> calendarIdList2 = [];
     String id;
@@ -197,7 +327,8 @@ class _TodayPageState extends State<TodayPage> {
         if (prefs.getString('$id Calendar Date') == _dateTime) {
           setState(() {
             idList = prefs.getStringList('ID List');
-            idList.add(id);
+            // idList.add(id);
+            idList.insert(0, id);
             prefs.setStringList('ID List', idList);
             calendarIdList2.remove(id);
             prefs.setStringList('Calendar ID List', calendarIdList2);
@@ -211,9 +342,7 @@ class _TodayPageState extends State<TodayPage> {
     // List<String> dateList = prefs.getStringList('Home Date List');
     //     dateList.add(DateFormat.yMMMd().format(DateTime.now()).toString());
     //     prefs.setStringList('Home Date List', dateList);
-    //     print('added 13');
     prefs.setInt('page index', 2);
-    print(prefs.getInt('page index'));
     if (dailyBuildList != null) {
       if (buildDaily = false) {
         buildDailyListFunc();
@@ -265,9 +394,23 @@ class _TodayPageState extends State<TodayPage> {
     return null;
   }
 
+  void _onChanged(bool) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      if (todaySelected == false) {
+        todaySelected = true;
+        dailySelected = false;
+        prefs.setBool('today list selected', true);
+      } else {
+        todaySelected = false;
+        dailySelected = true;
+        prefs.setBool('today list selected', false);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    print('build');
     if (dateCalled == false) {
       datePrefs();
     }
@@ -297,44 +440,138 @@ class _TodayPageState extends State<TodayPage> {
               ),
               // Text(DateFormat.yMMMd().format(DateTime.now()).toString()),
               Container(
-                height: MediaQuery.of(context).size.height / 2.8,
-                child: TaskListWidget(_taskList, _deleteTask, _completeTask),
+                height: MediaQuery.of(context).size.height / 1.5,
+                child: todaySelected == true
+                    ? TaskListWidget(_taskList, _deleteTask, _completeTask)
+                    : TaskListWidget(_dailyList, _deleteTask2, _completeTask2),
               ),
-              Divider(
-                height: MediaQuery.of(context).size.height / 50,
-                color: Theme.of(context).dividerColor,
-                thickness: MediaQuery.of(context).size.height / 50,
-                endIndent: 4.0,
-                indent: 4.0,
-              ),
+              // Divider(
+              //   height: MediaQuery.of(context).size.height / 50,
+              //   color: Theme.of(context).dividerColor,
+              //   thickness: MediaQuery.of(context).size.height / 50,
+              //   endIndent: 4.0,
+              //   indent: 4.0,
+              // ),
+              // Container(
+              //   height: MediaQuery.of(context).size.height / 3,
+              //   child: TaskListWidget(_dailyList, _deleteTask2, _completeTask2),
+              // ),
               Container(
-                height: MediaQuery.of(context).size.height / 2.73,
-                child: TaskListWidget(_dailyList, _deleteTask2, _completeTask2),
-              ),
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 15,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5.0),
+                        child: Text('Today'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5.0),
+                        child: Switch(
+                          value: dailySelected,
+                          onChanged: _onChanged,
+                          inactiveThumbColor: Theme.of(context).primaryColorDark,
+                          activeColor: Theme.of(context).primaryColorDark,
+                          activeTrackColor: Theme.of(context).dividerColor,
+                          inactiveTrackColor: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5.0),
+                        child: Text('Daily'),
+                      ),
+                    ],
+                  )
+                  // Row(
+                  //   children: [
+                  //     Padding(
+                  //       padding: const EdgeInsets.only(left: 60.0),
+                  //       child: ElevatedButton(
+                  //         style: ButtonStyle(
+                  //           backgroundColor: MaterialStateProperty.all(
+                  //             Theme.of(context).backgroundColor,
+                  //           ),
+                  //         ),
+                  //         child: Column(
+                  //           children: [
+                  //             Icon(Icons.list,
+                  //                 color: todaySelected
+                  //                     ? Theme.of(context).primaryColor
+                  //                     : Theme.of(context).dividerColor),
+                  //             Text(
+                  //               'Today',
+                  //               style: Theme.of(context).textTheme.bodyText2,
+                  //             ),
+                  //           ],
+                  //         ),
+                  //         onPressed: () async {
+                  //           SharedPreferences prefs = await SharedPreferences.getInstance();
+                  //           setState(() {
+                  //             prefs.setBool('today list selected', true);
+                  //             todaySelected = true;
+                  //             dailySelected = false;
+                  //           });
+                  //         },
+                  //       ),
+                  //     ),
+                  //     Padding(
+                  //       padding: const EdgeInsets.only(left: 140.0),
+                  //       child: ElevatedButton(
+                  //         style: ButtonStyle(
+                  //           backgroundColor: MaterialStateProperty.all(
+                  //             Theme.of(context).backgroundColor,
+                  //           ),
+                  //         ),
+                  //         child: Column(
+                  //           children: [
+                  //             Icon(Icons.loop,
+                  //                 color: dailySelected
+                  //                     ? Theme.of(context).primaryColor
+                  //                     : Theme.of(context).dividerColor),
+                  //             Text(
+                  //               'Daily',
+                  //               style: Theme.of(context).textTheme.bodyText2,
+                  //             ),
+                  //           ],
+                  //         ),
+                  //         onPressed: () async {
+                  //           SharedPreferences prefs = await SharedPreferences.getInstance();
+                  //           setState(() {
+                  //             prefs.setBool('today list selected', false);
+                  //             dailySelected = true;
+                  //             todaySelected = false;
+                  //           });
+                  //         },
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  )
             ],
           ),
         ),
         onRefresh: refreshList,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: Theme.of(context).primaryColor,
-        splashColor: Theme.of(context).primaryColor,
-        onPressed: () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setInt('page index', 2);
-          showModalBottomSheet(
-            context: context,
-            builder: (_) {
-              return GestureDetector(
-                onTap: () {},
-                child: NewTask(_addNewTask),
-                behavior: HitTestBehavior.opaque,
-              );
-            },
-          );
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   backgroundColor: Theme.of(context).primaryColor,
+      //   splashColor: Theme.of(context).primaryColor,
+      //   onPressed: () async {
+      //     SharedPreferences prefs = await SharedPreferences.getInstance();
+      //     prefs.setInt('page index', 2);
+      //     showModalBottomSheet(
+      //       context: context,
+      //       builder: (_) {
+      //         return GestureDetector(
+      //           onTap: () {},
+      //           child: NewTask(_addNewTask),
+      //           behavior: HitTestBehavior.opaque,
+      //         );
+      //       },
+      //     );
+      //   },
+      // ),
     );
   }
 }

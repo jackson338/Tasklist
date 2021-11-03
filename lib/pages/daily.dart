@@ -13,21 +13,25 @@ class _DailyPageState extends State<DailyPage> {
   List<TaskMod> _dailyList = [];
   List<String> dailyidList = [];
   List<String> dailyBuildList = [];
+  List<String> dateList = [];
+  List<String> idList = [];
+  List<String> goalsIdList = [];
+  List<String> calendarIDlist = [];
   bool buildCalled = false;
   String _iconName = 'check_circle_outline';
 
   void _deleteTask(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getInt('page index') == 4) {
-      setState(() {
-        _dailyList.removeWhere((taskR) => taskR.id == id);
-        dailyidList.remove(id);
-        prefs.setStringList('Daily ID List', dailyidList);
-        dailyBuildList.remove(id);
-        prefs.setStringList('Daily Build List', dailyBuildList);
-        prefs.remove('$id Daily Task');
-      });
-    }
+    // if (prefs.getInt('page index') == 4) {
+    setState(() {
+      _dailyList.removeWhere((taskR) => taskR.id == id);
+      dailyidList.remove(id);
+      prefs.setStringList('Daily ID List', dailyidList);
+      dailyBuildList.remove(id);
+      prefs.setStringList('Daily Build List', dailyBuildList);
+      prefs.remove('$id Daily Task');
+    });
+    // }
   }
 
   void _completeTask(String id) async {
@@ -43,10 +47,85 @@ class _DailyPageState extends State<DailyPage> {
     // });
   }
 
-  void _addNewTask(
+  void _addNewTask(String _task, String _date) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      String selectedList = prefs.getString('selected list');
+      if (selectedList == 'calendar') {
+        prefs.setInt('page index', 3);
+        _addNewCalendarTask(_task, _date);
+      }
+      if (selectedList == 'today') {
+        prefs.setInt('page index', 2);
+        _addTodayTask(_task);
+      }
+      if (selectedList == 'daily') {
+        prefs.setInt('page index', 4);
+        _addNewDailyTask(_task);
+      }
+      if (selectedList == 'goal') {
+        prefs.setInt('page index', 1);
+        _addNewGoal(_task);
+      }
+    });
+  }
+
+  void _addTodayTask(String _task) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getStringList('ID List') != null) {
+      idList = prefs.getStringList('ID List');
+    }
+    final newTask = TaskMod(
+      task: _task,
+      iconName: _iconName,
+      finish: null,
+      id: DateTime.now().toString(),
+    );
+    prefs.setString('${newTask.id} Task', newTask.task);
+    setState(() {
+      // _taskList.add(newTask);
+      idList.add(newTask.id);
+      prefs.setStringList('ID List', idList);
+    });
+  }
+
+  void _addNewCalendarTask(
+    String calendarTask,
+    String date,
+  ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getStringList('Calendar ID List') != null) {
+      calendarIDlist = prefs.getStringList('Calendar ID List');
+    }
+    // if (prefs.getInt('page index') == 3) {
+    final newCalendarTask = TaskMod(
+      task: calendarTask,
+      iconName: _iconName,
+      finish: date,
+      id: DateTime.now().toString(),
+    );
+    prefs.setString(
+        '${newCalendarTask.id} Calendar Task', newCalendarTask.task);
+    prefs.setString(
+        '${newCalendarTask.id} Calendar Date', newCalendarTask.finish);
+    setState(() {
+      // calendarList.add(newCalendarTask);
+      calendarIDlist.add(newCalendarTask.id);
+      prefs.setStringList('Calendar ID List', calendarIDlist);
+    });
+    // }
+  }
+
+  void _addNewDailyTask(
     String _task,
   ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getStringList('Daily ID List') != null) {
+      dailyidList = prefs.getStringList('Daily ID List');
+    }
+    if (prefs.getStringList('Daily Build List') != null) {
+      dailyBuildList = prefs.getStringList('Daily Build List');
+    }
     if (prefs.getInt('page index') == 4) {
       final newTask = TaskMod(
         task: _task,
@@ -56,12 +135,33 @@ class _DailyPageState extends State<DailyPage> {
       );
       prefs.setString('${newTask.id} Daily Task', newTask.task);
       setState(() {
-        _dailyList.add(newTask);
         dailyidList.add(newTask.id);
         prefs.setStringList('Daily ID List', dailyidList);
         dailyBuildList.add(newTask.id);
         prefs.setStringList('Daily Build List', dailyBuildList);
-        buildCalled = true;
+      });
+    }
+  }
+
+  void _addNewGoal(
+    String _task,
+  ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getStringList('Goal ID List') != null) {
+      goalsIdList = prefs.getStringList('Goal ID List');
+    }
+    if (prefs.getInt('page index') == 1) {
+      final newGoal = TaskMod(
+        task: _task,
+        iconName: _iconName,
+        finish: null,
+        id: DateTime.now().toString(),
+      );
+      prefs.setString('${newGoal.id} Goal Task', newGoal.task);
+      setState(() {
+        // _goalsList.add(newGoal);
+        goalsIdList.add(newGoal.id);
+        prefs.setStringList('Goal ID List', goalsIdList);
       });
     }
   }
@@ -143,6 +243,7 @@ class _DailyPageState extends State<DailyPage> {
           ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Theme.of(context).primaryColor,

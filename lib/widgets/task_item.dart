@@ -101,7 +101,7 @@ class _TaskItemState extends State<TaskItem> {
                 color: Theme.of(context).primaryColor,
                 splashColor: Theme.of(context).primaryColor,
                 onPressed: () async {
-                  HapticFeedback.mediumImpact();
+                  HapticFeedback.heavyImpact();
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   print(prefs.getStringList('Folder Names'));

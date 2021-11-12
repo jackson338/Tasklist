@@ -54,14 +54,15 @@ class _GoalItemState extends State<GoalItem> {
         // }
         // percent = prefs.getDouble('${widget.goalItem.id} percent');
         if (prefs.getStringList('${widget.goalItem.id} completed goals') !=
-          null) {
-        completedListLengthInt =
-            prefs.getStringList('${widget.goalItem.id} completed goals').length;
-      }
-      if (prefs.getStringList('${widget.goalItem.id} goal list') != null) {
-        listlengthInt =
-            prefs.getStringList('${widget.goalItem.id} goal list').length;
-      }
+            null) {
+          completedListLengthInt = prefs
+              .getStringList('${widget.goalItem.id} completed goals')
+              .length;
+        }
+        if (prefs.getStringList('${widget.goalItem.id} goal list') != null) {
+          listlengthInt =
+              prefs.getStringList('${widget.goalItem.id} goal list').length;
+        }
         print(percent);
         goalIdList = prefs.getStringList('goal id list');
         if (prefs.getStringList('Journal ID List') != null) {
@@ -227,11 +228,11 @@ class _GoalItemState extends State<GoalItem> {
             child: Row(
               children: [
                 Container(
-                    width: MediaQuery.of(context).size.width / 5,
-                    child: Text(
-                        '${percent == null ? 0 : percent > 1 ? 100 : (percent * 100).roundToDouble()}% $completedListLengthInt/$listlengthInt')),
+                  width: MediaQuery.of(context).size.width / 8,
+                  child: Text('$completedListLengthInt/$listlengthInt'),
+                ),
                 Container(
-                  width: MediaQuery.of(context).size.width / 1.3,
+                  width: MediaQuery.of(context).size.width / 1.18,
                   child: FractionallySizedBox(
                     alignment: Alignment.centerLeft,
                     heightFactor: 1.0,

@@ -20,7 +20,7 @@ class _FuturePageState extends State<FuturePage> {
   List<String> idList = [];
   List<String> goalsIdList = [];
   String _iconName = 'check_circle_outline';
-  String _dateTime = DateFormat.yMMMd().format(DateTime.now()).toString();
+  String _dateTime = DateFormat.yMMMEd().format(DateTime.now()).toString();
   bool buildCalled = false;
 
   void _deleteTask(String id) async {

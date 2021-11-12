@@ -53,7 +53,6 @@ class _HomePageState extends State<HomePage> {
 
         int buildLength = prefs.getInt('$id daily build count');
         int dailyLength = prefs.getInt('$id daily count');
-        print(prefs.getStringList('Daily ID List'));
         if (buildLength != null) {
           percentage = ((dailyLength - buildLength) * 100) / dailyLength;
           if (prefs.getStringList('daily percentages') != null) {
@@ -63,8 +62,7 @@ class _HomePageState extends State<HomePage> {
             percentages.add('${(percentage).roundToDouble()}');
             prefs.setStringList('daily percentages', percentages);
           }
-          print(
-              'BuildLength: $buildLength, DailyLength: $dailyLength, percent: $percentage');
+          // print('BuildLength: $buildLength, DailyLength: $dailyLength, percent: $percentage');
         }
         totalCompleted = percentage != null
             ? buildLength != null
@@ -91,8 +89,6 @@ class _HomePageState extends State<HomePage> {
           FlSpot(dayCompleted, totalCompleted),
         );
       }
-      // print(prefs.getDouble('$id total completed'));
-      // print(listD);
       // String date = DateFormat.yMMMd().format(DateTime.now());
       DateTime date = DateTime.now();
       int day = date.day;

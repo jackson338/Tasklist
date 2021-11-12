@@ -64,7 +64,7 @@ class _NewTaskState extends State<NewTask> {
         return;
       }
       setState(() {
-        _selectedDate = DateFormat.yMMMd().format(pickedDate).toString();
+        _selectedDate = DateFormat.yMMMEd().format(pickedDate).toString();
         pickDate = pickedDate;
       });
     });
@@ -272,7 +272,7 @@ class _NewTaskState extends State<NewTask> {
                         child: Text(
                           _selectedDate == null
                               ? 'No Date Chosen'
-                              : 'Selected Date: ${DateFormat.yMMMd().format(pickDate)}',
+                              : 'Selected Date: ${DateFormat.yMMMEd().format(pickDate)}',
                         ),
                       ),
                       // ElevatedButton(

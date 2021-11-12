@@ -60,7 +60,7 @@ class _StatisticsPage extends State<StatisticsPage> {
         totalCompleted = prefs.getDouble('$id total completed');
         dayCompleted += 1;
         points.add(
-          FlSpot(dayCompleted, totalCompleted),
+          FlSpot(dayCompleted, totalCompleted < 1 ? 1 : totalCompleted),
         );
         xLength += 1;
         if (prefs.getDouble('max val') == null) {

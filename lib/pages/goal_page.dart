@@ -74,6 +74,7 @@ class _GoalPageState extends State<GoalPage> {
   void _openGoal(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('expanded goal', id);
+    prefs.setString('start goal id', id);
     // prefs.setString('$id expanded goal', id);
     // if (prefs.getInt('page index') == 1) {
     setState(() {

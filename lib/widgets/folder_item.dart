@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasklist_app/models/folder_mod.dart';
 import 'package:tasklist_app/pages/journal.dart';
+import 'package:tasklist_app/pages/journal_folder_page.dart';
 
 class FolderItem extends StatelessWidget {
   const FolderItem({
@@ -20,10 +21,20 @@ class FolderItem extends StatelessWidget {
       onPressed: () async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('Folder Name', folderItem.date);
+        dynamic page;
+        if (folderItem.date.length == 4){
+          page = JournalMonthlyPage();
+        }
+        else if (folderItem.date.length == 3) {
+          page = JournalFolderPage();
+        }
+        else{
+          page = JournalPage();
+        }
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => JournalPage(),
+            builder: (context) => page,
           ),
         );
       },

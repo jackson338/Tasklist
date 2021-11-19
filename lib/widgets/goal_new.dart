@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tasklist_app/pages/goal_page.dart';
 
 class NewGoal extends StatefulWidget {
   final Function addGoalFunc;

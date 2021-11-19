@@ -95,6 +95,7 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
         startGoalList.add(id);
         prefs.setStringList('$startId start goal list', startGoalList);
       }
+      Navigator.of(context).pop();
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -155,39 +156,30 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
     });
   }
 
-  void deleteGoal() async {
+  void deleteGoal(String id, String mainId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String id;
-    List<String> removalId = prefs.getStringList('Goal ID List');
-    List<String> removePrevGoal = [];
-    if (index > 0) {
-      removePrevGoal = prefs
-          .getStringList('${startGoalList.elementAt(index - 2)} goal list');
-      if (removePrevGoal != null) {
-        removePrevGoal.remove(startGoalList.elementAt(index - 1));
-        prefs.setStringList(
-            '${startGoalList.elementAt(index - 2)} goal list', removePrevGoal);
+    if (prefs.getStringList('$id goal list') != null) {
+      List<String> currentList = prefs.getStringList('$id goal list');
+      String subId;
+      for (subId in currentList) {
+        if (prefs.getStringList('$subId goal list') != null) {
+          deleteGoal(subId, null);
+        }
+        prefs.remove('$subId Goal Task');
       }
+      prefs.remove('$id goal list');
     }
-    // List<String> subRemovalList = prefs.getStringList('$gId goal list');
-    if (prefs.getStringList('$gId goal list') != null) {
-      for (id in prefs.getStringList('$gId goal list')) {
-        prefs.remove('$id goal task');
-      }
+      List<String> goalsIdList = prefs.getStringList('Goal ID List');
+      goalsIdList.remove(id);
+      prefs.setStringList('Goal ID List', goalsIdList);
+      prefs.remove('$id Goal Task');
+      // prefs.remove('$mainId Goal Task');
+    if (prefs.getStringList('$mainId goal list') != null) {
+      List<String> goalsIdList = prefs.getStringList('$mainId goal list');
+      goalsIdList.remove(id);
+      prefs.setStringList('$mainId goal list', goalsIdList);
     }
-
-    prefs.remove('$gId goal list');
-    prefs.remove('$gId Goal Task');
-    startGoalList.remove(gId);
-    startGoalList.remove(startGoalList.elementAt(index - 1));
-    prefs.setStringList('$startId start goal list', startGoalList);
-    removalId.remove(gId);
-    prefs.setStringList('Goal ID List', removalId);
-    // subRemovalList.remove(gId);
-    prefs.remove('$gId completed goals');
-    setState(() {
-      Navigator.of(context).pop();
-    });
+    goBack();
   }
 
   Future<Null> refreshList() async {
@@ -227,16 +219,25 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
   void goBack() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (index > 0) {
-      startGoalList.remove(prefs.getString('expanded goal'));
+      setState(() {
+      // startGoalList.remove(prefs.getString('expanded goal'));
       startGoalList.remove(gId);
       prefs.setStringList('$startId start goal list', startGoalList);
       prefs.setString('expanded goal', startGoalList.elementAt(index - 1));
+      // prefs.setString('expanded goal', startGoalList.elementAt(index));
+      Navigator.of(context).pop();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => GoalExpandedPage(),
+        ),
+      );
+    });
     } else {
       startGoalList = [];
       prefs.setStringList('$startId start goal list', startGoalList);
+      Navigator.of(context).pop();
     }
-
-    Navigator.of(context).pop();
   }
 
   @override
@@ -263,7 +264,8 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
-              deleteGoal();
+              deleteGoal(
+                  gId, index > 0 ? startGoalList.elementAt(index - 1) : gId);
             },
           ),
         ],

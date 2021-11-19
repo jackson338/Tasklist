@@ -8,7 +8,7 @@ class TaskMod {
   TaskMod({
     @required this.task,
     @required this.iconName,
-    @required this.id,
     @required this.finish,
+    @required this.id,
   });
 }

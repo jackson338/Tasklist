@@ -276,9 +276,9 @@ class _NewTaskState extends State<NewTask> {
                         ),
                       ),
                       // ElevatedButton(
-                      //   style: ButtonStyle(
-                      //     backgroundColor: MaterialStateProperty.all(
-                      //         Theme.of(context).primaryColor),
+                        // style: ButtonStyle(
+                        //   backgroundColor: MaterialStateProperty.all(
+                        //       Theme.of(context).primaryColor),
                       //   ),
                       //   onPressed: _presentDatePicker,
                       //   child: Icon(Icons.calendar_today,

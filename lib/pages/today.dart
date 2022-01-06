@@ -147,10 +147,14 @@ class _TodayPageState extends State<TodayPage> {
       if (prefs.getString('Home Date') != null &&
           prefs.getString('Home Date') != _dateTime) {
         //setting daily count max number
-        prefs.setInt('$_dateTime daily count',
-            prefs.getStringList('Daily ID List').length);
-        prefs.setInt('$_dateTime daily build count',
-            prefs.getStringList('Daily Build List').length);
+        if (prefs.getStringList('Daily ID List') != null) {
+          prefs.setInt('$_dateTime daily count',
+              prefs.getStringList('Daily ID List').length);
+        }
+        if (prefs.getStringList('Daily Build List') != null) {
+          prefs.setInt('$_dateTime daily build count',
+              prefs.getStringList('Daily Build List').length);
+        }
         if (prefs.getStringList('Daily ID List') != null) {
           dailyBuildList = prefs.getStringList('Daily ID List');
           prefs.setStringList('Daily Build List', dailyBuildList);
@@ -204,10 +208,14 @@ class _TodayPageState extends State<TodayPage> {
     print('build Tasks Called');
     buildCalled = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('$_dateTime daily build count',
-        prefs.getStringList('Daily Build List').length);
-    prefs.setInt(
-        '$_dateTime daily count', prefs.getStringList('Daily ID List').length);
+    if (prefs.getStringList('Daily Build List') != null) {
+      prefs.setInt('$_dateTime daily build count',
+          prefs.getStringList('Daily Build List').length);
+    }
+    if (prefs.getStringList('Daily ID List') != null) {
+      prefs.setInt('$_dateTime daily count',
+          prefs.getStringList('Daily ID List').length);
+    }
     List<String> calendarIdList = [];
     List<String> calendarIdList2 = [];
     String id;

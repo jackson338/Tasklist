@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tasklist_app/models/note_mod.dart';
 import 'package:tasklist_app/pages/calendar_page.dart';
 import 'package:tasklist_app/pages/statistics_page.dart';
 import 'package:tasklist_app/pages/daily.dart';
@@ -21,43 +20,16 @@ class _HomePageState extends State<HomePage> {
   List<FlSpot> points = [];
   List<String> chartIds = [];
   List<String> weekIds = [];
-  List<String> percentageIds = [];
   List<String> percentages = [];
   List<String> allIds = [];
-  List<String> noteIdsList = [];
-  List<NoteMod> noteList = [];
   double totalCompleted = 0.0;
   double dayCompleted = 0;
   double percentage = 0.0;
-  TextEditingController moneyController = TextEditingController();
-  String moneyString = "";
 
   void getChartValues() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getStringList('general note ids') != null) {
-      noteIdsList = prefs.getStringList('general note ids');
-    }
     int count = 0;
     setState(() {
-      for (String id in noteIdsList) {
-        bool slideNum = prefs.getBool('$id slide/num');
-        TextEditingController _noteController = TextEditingController();
-        final newNote = NoteMod(
-          question: prefs.getString('$id question'),
-          start: slideNum == true ? prefs.getString('$id start') : '',
-          end: slideNum == true ? prefs.getString('$id end') : '',
-          note: prefs.getString('$id note'),
-          id: id,
-          scaleVal: slideNum == true ? prefs.getDouble('$id scaleVal') : 0,
-          num: slideNum == false ? prefs.getInt('$id num') : 0,
-          slide_num: prefs.getBool('$id slide/num'),
-          noteController: _noteController,
-        );
-        noteList.add(newNote);
-      }
-      if (prefs.getString('weekly money text') != null) {
-        moneyString = prefs.getString('weekly money text');
-      }
       if (prefs.getStringList('chart ids') != null) {
         chartIds = prefs.getStringList('chart ids');
       }
@@ -74,17 +46,6 @@ class _HomePageState extends State<HomePage> {
         weekIds = chartIds;
       }
       String id;
-      for (String ids in chartIds) {
-        int buildLength = prefs.getInt('$ids daily build count');
-        int dailyLength = prefs.getInt('$ids daily count');
-        if (buildLength != null) {
-          percentage = ((dailyLength - buildLength) * 100) / dailyLength;
-          prefs.setString('$ids percentage', '$percentage');
-          percentageIds.add('$ids');
-          prefs.setStringList('total percentage ids', percentageIds);
-        }
-      }
-
       for (id in weekIds) {
         listD = prefs.getInt('$id daily count') == null
             ? prefs.getStringList('Daily ID List').length
@@ -92,17 +53,18 @@ class _HomePageState extends State<HomePage> {
 
         int buildLength = prefs.getInt('$id daily build count');
         int dailyLength = prefs.getInt('$id daily count');
+        print(prefs.getStringList('Daily ID List'));
         if (buildLength != null) {
           percentage = ((dailyLength - buildLength) * 100) / dailyLength;
-
           if (prefs.getStringList('daily percentages') != null) {
             percentages = prefs.getStringList('daily percentages');
           }
-          percentages.contains(percentage)
-              ? print('already added')
-              : percentages.add('${(percentage).roundToDouble()}');
-          prefs.setStringList('daily percentages', percentages);
-          // print('BuildLength: $buildLength, DailyLength: $dailyLength, percent: $percentage');
+          if (percentages.contains(percentage) == false) {
+            percentages.add('${(percentage).roundToDouble()}');
+            prefs.setStringList('daily percentages', percentages);
+          }
+          print(
+              'BuildLength: $buildLength, DailyLength: $dailyLength, percent: $percentage');
         }
         totalCompleted = percentage != null
             ? buildLength != null
@@ -129,19 +91,13 @@ class _HomePageState extends State<HomePage> {
           FlSpot(dayCompleted, totalCompleted),
         );
       }
+      // print(prefs.getDouble('$id total completed'));
+      // print(listD);
       // String date = DateFormat.yMMMd().format(DateTime.now());
       DateTime date = DateTime.now();
       int day = date.day;
       dateLengthD += day;
       buildCalled = true;
-    });
-  }
-
-  void setMoneyString(String _moneyText) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      moneyString = _moneyText;
-      prefs.setString('weekly money text', _moneyText);
     });
   }
 
@@ -168,126 +124,43 @@ class _HomePageState extends State<HomePage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: TextField(
-                controller: moneyController,
-                cursorColor: Theme.of(context).dividerColor,
-                decoration: InputDecoration(
-                  labelText: moneyString,
-                  contentPadding: EdgeInsets.only(left: 170),
-                ),
-                onSubmitted: setMoneyString,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
               child: Container(
                 height: MediaQuery.of(context).size.height / 4,
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: [
-                    noteIdsList != null
-                        ? Container(
-                            height: MediaQuery.of(context).size.height / 4,
-                            width: MediaQuery.of(context).size.width / 1.2,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (ctx, index) {
-                                return Container(
-                                  height:
-                                      MediaQuery.of(context).size.height / 4,
-                                  width: MediaQuery.of(context).size.width / 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: LineChart(
-                                      LineChartData(
-                                        backgroundColor:
-                                            Theme.of(context).backgroundColor,
-                                        lineTouchData: LineTouchData(
-                                          enabled: true,
-                                          touchTooltipData:
-                                              LineTouchTooltipData(
-                                                  tooltipRoundedRadius: 30.0),
-                                        ),
-                                        axisTitleData: FlAxisTitleData(
-                                          topTitle: AxisTitle(
-                                            titleText: noteList
-                                                .elementAt(index)
-                                                .question,
-                                            showTitle: true,
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .headline6,
-                                          ),
-                                        ),
-                                        titlesData: FlTitlesData(
-                                          rightTitles:
-                                              SideTitles(showTitles: false),
-                                          topTitles:
-                                              SideTitles(showTitles: false),
-                                          leftTitles: SideTitles(
-                                              interval: 20,
-                                              showTitles: true,
-                                              margin: 8.0),
-                                        ),
-                                        minX: 1,
-                                        maxX: 10,
-                                        minY: 0,
-                                        maxY: 10,
-                                        gridData: FlGridData(
-                                          drawHorizontalLine: false,
-                                          drawVerticalLine: false,
-                                        ),
-                                        lineBarsData: [
-                                          LineChartBarData(
-                                            spots: points,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                              itemCount: noteIdsList.length,
-                            ),
-                          )
-                        : Text('No notes'),
-                    // LineChart(
-                    //   LineChartData(
-                    //     backgroundColor: Theme.of(context).backgroundColor,
-                    //     lineTouchData: LineTouchData(
-                    //       enabled: true,
-                    //       touchTooltipData:
-                    //           LineTouchTooltipData(tooltipRoundedRadius: 30.0),
-                    //     ),
-                    //     axisTitleData: FlAxisTitleData(
-                    //       topTitle: AxisTitle(
-                    //         titleText: 'This Week\'s Stats',
-                    //         showTitle: true,
-                    //         textStyle: Theme.of(context).textTheme.headline6,
-                    //       ),
-                    //     ),
-                    //     titlesData: FlTitlesData(
-                    //       rightTitles: SideTitles(showTitles: false),
-                    //       topTitles: SideTitles(showTitles: false),
-                    //       leftTitles: SideTitles(
-                    //           interval: 20, showTitles: true, margin: 8.0),
-                    //     ),
-                    //     minX: 1,
-                    //     maxX: 7,
-                    //     minY: 0,
-                    //     maxY: 99,
-                    //     gridData: FlGridData(
-                    //       drawHorizontalLine: false,
-                    //       drawVerticalLine: false,
-                    //     ),
-                    //     lineBarsData: [
-                    //       LineChartBarData(
-                    //         spots: points,
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                  ],
+                child: LineChart(
+                  LineChartData(
+                    backgroundColor: Theme.of(context).backgroundColor,
+                    lineTouchData: LineTouchData(
+                      enabled: true,
+                      touchTooltipData:
+                          LineTouchTooltipData(tooltipRoundedRadius: 30.0),
+                    ),
+                    axisTitleData: FlAxisTitleData(
+                      topTitle: AxisTitle(
+                        titleText: 'This Week\'s Stats',
+                        showTitle: true,
+                        textStyle: Theme.of(context).textTheme.headline6,
+                      ),
+                    ),
+                    titlesData: FlTitlesData(
+                      rightTitles: SideTitles(showTitles: false),
+                      topTitles: SideTitles(showTitles: false),
+                      leftTitles: SideTitles(
+                          interval: 20, showTitles: true, margin: 8.0),
+                    ),
+                    minX: 1,
+                    maxX: 7,
+                    minY: 0,
+                    maxY: 99,
+                    gridData: FlGridData(
+                      drawHorizontalLine: false,
+                      drawVerticalLine: false,
+                    ),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: points,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

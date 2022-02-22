@@ -54,6 +54,9 @@ class _HomePageState extends State<HomePage> {
       }
       String id;
       for (id in weekIds) {
+        if (prefs.getStringList('Daily ID List') == null) {
+          prefs.setStringList('Daily ID List', ['test']);
+        }
         listD = prefs.getInt('$id daily count') == null
             ? prefs.getStringList('Daily ID List').length
             : prefs.getInt('$id daily count');

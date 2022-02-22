@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasklist_app/models/folder_mod.dart';
+<<<<<<< HEAD
+import 'package:tasklist_app/pages/journal_navigator.dart';
+import 'package:tasklist_app/pages/journal_tasks.dart';
+=======
 import 'package:tasklist_app/pages/journal.dart';
 import 'package:tasklist_app/pages/journal_folder_page.dart';
+>>>>>>> main
 
 class FolderItem extends StatelessWidget {
   const FolderItem({
@@ -34,7 +39,11 @@ class FolderItem extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
+<<<<<<< HEAD
+            builder: (context) => JournalTasksPage(),
+=======
             builder: (context) => page,
+>>>>>>> main
           ),
         );
       },

@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasklist_app/pages/calendar_page.dart';
 import 'package:tasklist_app/pages/statistics_page.dart';
@@ -16,15 +17,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool buildCalled = false;
   int listD = 0;
-  double dateLengthD = 0.0;
   List<FlSpot> points = [];
   List<String> chartIds = [];
   List<String> weekIds = [];
   List<String> percentages = [];
   List<String> allIds = [];
+  List<Color> chartColors = [];
+  String _dateTime;
   double totalCompleted = 0.0;
   double dayCompleted = 0;
   double percentage = 0.0;
+  double dateLengthD = 0.0;
 
   void getChartValues() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -32,6 +35,10 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       if (prefs.getStringList('chart ids') != null) {
         chartIds = prefs.getStringList('chart ids');
+      }
+      if (chartIds.contains(_dateTime) == false) {
+        chartIds.add(_dateTime);
+        prefs.setStringList('chart ids', chartIds);
       }
       count = chartIds.length - 1;
       if (count > 6) {
@@ -66,6 +73,9 @@ class _HomePageState extends State<HomePage> {
           print(
               'BuildLength: $buildLength, DailyLength: $dailyLength, percent: $percentage');
         }
+        if (prefs.getDouble('$id total completed') == null) {
+          prefs.setDouble('$id total completed', 0);
+        }
         totalCompleted = percentage != null
             ? buildLength != null
                 ? percentage.roundToDouble()
@@ -91,9 +101,6 @@ class _HomePageState extends State<HomePage> {
           FlSpot(dayCompleted, totalCompleted),
         );
       }
-      // print(prefs.getDouble('$id total completed'));
-      // print(listD);
-      // String date = DateFormat.yMMMd().format(DateTime.now());
       DateTime date = DateTime.now();
       int day = date.day;
       dateLengthD += day;
@@ -103,22 +110,454 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    chartColors = [
+      Theme.of(context).dividerColor,
+      Colors.teal[300],
+      Theme.of(context).primaryColor
+    ];
+    _dateTime = DateFormat.yMMMEd().format(DateTime.now()).toString();
     if (buildCalled == false) {
       getChartValues();
     }
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                barrierDismissible: true,
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Home Page'),
+                    backgroundColor: Theme.of(context).backgroundColor,
+                    actions: [
+                      Text(
+                        'Welcome to the Home Page! This is where you\'ll see a chart for the percentage of daily tasks you\'ve completed this week.',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: Text(
+                          'You will also be able to navigate to your Calendar, Daily Task, Journal, and Statistics pages!',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    Theme.of(context).dividerColor),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                'Dismiss',
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    Theme.of(context).dividerColor),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                showDialog(
+                                  barrierDismissible: true,
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text('Adding Tasks'),
+                                      backgroundColor:
+                                          Theme.of(context).backgroundColor,
+                                      actions: [
+                                        Text(
+                                          'Hit the \"+\" button to add a new:',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 15.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8.0),
+                                                child: Text(
+                                                  'Calendar Task',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8.0),
+                                                child: Text(
+                                                  'Today Task',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8.0),
+                                                child: Text(
+                                                  'Daily Task',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8.0),
+                                                child: Text(
+                                                  'Goal Task',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText2,
+                                                ),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: ElevatedButton(
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(Theme.of(
+                                                                        context)
+                                                                    .dividerColor),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Text(
+                                                        'Dismiss',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText2,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: ElevatedButton(
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(Theme.of(
+                                                                        context)
+                                                                    .dividerColor),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        showDialog(
+                                                          barrierDismissible:
+                                                              true,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return AlertDialog(
+                                                              title: Text(
+                                                                  'Calendar Tasks'),
+                                                              backgroundColor:
+                                                                  Theme.of(
+                                                                          context)
+                                                                      .backgroundColor,
+                                                              actions: [
+                                                                Text(
+                                                                  'Calendar tasks add to your today list automatically on their set date.',
+                                                                  style: Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .bodyText1,
+                                                                ),
+                                                                Row(
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              8.0),
+                                                                      child:
+                                                                          ElevatedButton(
+                                                                        style:
+                                                                            ButtonStyle(
+                                                                          backgroundColor:
+                                                                              MaterialStateProperty.all(Theme.of(context).dividerColor),
+                                                                        ),
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                        child:
+                                                                            Text(
+                                                                          'Dismiss',
+                                                                          style: Theme.of(context)
+                                                                              .textTheme
+                                                                              .bodyText2,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              8.0),
+                                                                      child:
+                                                                          ElevatedButton(
+                                                                        style:
+                                                                            ButtonStyle(
+                                                                          backgroundColor:
+                                                                              MaterialStateProperty.all(Theme.of(context).dividerColor),
+                                                                        ),
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                          showDialog(
+                                                                            barrierDismissible:
+                                                                                true,
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (context) {
+                                                                              return AlertDialog(
+                                                                                title: Text('Today Task'),
+                                                                                backgroundColor: Theme.of(context).backgroundColor,
+                                                                                actions: [
+                                                                                  Text(
+                                                                                    'Today Tasks add to your Today List. They will stay there until completed or deleted. You shouldn\'t have a today task for more than a couple days. ',
+                                                                                    style: Theme.of(context).textTheme.bodyText1,
+                                                                                  ),
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: ElevatedButton(
+                                                                                          style: ButtonStyle(
+                                                                                            backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
+                                                                                          ),
+                                                                                          onPressed: () {
+                                                                                            Navigator.of(context).pop();
+                                                                                          },
+                                                                                          child: Text(
+                                                                                            'Dismiss',
+                                                                                            style: Theme.of(context).textTheme.bodyText2,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: ElevatedButton(
+                                                                                          style: ButtonStyle(
+                                                                                            backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
+                                                                                          ),
+                                                                                          onPressed: () {
+                                                                                            Navigator.of(context).pop();
+                                                                                            showDialog(
+                                                                            barrierDismissible:
+                                                                                true,
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (context) {
+                                                                              return AlertDialog(
+                                                                                title: Text('Daily Task'),
+                                                                                backgroundColor: Theme.of(context).backgroundColor,
+                                                                                actions: [
+                                                                                  Text(
+                                                                                    'Daily Tasks will add to your Daily Today list. These will repeat every day. Use these to set a routine.',
+                                                                                    style: Theme.of(context).textTheme.bodyText1,
+                                                                                  ),
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: ElevatedButton(
+                                                                                          style: ButtonStyle(
+                                                                                            backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
+                                                                                          ),
+                                                                                          onPressed: () {
+                                                                                            Navigator.of(context).pop();
+                                                                                          },
+                                                                                          child: Text(
+                                                                                            'Dismiss',
+                                                                                            style: Theme.of(context).textTheme.bodyText2,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: ElevatedButton(
+                                                                                          style: ButtonStyle(
+                                                                                            backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
+                                                                                          ),
+                                                                                          onPressed: () {
+                                                                                            Navigator.of(context).pop();
+                                                                                            showDialog(
+                                                                            barrierDismissible:
+                                                                                true,
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (context) {
+                                                                              return AlertDialog(
+                                                                                title: Text('Goal Task'),
+                                                                                backgroundColor: Theme.of(context).backgroundColor,
+                                                                                actions: [
+                                                                                  Text(
+                                                                                    'Goal tasks add to your Goals list. You can go into a Goal Task and add sub-goals!',
+                                                                                    style: Theme.of(context).textTheme.bodyText1,
+                                                                                  ),
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: ElevatedButton(
+                                                                                          style: ButtonStyle(
+                                                                                            backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
+                                                                                          ),
+                                                                                          onPressed: () {
+                                                                                            Navigator.of(context).pop();
+                                                                                          },
+                                                                                          child: Text(
+                                                                                            'Dismiss',
+                                                                                            style: Theme.of(context).textTheme.bodyText2,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: ElevatedButton(
+                                                                                          style: ButtonStyle(
+                                                                                            backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
+                                                                                          ),
+                                                                                          onPressed: () {
+                                                                                            Navigator.of(context).pop();
+                                                                                          },
+                                                                                          child: Text(
+                                                                                            'Next',
+                                                                                            style: Theme.of(context).textTheme.bodyText2,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ],
+                                                                              );
+                                                                            },
+                                                                          );
+                                                                                          },
+                                                                                          child: Text(
+                                                                                            'Next',
+                                                                                            style: Theme.of(context).textTheme.bodyText2,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ],
+                                                                              );
+                                                                            },
+                                                                          );
+                                                                                          },
+                                                                                          child: Text(
+                                                                                            'Next',
+                                                                                            style: Theme.of(context).textTheme.bodyText2,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ],
+                                                                              );
+                                                                            },
+                                                                          );
+                                                                        },
+                                                                        child:
+                                                                            Text(
+                                                                          'Next',
+                                                                          style: Theme.of(context)
+                                                                              .textTheme
+                                                                              .bodyText2,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
+                                                      },
+                                                      child: Text(
+                                                        'Next',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText2,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Text(
+                                'Next',
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            icon: Icon(Icons.help),
+            color: Theme.of(context).primaryColor,
+          )
+        ],
         toolbarHeight: MediaQuery.of(context).size.height / 15,
-        // brightness: Brightness.light,
-        backgroundColor: Theme.of(context).primaryColorDark,
+        backgroundColor: Theme.of(context).backgroundColor,
+        elevation: 0,
         title: Text(
           "Home",
           style: Theme.of(context).textTheme.headline5,
         ),
       ),
       body: Container(
-        // color: Theme.of(context).backgroundColor,
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
@@ -136,7 +575,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     axisTitleData: FlAxisTitleData(
                       topTitle: AxisTitle(
-                        titleText: 'This Week\'s Stats',
+                        titleText: 'This Week\'s Daily Stats',
                         showTitle: true,
                         textStyle: Theme.of(context).textTheme.headline6,
                       ),
@@ -158,6 +597,7 @@ class _HomePageState extends State<HomePage> {
                     lineBarsData: [
                       LineChartBarData(
                         spots: points,
+                        colors: chartColors,
                       ),
                     ],
                   ),
@@ -236,30 +676,30 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                      Theme.of(context).primaryColorDark),
-                ),
-                child: ListTile(
-                  leading: Icon(
-                    Icons.data_saver_off_outlined,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  title: Text('Statistics'),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => StatisticsPage(),
-                    ),
-                  );
-                },
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(5.0),
+            //   child: ElevatedButton(
+            //     style: ButtonStyle(
+            //       backgroundColor: MaterialStateProperty.all(
+            //           Theme.of(context).primaryColorDark),
+            //     ),
+            //     child: ListTile(
+            //       leading: Icon(
+            //         Icons.data_saver_off_outlined,
+            //         color: Theme.of(context).primaryColor,
+            //       ),
+            //       title: Text('Statistics'),
+            //     ),
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (BuildContext context) => StatisticsPage(),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

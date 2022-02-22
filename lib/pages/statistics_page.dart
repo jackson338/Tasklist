@@ -17,6 +17,8 @@ class _StatisticsPage extends State<StatisticsPage> {
   double dateLengthD = 0.0;
   List<FlSpot> points = [];
   List<String> chartIds = [];
+  List<String> percentageIds = [];
+  List<Color> chartColors = [];
   double totalCompleted = 0.0;
   double dayCompleted = 0;
   double xLength = 0;
@@ -29,13 +31,13 @@ class _StatisticsPage extends State<StatisticsPage> {
   void getChartValues() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      if (prefs.getStringList('daily percentages') != null) {
-        String percent;
-        for (percent in prefs.getStringList('daily percentages')) {
-          percentage = percent;
+      if (prefs.getStringList('total percentage ids') != null) {
+        // prefs.setStringList('daily percentages', []);
+        String percentId;
+        for (percentId in prefs.getStringList('total percentage ids')) {
+          percentage = prefs.getString('$percentId percentage');
           print(percentage);
         }
-        print(percentage);
       }
       if (prefs.getStringList('daily average ids') != null) {
         List<String> allIds = prefs.getStringList('daily average ids');
@@ -43,12 +45,12 @@ class _StatisticsPage extends State<StatisticsPage> {
         int totalLength = allIds.length;
         double addedTogether = 0.0;
         for (id in allIds) {
-          addedTogether+=prefs.getDouble('$id average percentage');
+          addedTogether += prefs.getDouble('$id average percentage');
         }
         average = (addedTogether / totalLength);
       }
-      if (prefs.getStringList('chart ids') != null) {
-        chartIds = prefs.getStringList('chart ids');
+      if (prefs.getStringList('total percentage ids') != null) {
+        chartIds = prefs.getStringList('total percentage ids');
       }
       String id;
       for (id in chartIds) {
@@ -57,10 +59,13 @@ class _StatisticsPage extends State<StatisticsPage> {
         if (buildLength != null) {
           dif = dailyLength - buildLength;
         }
-        totalCompleted = prefs.getDouble('$id total completed');
+        if (prefs.getString('$id percentage') != null) {
+          totalCompleted = double.parse(prefs.getString('$id percentage')).roundToDouble();
+        }
+
         dayCompleted += 1;
         points.add(
-          FlSpot(dayCompleted, totalCompleted),
+          FlSpot(dayCompleted, totalCompleted < 1 ? 1 : totalCompleted),
         );
         xLength += 1;
         if (prefs.getDouble('max val') == null) {
@@ -89,14 +94,18 @@ class _StatisticsPage extends State<StatisticsPage> {
 
   @override
   Widget build(BuildContext context) {
+    chartColors = [Theme.of(context).dividerColor, Colors.teal[300], Theme.of(context).primaryColor];
     if (buildCalled == false) {
       getChartValues();
     }
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Theme.of(context).backgroundColor,
         title: Text('Chart'),
       ),
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Padding(
         padding: const EdgeInsets.only(
           top: 30,
@@ -118,11 +127,7 @@ class _StatisticsPage extends State<StatisticsPage> {
                     rightTitles: SideTitles(showTitles: false),
                     topTitles: SideTitles(showTitles: false),
                     leftTitles: SideTitles(
-                      interval: totalDaily < 15
-                          ? 1
-                          : totalDaily > 20
-                              ? 5
-                              : 3,
+                      interval: 20,
                       showTitles: true,
                     ),
                   ),
@@ -136,7 +141,7 @@ class _StatisticsPage extends State<StatisticsPage> {
                   minX: 1,
                   maxX: xLength,
                   minY: 1,
-                  maxY: totalDaily,
+                  maxY: 100,
                   gridData: FlGridData(
                     drawHorizontalLine: false,
                     drawVerticalLine: false,
@@ -144,31 +149,27 @@ class _StatisticsPage extends State<StatisticsPage> {
                   lineBarsData: [
                     LineChartBarData(
                       spots: points,
+                      colors: chartColors,
                     ),
                   ],
                 ),
               ),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 18.0),
+            //   child: Text(
+            //     '$dif/$dailyLength Daily Tasks Completed',
+            //     style: Theme.of(context).textTheme.bodyText1,
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.only(top: 18.0),
-              child: Text(
-                '$percentage% of Daily Tasks Completed',
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 18.0),
-              child: Text(
-                '$dif/$dailyLength Daily Tasks Completed',
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 18.0),
-              child: average != null ? Text(
-                'Average Daily Task Completion Rate: ${average.roundToDouble()}%',
-                style: Theme.of(context).textTheme.bodyText1,
-              ) : Text('nothing'),
+              child: average != null
+                  ? Text(
+                      'Average Daily Task Completion Rate: ${average.roundToDouble()}%',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
+                  : Text('nothing'),
             ),
           ],
         ),

@@ -3,12 +3,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/task_mod.dart';
 import 'package:tasklist_app/widgets/task_list.dart';
 
-class JournalPage extends StatefulWidget {
+class JournalTasksPage extends StatefulWidget {
   @override
-  _JournalPageState createState() => _JournalPageState();
+  _JournalTasksPageState createState() => _JournalTasksPageState();
 }
 
-class _JournalPageState extends State<JournalPage> {
+class _JournalTasksPageState extends State<JournalTasksPage> {
   List<String> journalidList = [];
   List<TaskMod> _taskList = [];
   bool buildCalled = false;
@@ -91,18 +91,15 @@ class _JournalPageState extends State<JournalPage> {
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         iconTheme: IconThemeData(color: Theme.of(context).dividerColor),
-        backgroundColor: Theme.of(context).primaryColorDark,
+        backgroundColor: Theme.of(context).backgroundColor,
+        elevation: 0,
         title: name != null
             ? Text(
                 name,
                 style: Theme.of(context).textTheme.headline5,
               )
-            : Text('hey'),
+            : Text('Title...'),
       ),
-      // bottomNavigationBar: Container(
-      //   color: Theme.of(context).primaryColorDark,
-      //   height: MediaQuery.of(context).size.height / 15,
-      // ),
       body: TaskListWidget(_taskList, _deleteTask, _completeTask),
     );
   }

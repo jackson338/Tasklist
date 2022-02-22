@@ -20,7 +20,7 @@ class _FuturePageState extends State<FuturePage> {
   List<String> idList = [];
   List<String> goalsIdList = [];
   String _iconName = 'check_circle_outline';
-  String _dateTime = DateFormat.yMMMd().format(DateTime.now()).toString();
+  String _dateTime = DateFormat.yMMMEd().format(DateTime.now()).toString();
   bool buildCalled = false;
 
   void _deleteTask(String id) async {
@@ -235,7 +235,8 @@ class _FuturePageState extends State<FuturePage> {
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 15,
         // brightness: Brightness.light,
-        backgroundColor: Theme.of(context).primaryColorDark,
+        backgroundColor: Theme.of(context).backgroundColor,
+        elevation: 0,
         title: Text(
           "Calendar Tasks",
           style: Theme.of(context).textTheme.headline5,

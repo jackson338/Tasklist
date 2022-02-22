@@ -27,6 +27,9 @@ class _TaskItemState extends State<TaskItem> {
   List<String> taskidList = [];
   List<String> journalidList = [];
   List<String> folderNames = [];
+  List<String> dateList = [];
+  String _dateTime;
+  bool dateCalled = false;
   bool buildCalled = false;
 
   void buildList() async {
@@ -41,10 +44,6 @@ class _TaskItemState extends State<TaskItem> {
       });
     }
   }
-
-  List<String> dateList = [];
-  String _dateTime;
-  bool dateCalled = false;
 
   void datePrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -101,7 +100,7 @@ class _TaskItemState extends State<TaskItem> {
                 color: Theme.of(context).primaryColor,
                 splashColor: Theme.of(context).primaryColor,
                 onPressed: () async {
-                  HapticFeedback.mediumImpact();
+                  HapticFeedback.heavyImpact();
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   print(prefs.getStringList('Folder Names'));

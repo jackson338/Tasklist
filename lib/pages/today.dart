@@ -16,13 +16,14 @@ class TodayPage extends StatefulWidget {
 }
 
 class _TodayPageState extends State<TodayPage> {
-  List<TaskMod> _taskList = [];
   List<TaskMod> _dailyList = [];
-  List<String> dateList = [];
+  List<TaskMod> _taskList = [];
   List<String> idList = [];
+  List<String> dateList = [];
   List<String> dailyBuildList = [];
   List<String> dailyidList = [];
   List<String> goalsIdList = [];
+  List<String> newBuildList = [];
   // List<TaskMod> calendarList = [];
   List<String> calendarIDlist = [];
   String _iconName = 'check_circle_outline';
@@ -31,120 +32,7 @@ class _TodayPageState extends State<TodayPage> {
   bool dateCalled = false;
   bool dailySelected = false;
   bool todaySelected = true;
-
-  void _addNewTask(String _task, String _date) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      String selectedList = prefs.getString('selected list');
-      if (selectedList == 'calendar') {
-        prefs.setInt('page index', 3);
-        _addNewCalendarTask(_task, _date);
-      }
-      if (selectedList == 'today') {
-        prefs.setInt('page index', 2);
-        _addTodayTask(_task);
-      }
-      if (selectedList == 'daily') {
-        prefs.setInt('page index', 4);
-        _addNewDailyTask(_task);
-      }
-      if (selectedList == 'goal') {
-        prefs.setInt('page index', 1);
-        _addNewGoal(_task);
-      }
-    });
-  }
-
-  void _addTodayTask(String _task) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final newTask = TaskMod(
-      task: _task,
-      iconName: _iconName,
-      finish: null,
-      id: DateTime.now().toString(),
-    );
-    prefs.setString('${newTask.id} Task', newTask.task);
-    setState(() {
-      _taskList.add(newTask);
-      idList.add(newTask.id);
-      prefs.setStringList('ID List', idList);
-      buildCalled = true;
-    });
-  }
-
-  void _addNewCalendarTask(
-    String calendarTask,
-    String date,
-  ) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    calendarIDlist = prefs.getStringList('Calendar ID List');
-    // if (prefs.getInt('page index') == 3) {
-    final newCalendarTask = TaskMod(
-      task: calendarTask,
-      iconName: _iconName,
-      finish: date,
-      id: DateTime.now().toString(),
-    );
-    prefs.setString(
-        '${newCalendarTask.id} Calendar Task', newCalendarTask.task);
-    prefs.setString(
-        '${newCalendarTask.id} Calendar Date', newCalendarTask.finish);
-    setState(() {
-      // calendarList.add(newCalendarTask);
-      calendarIDlist.add(newCalendarTask.id);
-      prefs.setStringList('Calendar ID List', calendarIDlist);
-      buildCalled = true;
-    });
-    // }
-  }
-
-  void _addNewDailyTask(
-    String _task,
-  ) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    dailyidList = prefs.getStringList('Daily ID List');
-    if (prefs.getInt('page index') == 4) {
-      final newTask = TaskMod(
-        task: _task,
-        iconName: _iconName,
-        finish: null,
-        id: DateTime.now().toString(),
-      );
-      prefs.setString('${newTask.id} Daily Task', newTask.task);
-      setState(() {
-        _dailyList.add(newTask);
-        dailyidList.add(newTask.id);
-        prefs.setStringList('Daily ID List', dailyidList);
-        dailyBuildList.add(newTask.id);
-        prefs.setStringList('Daily Build List', dailyBuildList);
-        buildCalled = true;
-      });
-    }
-  }
-
-  void _addNewGoal(
-    String _task,
-  ) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getStringList('goal id list') != null) {
-      goalsIdList = prefs.getStringList('goal id list');
-    }
-    if (prefs.getInt('page index') == 1) {
-      final newGoal = GoalMod(
-        task: _task,
-        iconName: _iconName,
-        finish: null,
-        id: DateTime.now().toString(),
-      );
-      prefs.setString('${newGoal.id} goal task', newGoal.task);
-      setState(() {
-        // _goalsList.add(newGoal);
-        goalsIdList.add(newGoal.id);
-        prefs.setStringList('goal id list', goalsIdList);
-        buildCalled = true;
-      });
-    }
-  }
+  int count = 0;
 
   void _deleteTask(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -186,6 +74,7 @@ class _TodayPageState extends State<TodayPage> {
       prefs.setStringList('Journal ID List', journalidList);
       taskidList.remove(id);
       prefs.setStringList('ID List', taskidList);
+      _taskList.removeWhere((taskC) => taskC.id == id);
     });
   }
 
@@ -195,6 +84,7 @@ class _TodayPageState extends State<TodayPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     setState(() {
+      _taskList.removeWhere((taskC) => taskC.id == id);
       // String idc = DateTime.now().toString();
       if (prefs.getStringList('chart ids') != null) {
         chartIds = prefs.getStringList('chart ids');
@@ -232,12 +122,12 @@ class _TodayPageState extends State<TodayPage> {
       prefs.setStringList('Journal ID List', journalidList);
       dailybuildList.remove(id);
       prefs.setStringList('Daily Build List', dailybuildList);
+      _dailyList.removeWhere((taskC) => taskC.id == id);
     });
   }
 
-  int count = 0;
-  List<String> newBuildList = [];
   void datePrefs() async {
+    print('date prefs called');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       if (prefs.getBool('today list selected') == true) {
@@ -253,14 +143,18 @@ class _TodayPageState extends State<TodayPage> {
       if (prefs.getStringList('Home Date List') != null) {
         dateList = prefs.getStringList('Home Date List');
       }
-      _dateTime = DateFormat.yMMMd().format(DateTime.now()).toString();
+      _dateTime = DateFormat.yMMMEd().format(DateTime.now()).toString();
       if (prefs.getString('Home Date') != null &&
           prefs.getString('Home Date') != _dateTime) {
         //setting daily count max number
-        prefs.setInt('$_dateTime daily count',
-            prefs.getStringList('Daily ID List').length);
-        prefs.setInt('$_dateTime daily build count',
-            prefs.getStringList('Daily Build List').length);
+        if (prefs.getStringList('Daily ID List') != null) {
+          prefs.setInt('$_dateTime daily count',
+              prefs.getStringList('Daily ID List').length);
+        }
+        if (prefs.getStringList('Daily Build List') != null) {
+          prefs.setInt('$_dateTime daily build count',
+              prefs.getStringList('Daily Build List').length);
+        }
         if (prefs.getStringList('Daily ID List') != null) {
           dailyBuildList = prefs.getStringList('Daily ID List');
           prefs.setStringList('Daily Build List', dailyBuildList);
@@ -268,10 +162,10 @@ class _TodayPageState extends State<TodayPage> {
         }
 
         prefs.setString(
-            'Home Date', DateFormat.yMMMd().format(DateTime.now()).toString());
+            'Home Date', DateFormat.yMMMEd().format(DateTime.now()).toString());
       } else {
         prefs.setString(
-            'Home Date', DateFormat.yMMMd().format(DateTime.now()).toString());
+            'Home Date', DateFormat.yMMMEd().format(DateTime.now()).toString());
       }
       dateCalled = true;
     });
@@ -311,12 +205,17 @@ class _TodayPageState extends State<TodayPage> {
   }
 
   void _buildTasks() async {
+    print('build Tasks Called');
     buildCalled = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('$_dateTime daily build count',
-        prefs.getStringList('Daily Build List').length);
-    prefs.setInt(
-        '$_dateTime daily count', prefs.getStringList('Daily ID List').length);
+    if (prefs.getStringList('Daily Build List') != null) {
+      prefs.setInt('$_dateTime daily build count',
+          prefs.getStringList('Daily Build List').length);
+    }
+    if (prefs.getStringList('Daily ID List') != null) {
+      prefs.setInt('$_dateTime daily count',
+          prefs.getStringList('Daily ID List').length);
+    }
     List<String> calendarIdList = [];
     List<String> calendarIdList2 = [];
     String id;
@@ -418,16 +317,28 @@ class _TodayPageState extends State<TodayPage> {
       _buildTasks();
       buildDailyListFunc();
     }
+    print('id list length: ${idList.length}');
+    print('tasklist length: ${_taskList.length}');
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: dailySelected == true
+          ? Colors.blueGrey[700]
+          : Theme.of(context).backgroundColor,
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 15,
         // brightness: Brightness.light,
-        backgroundColor: Theme.of(context).primaryColorDark,
-        title: Text(
-          "Today's Tasks",
-          style: Theme.of(context).textTheme.headline5,
-        ),
+        elevation: 0,
+        backgroundColor: dailySelected == true
+            ? Colors.blueGrey[700]
+            : Theme.of(context).backgroundColor,
+        title: dailySelected == true
+            ? Text(
+                "Daily Tasks",
+                style: Theme.of(context).textTheme.headline5,
+              )
+            : Text(
+                "Today's Tasks",
+                style: Theme.of(context).textTheme.headline5,
+              ),
       ),
       body: RefreshIndicator(
         color: Theme.of(context).dividerColor,
@@ -471,7 +382,8 @@ class _TodayPageState extends State<TodayPage> {
                         child: Switch(
                           value: dailySelected,
                           onChanged: _onChanged,
-                          inactiveThumbColor: Theme.of(context).primaryColorDark,
+                          inactiveThumbColor:
+                              Theme.of(context).primaryColorDark,
                           activeColor: Theme.of(context).primaryColorDark,
                           activeTrackColor: Theme.of(context).dividerColor,
                           inactiveTrackColor: Theme.of(context).primaryColor,

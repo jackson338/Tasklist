@@ -18,6 +18,7 @@ class _StatisticsPage extends State<StatisticsPage> {
   List<FlSpot> points = [];
   List<String> chartIds = [];
   List<String> percentageIds = [];
+  List<Color> chartColors = [];
   double totalCompleted = 0.0;
   double dayCompleted = 0;
   double xLength = 0;
@@ -93,14 +94,18 @@ class _StatisticsPage extends State<StatisticsPage> {
 
   @override
   Widget build(BuildContext context) {
+    chartColors = [Theme.of(context).dividerColor, Colors.teal[300], Theme.of(context).primaryColor];
     if (buildCalled == false) {
       getChartValues();
     }
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Theme.of(context).backgroundColor,
         title: Text('Chart'),
       ),
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Padding(
         padding: const EdgeInsets.only(
           top: 30,
@@ -144,25 +149,19 @@ class _StatisticsPage extends State<StatisticsPage> {
                   lineBarsData: [
                     LineChartBarData(
                       spots: points,
+                      colors: chartColors,
                     ),
                   ],
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 18.0),
-              child: Text(
-                '$percentage% of Daily Tasks Completed',
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 18.0),
-              child: Text(
-                '$dif/$dailyLength Daily Tasks Completed',
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 18.0),
+            //   child: Text(
+            //     '$dif/$dailyLength Daily Tasks Completed',
+            //     style: Theme.of(context).textTheme.bodyText1,
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.only(top: 18.0),
               child: average != null

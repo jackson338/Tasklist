@@ -91,7 +91,8 @@ class _JournalTasksPageState extends State<JournalTasksPage> {
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         iconTheme: IconThemeData(color: Theme.of(context).dividerColor),
-        backgroundColor: Theme.of(context).primaryColorDark,
+        backgroundColor: Theme.of(context).backgroundColor,
+        elevation: 0,
         title: name != null
             ? Text(
                 name,

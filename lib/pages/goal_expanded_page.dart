@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasklist_app/models/goal_mod.dart';
 import 'package:tasklist_app/widgets/goal_list.dart';
@@ -59,7 +60,9 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
         final newGoal = GoalMod(
           task: prefs.getString('$id goal task'),
           iconName: _iconName,
-          finish: null,
+          finish: prefs.getString('$id goal finish') == null
+              ? null
+              : prefs.getString('$id goal finish'),
           id: id,
         );
         setState(() {
@@ -119,6 +122,7 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
         prefs.setStringList('$gId completed goals', completedGoals);
       }
       prefs.setString('$id Icon Name', 'check_circle');
+      prefs.setString('$id goal finish', DateFormat.yMMMd().format(DateTime.now()).toString());
       // List<String> goalidList = prefs.getStringList('$gId goal list');
       // if (prefs.getStringList('Journal ID List') != null) {
       //   journalidList = prefs.getStringList('Journal ID List');
@@ -169,11 +173,11 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
       }
       prefs.remove('$id goal list');
     }
-      List<String> goalsIdList = prefs.getStringList('Goal ID List');
-      goalsIdList.remove(id);
-      prefs.setStringList('Goal ID List', goalsIdList);
-      prefs.remove('$id Goal Task');
-      // prefs.remove('$mainId Goal Task');
+    List<String> goalsIdList = prefs.getStringList('Goal ID List');
+    goalsIdList.remove(id);
+    prefs.setStringList('Goal ID List', goalsIdList);
+    prefs.remove('$id Goal Task');
+    // prefs.remove('$mainId Goal Task');
     if (prefs.getStringList('$mainId goal list') != null) {
       List<String> goalsIdList = prefs.getStringList('$mainId goal list');
       goalsIdList.remove(id);
@@ -220,19 +224,19 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (index > 0) {
       setState(() {
-      // startGoalList.remove(prefs.getString('expanded goal'));
-      startGoalList.remove(gId);
-      prefs.setStringList('$startId start goal list', startGoalList);
-      prefs.setString('expanded goal', startGoalList.elementAt(index - 1));
-      // prefs.setString('expanded goal', startGoalList.elementAt(index));
-      Navigator.of(context).pop();
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => GoalExpandedPage(),
-        ),
-      );
-    });
+        // startGoalList.remove(prefs.getString('expanded goal'));
+        startGoalList.remove(gId);
+        prefs.setStringList('$startId start goal list', startGoalList);
+        prefs.setString('expanded goal', startGoalList.elementAt(index - 1));
+        // prefs.setString('expanded goal', startGoalList.elementAt(index));
+        Navigator.of(context).pop();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => GoalExpandedPage(),
+          ),
+        );
+      });
     } else {
       startGoalList = [];
       prefs.setStringList('$startId start goal list', startGoalList);
@@ -247,8 +251,9 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
     }
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         toolbarHeight: MediaQuery.of(context).size.height / 15,
-        backgroundColor: Theme.of(context).primaryColorDark,
+        backgroundColor: Theme.of(context).backgroundColor,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_outlined,
@@ -256,10 +261,10 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
           ),
           onPressed: goBack,
         ),
-        title: Text(
-          '$index',
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
+        // title: Text(
+        //   '$index',
+        //   style: Theme.of(context).textTheme.bodyText2,
+        // ),
         actions: [
           IconButton(
             icon: Icon(Icons.delete),
@@ -271,6 +276,7 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
         ],
         actionsIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
       ),
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
         child: Column(
           children: [

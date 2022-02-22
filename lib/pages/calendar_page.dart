@@ -235,7 +235,8 @@ class _FuturePageState extends State<FuturePage> {
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 15,
         // brightness: Brightness.light,
-        backgroundColor: Theme.of(context).primaryColorDark,
+        backgroundColor: Theme.of(context).backgroundColor,
+        elevation: 0,
         title: Text(
           "Calendar Tasks",
           style: Theme.of(context).textTheme.headline5,

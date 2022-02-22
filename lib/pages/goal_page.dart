@@ -149,8 +149,9 @@ class _GoalPageState extends State<GoalPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
+        elevation: 0,
         toolbarHeight: MediaQuery.of(context).size.height / 15,
-        backgroundColor: Theme.of(context).primaryColorDark,
+        backgroundColor: Theme.of(context).backgroundColor,
         title: Text(
           "Goals",
           style: Theme.of(context).textTheme.headline5,

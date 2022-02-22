@@ -41,7 +41,8 @@ class _JournalYearlyPageState extends State<JournalYearlyPage> {
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 15,
         // brightness: Brightness.light,
-        backgroundColor: Theme.of(context).primaryColorDark,
+        backgroundColor: Theme.of(context).backgroundColor,
+        elevation: 0,
         title: Text(
           "Journal",
           style: Theme.of(context).textTheme.headline5,

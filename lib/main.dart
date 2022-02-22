@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.tealAccent,
         primaryColorLight: Colors.lightBlue,
         primaryColorDark: Colors.blueGrey,
-        backgroundColor: Colors.black54,
+        backgroundColor: Colors.blueGrey[900],
         dividerColor: Colors.teal,
         brightness: Brightness.dark,
         textTheme: TextTheme(

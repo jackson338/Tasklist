@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasklist_app/models/folder_mod.dart';
 import 'package:tasklist_app/pages/journal_navigator.dart';
+import 'package:tasklist_app/pages/journal_tasks.dart';
 
 class FolderItem extends StatelessWidget {
   const FolderItem({
@@ -23,7 +24,7 @@ class FolderItem extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => JournalNavigatorPage(),
+            builder: (context) => JournalTasksPage(),
           ),
         );
       },

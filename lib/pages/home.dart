@@ -775,12 +775,14 @@ class _HomePageState extends State<HomePage> {
                       rightTitles: SideTitles(showTitles: false),
                       topTitles: SideTitles(showTitles: false),
                       leftTitles: SideTitles(
-                          interval: 20, showTitles: true, margin: 8.0),
+                          interval: 20, showTitles: true, margin: 8.0,reservedSize: 25.0),
+                      bottomTitles:
+                          SideTitles(interval: 1, showTitles: true, margin: 8),
                     ),
                     minX: 1,
                     maxX: 7,
                     minY: 0,
-                    maxY: 99,
+                    maxY: 100,
                     gridData: FlGridData(
                       drawHorizontalLine: false,
                       drawVerticalLine: false,

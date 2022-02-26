@@ -28,6 +28,8 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
   String gId;
   String startId;
   bool buildCalled = false;
+  bool delete = false;
+  String expandedTitle = "Expanded Goal Page";
 
   void _buildGoals() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -122,7 +124,8 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
         prefs.setStringList('$gId completed goals', completedGoals);
       }
       prefs.setString('$id Icon Name', 'check_circle');
-      prefs.setString('$id goal finish', DateFormat.yMMMd().format(DateTime.now()).toString());
+      prefs.setString('$id goal finish',
+          DateFormat.yMMMd().format(DateTime.now()).toString());
       // List<String> goalidList = prefs.getStringList('$gId goal list');
       // if (prefs.getStringList('Journal ID List') != null) {
       //   journalidList = prefs.getStringList('Journal ID List');
@@ -161,6 +164,9 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
   }
 
   void deleteGoal(String id, String mainId) async {
+    setState(() {
+      expandedTitle = "Hit the back button";
+    });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getStringList('$id goal list') != null) {
       List<String> currentList = prefs.getStringList('$id goal list');
@@ -183,6 +189,7 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
       goalsIdList.remove(id);
       prefs.setStringList('$mainId goal list', goalsIdList);
     }
+    delete = true;
     goBack();
   }
 
@@ -240,7 +247,12 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
     } else {
       startGoalList = [];
       prefs.setStringList('$startId start goal list', startGoalList);
-      Navigator.of(context).pop();
+      if (delete == false) {
+        Navigator.of(context).pop();
+      } else {
+        delete = false;
+        // Navigator.of(context).pop();
+      }
     }
   }
 
@@ -259,8 +271,12 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
             Icons.arrow_back_ios_new_outlined,
             color: Theme.of(context).primaryColor,
           ),
-          onPressed: goBack,
+          onPressed: () {
+            delete = false;
+            goBack();
+          },
         ),
+        title: Text(expandedTitle),
         // title: Text(
         //   '$index',
         //   style: Theme.of(context).textTheme.bodyText2,

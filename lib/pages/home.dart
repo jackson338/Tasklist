@@ -382,85 +382,161 @@ class _HomePageState extends State<HomePage> {
                                                                                           onPressed: () {
                                                                                             Navigator.of(context).pop();
                                                                                             showDialog(
-                                                                            barrierDismissible:
-                                                                                true,
-                                                                            context:
-                                                                                context,
-                                                                            builder:
-                                                                                (context) {
-                                                                              return AlertDialog(
-                                                                                title: Text('Daily Task'),
-                                                                                backgroundColor: Theme.of(context).backgroundColor,
-                                                                                actions: [
-                                                                                  Text(
-                                                                                    'Daily Tasks will add to your Daily Today list. These will repeat every day. Use these to set a routine.',
-                                                                                    style: Theme.of(context).textTheme.bodyText1,
-                                                                                  ),
-                                                                                  Row(
-                                                                                    children: [
-                                                                                      Padding(
-                                                                                        padding: const EdgeInsets.all(8.0),
-                                                                                        child: ElevatedButton(
-                                                                                          style: ButtonStyle(
-                                                                                            backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
-                                                                                          ),
-                                                                                          onPressed: () {
-                                                                                            Navigator.of(context).pop();
-                                                                                          },
-                                                                                          child: Text(
-                                                                                            'Dismiss',
-                                                                                            style: Theme.of(context).textTheme.bodyText2,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                      Padding(
-                                                                                        padding: const EdgeInsets.all(8.0),
-                                                                                        child: ElevatedButton(
-                                                                                          style: ButtonStyle(
-                                                                                            backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
-                                                                                          ),
-                                                                                          onPressed: () {
-                                                                                            Navigator.of(context).pop();
-                                                                                            showDialog(
-                                                                            barrierDismissible:
-                                                                                true,
-                                                                            context:
-                                                                                context,
-                                                                            builder:
-                                                                                (context) {
-                                                                              return AlertDialog(
-                                                                                title: Text('Goal Task'),
-                                                                                backgroundColor: Theme.of(context).backgroundColor,
-                                                                                actions: [
-                                                                                  Text(
-                                                                                    'Goal tasks add to your Goals list. You can go into a Goal Task and add sub-goals!',
-                                                                                    style: Theme.of(context).textTheme.bodyText1,
-                                                                                  ),
-                                                                                  Row(
-                                                                                    children: [
-                                                                                      Padding(
-                                                                                        padding: const EdgeInsets.all(8.0),
-                                                                                        child: ElevatedButton(
-                                                                                          style: ButtonStyle(
-                                                                                            backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
-                                                                                          ),
-                                                                                          onPressed: () {
-                                                                                            Navigator.of(context).pop();
-                                                                                          },
-                                                                                          child: Text(
-                                                                                            'Dismiss',
-                                                                                            style: Theme.of(context).textTheme.bodyText2,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                      Padding(
-                                                                                        padding: const EdgeInsets.all(8.0),
-                                                                                        child: ElevatedButton(
-                                                                                          style: ButtonStyle(
-                                                                                            backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
-                                                                                          ),
-                                                                                          onPressed: () {
-                                                                                            Navigator.of(context).pop();
+                                                                                              barrierDismissible: true,
+                                                                                              context: context,
+                                                                                              builder: (context) {
+                                                                                                return AlertDialog(
+                                                                                                  title: Text('Daily Task'),
+                                                                                                  backgroundColor: Theme.of(context).backgroundColor,
+                                                                                                  actions: [
+                                                                                                    Text(
+                                                                                                      'Daily Tasks will add to your Daily Today list. These will repeat every day. Use these to set a routine.',
+                                                                                                      style: Theme.of(context).textTheme.bodyText1,
+                                                                                                    ),
+                                                                                                    Row(
+                                                                                                      children: [
+                                                                                                        Padding(
+                                                                                                          padding: const EdgeInsets.all(8.0),
+                                                                                                          child: ElevatedButton(
+                                                                                                            style: ButtonStyle(
+                                                                                                              backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
+                                                                                                            ),
+                                                                                                            onPressed: () {
+                                                                                                              Navigator.of(context).pop();
+                                                                                                            },
+                                                                                                            child: Text(
+                                                                                                              'Dismiss',
+                                                                                                              style: Theme.of(context).textTheme.bodyText2,
+                                                                                                            ),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                        Padding(
+                                                                                                          padding: const EdgeInsets.all(8.0),
+                                                                                                          child: ElevatedButton(
+                                                                                                            style: ButtonStyle(
+                                                                                                              backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
+                                                                                                            ),
+                                                                                                            onPressed: () {
+                                                                                                              Navigator.of(context).pop();
+                                                                                                              showDialog(
+                                                                                                                barrierDismissible: true,
+                                                                                                                context: context,
+                                                                                                                builder: (context) {
+                                                                                                                  return AlertDialog(
+                                                                                                                    title: Text('Goal Task'),
+                                                                                                                    backgroundColor: Theme.of(context).backgroundColor,
+                                                                                                                    actions: [
+                                                                                                                      Text(
+                                                                                                                        'Goal tasks add to your Goals list. You can go into a Goal Task and add sub-goals through the list icon on the right. You can add and track an infinite amount of sub goals! Use these to help you achieve your goals. To delete a goal or sub goal with all of it\'s sub goals hit the delete icon in the top right of the expanded goal page.',
+                                                                                                                        style: Theme.of(context).textTheme.bodyText1,
+                                                                                                                      ),
+                                                                                                                      Row(
+                                                                                                                        children: [
+                                                                                                                          Padding(
+                                                                                                                            padding: const EdgeInsets.all(8.0),
+                                                                                                                            child: ElevatedButton(
+                                                                                                                              style: ButtonStyle(
+                                                                                                                                backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
+                                                                                                                              ),
+                                                                                                                              onPressed: () {
+                                                                                                                                Navigator.of(context).pop();
+                                                                                                                              },
+                                                                                                                              child: Text(
+                                                                                                                                'Dismiss',
+                                                                                                                                style: Theme.of(context).textTheme.bodyText2,
+                                                                                                                              ),
+                                                                                                                            ),
+                                                                                                                          ),
+                                                                                                                          Padding(
+                                                                                                                            padding: const EdgeInsets.all(8.0),
+                                                                                                                            child: ElevatedButton(
+                                                                                                                              style: ButtonStyle(
+                                                                                                                                backgroundColor: MaterialStateProperty.all(Theme.of(context).dividerColor),
+                                                                                                                              ),
+                                                                                                                              onPressed: () {
+                                                                                                                                Navigator.of(context).pop();
+                                                                                                                              },
+                                                                                                                              child: Text(
+                                                                                                                                'Next',
+                                                                                                                                style: Theme.of(context).textTheme.bodyText2,
+                                                                                                                              ),
+                                                                                                                            ),
+                                                                                                                          ),
+                                                                                                                        ],
+                                                                                                                      ),
+                                                                                                                      Row(
+                                                                                                                        children: [
+                                                                                                                          Icon(
+                                                                                                                            Icons.circle_outlined,
+                                                                                                                            color: Theme.of(context).dividerColor,
+                                                                                                                          ),
+                                                                                                                          Icon(
+                                                                                                                            Icons.circle_outlined,
+                                                                                                                            color: Theme.of(context).dividerColor,
+                                                                                                                          ),
+                                                                                                                          Icon(
+                                                                                                                            Icons.circle_outlined,
+                                                                                                                            color: Theme.of(context).dividerColor,
+                                                                                                                          ),
+                                                                                                                          Icon(
+                                                                                                                            Icons.circle_outlined,
+                                                                                                                            color: Theme.of(context).dividerColor,
+                                                                                                                          ),
+                                                                                                                          Icon(
+                                                                                                                            Icons.circle_outlined,
+                                                                                                                            color: Theme.of(context).dividerColor,
+                                                                                                                          ),
+                                                                                                                          Icon(
+                                                                                                                            Icons.circle,
+                                                                                                                            color: Theme.of(context).primaryColor,
+                                                                                                                          ),
+                                                                                                                        ],
+                                                                                                                      ),
+                                                                                                                    ],
+                                                                                                                  );
+                                                                                                                },
+                                                                                                              );
+                                                                                                            },
+                                                                                                            child: Text(
+                                                                                                              'Next',
+                                                                                                              style: Theme.of(context).textTheme.bodyText2,
+                                                                                                            ),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ],
+                                                                                                    ),
+                                                                                                    Row(
+                                                                                                      children: [
+                                                                                                        Icon(
+                                                                                                          Icons.circle_outlined,
+                                                                                                          color: Theme.of(context).dividerColor,
+                                                                                                        ),
+                                                                                                        Icon(
+                                                                                                          Icons.circle_outlined,
+                                                                                                          color: Theme.of(context).dividerColor,
+                                                                                                        ),
+                                                                                                        Icon(
+                                                                                                          Icons.circle_outlined,
+                                                                                                          color: Theme.of(context).dividerColor,
+                                                                                                        ),
+                                                                                                        Icon(
+                                                                                                          Icons.circle_outlined,
+                                                                                                          color: Theme.of(context).dividerColor,
+                                                                                                        ),
+                                                                                                        Icon(
+                                                                                                          Icons.circle,
+                                                                                                          color: Theme.of(context).primaryColor,
+                                                                                                        ),
+                                                                                                        Icon(
+                                                                                                          Icons.circle_outlined,
+                                                                                                          color: Theme.of(context).dividerColor,
+                                                                                                        ),
+                                                                                                      ],
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                );
+                                                                                              },
+                                                                                            );
                                                                                           },
                                                                                           child: Text(
                                                                                             'Next',
@@ -470,29 +546,31 @@ class _HomePageState extends State<HomePage> {
                                                                                       ),
                                                                                     ],
                                                                                   ),
-                                                                                ],
-                                                                              );
-                                                                            },
-                                                                          );
-                                                                                          },
-                                                                                          child: Text(
-                                                                                            'Next',
-                                                                                            style: Theme.of(context).textTheme.bodyText2,
-                                                                                          ),
-                                                                                        ),
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      Icon(
+                                                                                        Icons.circle_outlined,
+                                                                                        color: Theme.of(context).dividerColor,
                                                                                       ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ],
-                                                                              );
-                                                                            },
-                                                                          );
-                                                                                          },
-                                                                                          child: Text(
-                                                                                            'Next',
-                                                                                            style: Theme.of(context).textTheme.bodyText2,
-                                                                                          ),
-                                                                                        ),
+                                                                                      Icon(
+                                                                                        Icons.circle_outlined,
+                                                                                        color: Theme.of(context).dividerColor,
+                                                                                      ),
+                                                                                      Icon(
+                                                                                        Icons.circle_outlined,
+                                                                                        color: Theme.of(context).dividerColor,
+                                                                                      ),
+                                                                                      Icon(
+                                                                                        Icons.circle,
+                                                                                        color: Theme.of(context).primaryColor,
+                                                                                      ),
+                                                                                      Icon(
+                                                                                        Icons.circle_outlined,
+                                                                                        color: Theme.of(context).dividerColor,
+                                                                                      ),
+                                                                                      Icon(
+                                                                                        Icons.circle_outlined,
+                                                                                        color: Theme.of(context).dividerColor,
                                                                                       ),
                                                                                     ],
                                                                                   ),
@@ -512,6 +590,52 @@ class _HomePageState extends State<HomePage> {
                                                                     ),
                                                                   ],
                                                                 ),
+                                                                Row(
+                                                                  children: [
+                                                                    Icon(
+                                                                      Icons
+                                                                          .circle_outlined,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .dividerColor,
+                                                                    ),
+                                                                    Icon(
+                                                                      Icons
+                                                                          .circle_outlined,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .dividerColor,
+                                                                    ),
+                                                                    Icon(
+                                                                      Icons
+                                                                          .circle,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .primaryColor,
+                                                                    ),
+                                                                    Icon(
+                                                                      Icons
+                                                                          .circle_outlined,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .dividerColor,
+                                                                    ),
+                                                                    Icon(
+                                                                      Icons
+                                                                          .circle_outlined,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .dividerColor,
+                                                                    ),
+                                                                    Icon(
+                                                                      Icons
+                                                                          .circle_outlined,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .dividerColor,
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ],
                                                             );
                                                           },
@@ -524,6 +648,40 @@ class _HomePageState extends State<HomePage> {
                                                             .bodyText2,
                                                       ),
                                                     ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.circle_outlined,
+                                                    color: Theme.of(context)
+                                                        .dividerColor,
+                                                  ),
+                                                  Icon(
+                                                    Icons.circle,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                                  Icon(
+                                                    Icons.circle_outlined,
+                                                    color: Theme.of(context)
+                                                        .dividerColor,
+                                                  ),
+                                                  Icon(
+                                                    Icons.circle_outlined,
+                                                    color: Theme.of(context)
+                                                        .dividerColor,
+                                                  ),
+                                                  Icon(
+                                                    Icons.circle_outlined,
+                                                    color: Theme.of(context)
+                                                        .dividerColor,
+                                                  ),
+                                                  Icon(
+                                                    Icons.circle_outlined,
+                                                    color: Theme.of(context)
+                                                        .dividerColor,
                                                   ),
                                                 ],
                                               ),
@@ -540,6 +698,34 @@ class _HomePageState extends State<HomePage> {
                                 style: Theme.of(context).textTheme.headline6,
                               ),
                             ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          Icon(
+                            Icons.circle_outlined,
+                            color: Theme.of(context).dividerColor,
+                          ),
+                          Icon(
+                            Icons.circle_outlined,
+                            color: Theme.of(context).dividerColor,
+                          ),
+                          Icon(
+                            Icons.circle_outlined,
+                            color: Theme.of(context).dividerColor,
+                          ),
+                          Icon(
+                            Icons.circle_outlined,
+                            color: Theme.of(context).dividerColor,
+                          ),
+                          Icon(
+                            Icons.circle_outlined,
+                            color: Theme.of(context).dividerColor,
                           ),
                         ],
                       ),
@@ -573,8 +759,10 @@ class _HomePageState extends State<HomePage> {
                     backgroundColor: Theme.of(context).backgroundColor,
                     lineTouchData: LineTouchData(
                       enabled: true,
-                      touchTooltipData:
-                          LineTouchTooltipData(tooltipRoundedRadius: 30.0),
+                      touchTooltipData: LineTouchTooltipData(
+                        tooltipRoundedRadius: 30.0,
+                        tooltipBgColor: Theme.of(context).primaryColor,
+                      ),
                     ),
                     axisTitleData: FlAxisTitleData(
                       topTitle: AxisTitle(

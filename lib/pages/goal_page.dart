@@ -59,14 +59,22 @@ class _GoalPageState extends State<GoalPage> {
               newGoal.iconName = prefs.getString('${newGoal.id} Icon Name');
             }
           });
+        } 
+        if (prefs.getString('$id Icon Name') == 'check_circle') {
+          final newcGoal = GoalMod(
+            task: prefs.getString('$id Goal Task'),
+            iconName: _iconName,
+            finish: prefs.getString('$id Goal Finish'),
+            id: id,
+          );
+          setState(() {
+            _goalsList.add(newcGoal);
+            buildCalled = true;
+            if (prefs.getString('${newcGoal.id} Icon Name') != null) {
+              newcGoal.iconName = prefs.getString('${newcGoal.id} Icon Name');
+            }
+          });
         }
-        // else {
-        //   dailyidList.remove(id);
-        //   prefs.setStringList('Daily ID List', dailyidList);
-        //   List<String> journalIdList = prefs.getStringList('Journal ID List');
-        //   journalIdList.add(id);
-        //   prefs.setStringList('Journal ID List', journalIdList);
-        // }
       }
     }
   }
@@ -96,6 +104,8 @@ class _GoalPageState extends State<GoalPage> {
       //     journalidList = prefs.getStringList('Journal ID List');
       //   }
       prefs.setString('$id Icon Name', 'check_circle');
+      prefs.setString('$id Goal finish',
+          DateFormat.yMMMd().format(DateTime.now()).toString());
       //   prefs.setString('$id Date Finished',
       //       DateFormat.yMMMd().format(DateTime.now()).toString());
       //   prefs.setString('$id Time Finished',

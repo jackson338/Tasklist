@@ -80,34 +80,35 @@ class _NewTaskState extends State<NewTask> {
   void _getPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-        selected = prefs.getString('selected list');
-        if (selected == 'calendar') {
-          calendarSelected = true;
-          todaySelected = false;
-          dailySelected = false;
-          goalSelected = false;
-        }
-        if (selected == 'today') {
-          calendarSelected = false;
-          todaySelected = true;
-          dailySelected = false;
-          goalSelected = false;
-        }
-        if (selected == 'daily') {
-          calendarSelected = false;
-          todaySelected = false;
-          dailySelected = true;
-          goalSelected = false;
-        }
-        if (selected == 'goal') {
-          calendarSelected = false;
-          todaySelected = false;
-          dailySelected = false;
-          goalSelected = true;
-        }
-        getPrefs = true;
-      });
+      selected = prefs.getString('selected list');
+      if (selected == 'calendar') {
+        calendarSelected = true;
+        todaySelected = false;
+        dailySelected = false;
+        goalSelected = false;
+      }
+      if (selected == 'today') {
+        calendarSelected = false;
+        todaySelected = true;
+        dailySelected = false;
+        goalSelected = false;
+      }
+      if (selected == 'daily') {
+        calendarSelected = false;
+        todaySelected = false;
+        dailySelected = true;
+        goalSelected = false;
+      }
+      if (selected == 'goal') {
+        calendarSelected = false;
+        todaySelected = false;
+        dailySelected = false;
+        goalSelected = true;
+      }
+      getPrefs = true;
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     if (buildCalled == false) {
@@ -118,7 +119,7 @@ class _NewTaskState extends State<NewTask> {
     }
     return Container(
       color: Theme.of(context).backgroundColor,
-      child: Column(
+      child: ListView(
         children: [
           Row(
             children: [
@@ -130,7 +131,8 @@ class _NewTaskState extends State<NewTask> {
                   ),
                 ),
                 onPressed: () async {
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
                   setState(() {
                     calendarSelected = true;
                     todaySelected = false;
@@ -163,7 +165,8 @@ class _NewTaskState extends State<NewTask> {
                   ),
                 ),
                 onPressed: () async {
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
                   setState(() {
                     calendarSelected = false;
                     todaySelected = true;
@@ -195,7 +198,8 @@ class _NewTaskState extends State<NewTask> {
                   ),
                 ),
                 onPressed: () async {
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
                   setState(() {
                     calendarSelected = false;
                     todaySelected = false;
@@ -226,7 +230,8 @@ class _NewTaskState extends State<NewTask> {
                   ),
                 ),
                 onPressed: () async {
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
                   setState(() {
                     calendarSelected = false;
                     todaySelected = false;
@@ -276,9 +281,9 @@ class _NewTaskState extends State<NewTask> {
                         ),
                       ),
                       // ElevatedButton(
-                        // style: ButtonStyle(
-                        //   backgroundColor: MaterialStateProperty.all(
-                        //       Theme.of(context).primaryColor),
+                      // style: ButtonStyle(
+                      //   backgroundColor: MaterialStateProperty.all(
+                      //       Theme.of(context).primaryColor),
                       //   ),
                       //   onPressed: _presentDatePicker,
                       //   child: Icon(Icons.calendar_today,

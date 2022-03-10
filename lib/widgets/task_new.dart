@@ -24,6 +24,7 @@ class _NewTaskState extends State<NewTask> {
       return;
     }
     if (prefs.getString('selected list') == null) {
+      prefs.setString('selected list', 'today');
       return;
     }
     final _enteredName = _nameController.text;

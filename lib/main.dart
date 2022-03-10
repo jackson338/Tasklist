@@ -73,6 +73,13 @@ class _ControllerState extends State<Controller> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       String selectedList = prefs.getString('selected list');
+      print(selectedList);
+      if (selectedList == null) {
+        setState(() {
+          selectedList = "today";
+          prefs.setString('selected list', selectedList);
+        });
+      }
       if (selectedList == 'calendar') {
         prefs.setInt('page index', 3);
         _addNewCalendarTask(_task, _date);

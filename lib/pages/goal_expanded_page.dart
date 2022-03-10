@@ -297,12 +297,16 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
         child: Column(
           children: [
             Container(
-              height: MediaQuery.of(context).size.height / 25,
-              child: Text(title != null ? title : 'no title data',
-                  style: Theme.of(context).textTheme.bodyText1),
+              height: MediaQuery.of(context).size.height / 19,
+                child: Center(
+                  child: Text(title != null ? title : 'no title data',
+                      style: Theme.of(context).textTheme.headline6,
+                      textAlign: TextAlign.center,
+                      ),
+                ),
             ),
             Container(
-              height: MediaQuery.of(context).size.height / 1.2,
+              height: MediaQuery.of(context).size.height / 1.3,
               child: RefreshIndicator(
                 color: Theme.of(context).dividerColor,
                 child: GoalListWidget(_goalsList, _openGoal, _completeGoal),

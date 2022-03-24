@@ -156,7 +156,7 @@ class _TaskItemState extends State<TaskItem> {
               ),
         trailing: IconButton(
           icon: Icon(
-            Icons.delete,
+            Icons.list,
           ),
           color: Theme.of(context).primaryColor,
           splashColor: Theme.of(context).primaryColor,

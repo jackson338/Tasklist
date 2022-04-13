@@ -8,7 +8,11 @@ class TaskListWidget extends StatelessWidget {
   final Function _completeTask;
   // ValueKey key;
 
-  TaskListWidget(this.taskItems, this._deleteTask, this._completeTask);
+  TaskListWidget(
+    this.taskItems,
+    this._deleteTask,
+    this._completeTask,
+  );
 
   @override
   Widget build(BuildContext context) {

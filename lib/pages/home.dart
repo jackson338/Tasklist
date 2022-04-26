@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasklist_app/pages/calendar_page.dart';
+import 'package:tasklist_app/pages/settings.dart';
 import 'package:tasklist_app/pages/statistics_page.dart';
 import 'package:tasklist_app/pages/daily.dart';
 import 'package:tasklist_app/pages/journal_folder_page.dart';
@@ -864,6 +865,30 @@ class _HomePageState extends State<HomePage> {
                     context,
                     MaterialPageRoute(
                       builder: (BuildContext context) => JournalYearlyPage(),
+                    ),
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                      Theme.of(context).primaryColorDark),
+                ),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.settings,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  title: Text('Settings'),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => SettingsPage(),
                     ),
                   );
                 },

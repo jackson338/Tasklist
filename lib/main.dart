@@ -13,33 +13,87 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool darkTheme = false;
+  bool buildCalled = false;
+
+  void getTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      if (prefs.getBool('theme bool') != null) {
+        darkTheme = prefs.getBool('theme bool');
+      } else {
+        darkTheme = false;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Tasklist App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        primaryColor: Colors.tealAccent,
-        primaryColorLight: Colors.lightBlue,
-        primaryColorDark: Colors.blueGrey,
-        backgroundColor: Colors.blueGrey[900],
-        dividerColor: Colors.teal,
-        brightness: Brightness.dark,
-        textTheme: TextTheme(
-          bodyText1: TextStyle(color: Colors.white),
-          subtitle2: TextStyle(color: Colors.black54),
-          subtitle1: TextStyle(color: Colors.white),
-          headline2: TextStyle(color: Colors.white),
-          headline3: TextStyle(color: Colors.white),
-          headline4: TextStyle(color: Colors.white),
-          headline5: TextStyle(color: Colors.white),
-          headline6: TextStyle(color: Colors.white),
-        ),
-      ),
-      home: Controller(title: 'tasklist home'),
-    );
+    if (buildCalled == false) {
+      getTheme();
+      buildCalled = true;
+    }
+
+    return darkTheme
+    //dark theme.
+        ? MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Tasklist App Dark',
+            theme: ThemeData(
+              primaryColor: Colors.blueGrey,
+              cardColor: Colors.teal[300],
+              primaryColorLight: Colors.tealAccent,
+              backgroundColor: Colors.blueGrey[900],
+              dividerColor: Colors.teal,
+              hintColor: Colors.tealAccent,
+              // brightness: Brightness.dark,
+              textTheme: TextTheme(
+                bodyText1: TextStyle(color: Colors.white),
+                bodyText2: TextStyle(color: Colors.white),
+                subtitle2: TextStyle(color: Colors.black54),
+                subtitle1: TextStyle(color: Colors.white),
+                headline2: TextStyle(color: Colors.white),
+                headline3: TextStyle(color: Colors.white),
+                headline4: TextStyle(color: Colors.white),
+                headline5: TextStyle(color: Colors.white),
+                headline6: TextStyle(color: Colors.white),
+              ),
+            ),
+            home: Controller(title: 'tasklist home'),
+          )
+        : 
+        //light theme
+        MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Tasklist App Light',
+            theme: ThemeData(
+              cardColor: Colors.grey,
+              primaryColor: Colors.black,
+              primaryColorLight: Colors.white,
+              backgroundColor: Colors.white,
+              dividerColor: Colors.grey,
+              // brightness: Brightness.dark,
+              hintColor: Colors.black,
+              textTheme: TextTheme(
+                bodyText1: TextStyle(color: Colors.white),
+                bodyText2: TextStyle(color: Colors.black),
+                subtitle2: TextStyle(color: Colors.black),
+                subtitle1: TextStyle(color: Colors.white),
+                headline2: TextStyle(color: Colors.black),
+                headline3: TextStyle(color: Colors.black),
+                headline4: TextStyle(color: Colors.black),
+                headline5: TextStyle(color: Colors.black),
+                headline6: TextStyle(color: Colors.black),
+              ),
+            ),
+            home: Controller(title: 'tasklist home'),
+          );
   }
 }
 
@@ -133,10 +187,8 @@ class _ControllerState extends State<Controller> {
       finish: date,
       id: DateTime.now().toString(),
     );
-    prefs.setString(
-        '${newCalendarTask.id} Calendar Task', newCalendarTask.task);
-    prefs.setString(
-        '${newCalendarTask.id} Calendar Date', newCalendarTask.finish);
+    prefs.setString('${newCalendarTask.id} Calendar Task', newCalendarTask.task);
+    prefs.setString('${newCalendarTask.id} Calendar Date', newCalendarTask.finish);
     setState(() {
       // calendarList.add(newCalendarTask);
       calendarIDlist.add(newCalendarTask.id);
@@ -203,9 +255,12 @@ class _ControllerState extends State<Controller> {
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: Icon(
+            Icons.add,
+            color: Theme.of(context).primaryColorLight,
+          ),
           backgroundColor: Theme.of(context).primaryColor,
-          splashColor: Theme.of(context).primaryColor,
+          splashColor: Theme.of(context).primaryColorLight,
           onPressed: () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.setInt('page index', 2);
@@ -224,19 +279,18 @@ class _ControllerState extends State<Controller> {
         body: TabBarView(
           children: _pages,
         ),
-        backgroundColor: Theme.of(context).primaryColorDark,
+        backgroundColor: Theme.of(context).primaryColor,
         bottomNavigationBar: Container(
-          // color: Theme.of(context).primaryColorDark,
+          // color: Theme.of(context).primaryColor,
           height: MediaQuery.of(context).size.height / 15,
           margin: EdgeInsets.only(bottom: 20),
           child: new TabBar(
-            overlayColor:
-                MaterialStateProperty.all(Theme.of(context).primaryColor),
+            overlayColor: MaterialStateProperty.all(Theme.of(context).primaryColorLight),
             tabs: [
               Tab(
                 icon: Icon(
                   Icons.map_outlined,
-                  // color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).primaryColorLight,
                 ),
                 child: Text(
                   'Goals',
@@ -246,7 +300,7 @@ class _ControllerState extends State<Controller> {
               Tab(
                 icon: Icon(
                   Icons.list,
-                  // color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).primaryColorLight,
                 ),
                 child: Text(
                   'Today',
@@ -256,7 +310,7 @@ class _ControllerState extends State<Controller> {
               Tab(
                 icon: Icon(
                   Icons.home,
-                  // color: Theme.of(context).dividerColor,
+                  color: Theme.of(context).primaryColorLight,
                 ),
                 child: Text(
                   'Home',
@@ -284,7 +338,7 @@ class _ControllerState extends State<Controller> {
             ],
             unselectedLabelColor: Colors.black,
             labelColor: Theme.of(context).primaryColor,
-            indicatorColor: Theme.of(context).primaryColor,
+            indicatorColor: Theme.of(context).primaryColorLight,
           ),
         ),
         //   floatingActionButton: FloatingActionButton(

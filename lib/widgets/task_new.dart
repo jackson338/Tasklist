@@ -127,13 +127,12 @@ class _NewTaskState extends State<NewTask> {
               //Calendar Button
               ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    Theme.of(context).backgroundColor,
-                  ),
+                  backgroundColor: MaterialStateProperty.all(calendarSelected == true
+                      ? Theme.of(context).primaryColorLight
+                      : Theme.of(context).primaryColor),
                 ),
                 onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
                   setState(() {
                     calendarSelected = true;
                     todaySelected = false;
@@ -149,10 +148,12 @@ class _NewTaskState extends State<NewTask> {
                     Icon(Icons.calendar_today,
                         color: calendarSelected == true
                             ? Theme.of(context).primaryColor
-                            : Theme.of(context).dividerColor),
+                            : Theme.of(context).primaryColorLight),
                     Text(
                       'Calendar',
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: calendarSelected
+                          ? Theme.of(context).textTheme.bodyText2
+                          : Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
                 ),
@@ -161,13 +162,12 @@ class _NewTaskState extends State<NewTask> {
               //Today Button
               ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    Theme.of(context).backgroundColor,
-                  ),
+                  backgroundColor: MaterialStateProperty.all(todaySelected == true
+                      ? Theme.of(context).primaryColorLight
+                      : Theme.of(context).primaryColor),
                 ),
                 onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
                   setState(() {
                     calendarSelected = false;
                     todaySelected = true;
@@ -181,10 +181,12 @@ class _NewTaskState extends State<NewTask> {
                     Icon(Icons.list,
                         color: todaySelected == true
                             ? Theme.of(context).primaryColor
-                            : Theme.of(context).dividerColor),
+                            : Theme.of(context).primaryColorLight),
                     Text(
                       'Today',
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: todaySelected
+                          ? Theme.of(context).textTheme.bodyText2
+                          : Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
                 ),
@@ -194,13 +196,12 @@ class _NewTaskState extends State<NewTask> {
               //Daily Button
               ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    Theme.of(context).backgroundColor,
-                  ),
+                  backgroundColor: MaterialStateProperty.all(dailySelected == true
+                      ? Theme.of(context).primaryColorLight
+                      : Theme.of(context).primaryColor),
                 ),
                 onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
                   setState(() {
                     calendarSelected = false;
                     todaySelected = false;
@@ -214,10 +215,12 @@ class _NewTaskState extends State<NewTask> {
                     Icon(Icons.loop,
                         color: dailySelected == true
                             ? Theme.of(context).primaryColor
-                            : Theme.of(context).dividerColor),
+                            : Theme.of(context).primaryColorLight),
                     Text(
                       'Daily',
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: dailySelected
+                          ? Theme.of(context).textTheme.bodyText2
+                          : Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
                 ),
@@ -227,12 +230,13 @@ class _NewTaskState extends State<NewTask> {
               ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
-                    Theme.of(context).backgroundColor,
+                    goalSelected == true
+                        ? Theme.of(context).primaryColorLight
+                        : Theme.of(context).primaryColor,
                   ),
                 ),
                 onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
                   setState(() {
                     calendarSelected = false;
                     todaySelected = false;
@@ -246,10 +250,12 @@ class _NewTaskState extends State<NewTask> {
                     Icon(Icons.map_outlined,
                         color: goalSelected == true
                             ? Theme.of(context).primaryColor
-                            : Theme.of(context).dividerColor),
+                            : Theme.of(context).primaryColorLight),
                     Text(
                       'Goals',
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: goalSelected
+                          ? Theme.of(context).textTheme.bodyText2
+                          : Theme.of(context).textTheme.bodyText1,
                     ),
                   ],
                 ),
@@ -258,7 +264,7 @@ class _NewTaskState extends State<NewTask> {
             ],
           ),
           TextField(
-            style: Theme.of(context).textTheme.subtitle1,
+            style: Theme.of(context).textTheme.subtitle2,
             cursorColor: Theme.of(context).primaryColor,
             decoration: InputDecoration(
               labelText: 'Enter a new task',
@@ -302,7 +308,7 @@ class _NewTaskState extends State<NewTask> {
             onPressed: () => _submitData(),
             child: Text(
               'Add Task',
-              style: Theme.of(context).textTheme.subtitle2,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
             style: ElevatedButton.styleFrom(
               primary: Theme.of(context).primaryColor,

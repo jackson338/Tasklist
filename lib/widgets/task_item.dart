@@ -83,7 +83,7 @@ class _TaskItemState extends State<TaskItem> {
       buildList();
     }
     return Card(
-      color: Theme.of(context).primaryColorDark,
+      color: Theme.of(context).primaryColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       elevation: 5,
       margin: EdgeInsets.symmetric(
@@ -97,7 +97,7 @@ class _TaskItemState extends State<TaskItem> {
                 icon: Icon(
                   Icons.check_circle_outline,
                 ),
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).primaryColorLight,
                 splashColor: Theme.of(context).primaryColor,
                 onPressed: () async {
                   HapticFeedback.heavyImpact();
@@ -131,7 +131,7 @@ class _TaskItemState extends State<TaskItem> {
                 icon: Icon(
                   Icons.check_circle,
                 ),
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).primaryColorLight,
                 splashColor: Theme.of(context).primaryColor,
                 onPressed: () {
                   widget.taskItem.iconName = 'check_circle_outline';
@@ -152,14 +152,15 @@ class _TaskItemState extends State<TaskItem> {
             : Center(
                 child: Text(
                   widget.taskItem.finish,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
         trailing: IconButton(
           icon: Icon(
             Icons.delete,
           ),
-          color: Theme.of(context).primaryColor,
-          splashColor: Theme.of(context).primaryColor,
+          color: Theme.of(context).primaryColorLight,
+          splashColor: Theme.of(context).primaryColorLight,
           onPressed: () {
             HapticFeedback.vibrate();
             widget.deleteTask(widget.taskItem.id);

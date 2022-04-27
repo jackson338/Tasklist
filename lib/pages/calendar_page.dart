@@ -236,6 +236,15 @@ class _FuturePageState extends State<FuturePage> {
         toolbarHeight: MediaQuery.of(context).size.height / 15,
         // brightness: Brightness.light,
         backgroundColor: Theme.of(context).backgroundColor,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Theme.of(context).dividerColor,
+          ),
+        ),
         elevation: 0,
         title: Text(
           "Calendar Tasks",

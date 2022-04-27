@@ -137,7 +137,7 @@ class _GoalItemState extends State<GoalItem> {
       buildList();
     }
     return Card(
-      color: Theme.of(context).primaryColorDark,
+      color: Theme.of(context).primaryColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 5,
       margin: EdgeInsets.symmetric(
@@ -153,8 +153,8 @@ class _GoalItemState extends State<GoalItem> {
                     icon: Icon(
                       Icons.check_circle_outline,
                     ),
-                    color: Theme.of(context).primaryColor,
-                    splashColor: Theme.of(context).primaryColor,
+                    color: Theme.of(context).primaryColorLight,
+                    splashColor: Theme.of(context).primaryColorLight,
                     onPressed: () async {
                       HapticFeedback.mediumImpact();
                       SharedPreferences prefs =
@@ -189,8 +189,8 @@ class _GoalItemState extends State<GoalItem> {
                     icon: Icon(
                       Icons.check_circle,
                     ),
-                    color: Theme.of(context).primaryColor,
-                    splashColor: Theme.of(context).primaryColor,
+                    color: Theme.of(context).primaryColorLight,
+                    splashColor: Theme.of(context).primaryColorLight,
                     onPressed: () {
                       widget.goalItem.iconName = 'check_circle_outline';
                     },
@@ -210,12 +210,13 @@ class _GoalItemState extends State<GoalItem> {
                 : Center(
                     child: Text(
                       widget.goalItem.finish,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
             trailing: IconButton(
               icon: Icon(Icons.list),
-              color: Theme.of(context).primaryColor,
-              splashColor: Theme.of(context).primaryColor,
+              color: Theme.of(context).primaryColorLight,
+              splashColor: Theme.of(context).primaryColorLight,
               onPressed: () {
                 HapticFeedback.lightImpact();
                 widget.openGoal(widget.goalItem.id);
@@ -229,7 +230,7 @@ class _GoalItemState extends State<GoalItem> {
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width / 8,
-                  child: Text('$completedListLengthInt/$listlengthInt'),
+                  child: Text('$completedListLengthInt/$listlengthInt',style: Theme.of(context).textTheme.bodyText1,),
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width / 1.18,
@@ -243,7 +244,7 @@ class _GoalItemState extends State<GoalItem> {
                             : percent,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
+                        color: Theme.of(context).primaryColorLight,
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),

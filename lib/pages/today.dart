@@ -146,6 +146,7 @@ class _TodayPageState extends State<TodayPage> {
       _dateTime = DateFormat.yMMMEd().format(DateTime.now()).toString();
       if (prefs.getString('Home Date') != null &&
           prefs.getString('Home Date') != _dateTime) {
+            prefs.setBool('dateChange', false);
         //setting daily count max number
         if (prefs.getStringList('Daily ID List') != null) {
           prefs.setInt('$_dateTime daily count',
@@ -321,14 +322,14 @@ class _TodayPageState extends State<TodayPage> {
     print('tasklist length: ${_taskList.length}');
     return Scaffold(
       backgroundColor: dailySelected == true
-          ? Colors.blueGrey[700]
+          ? Theme.of(context).dividerColor
           : Theme.of(context).backgroundColor,
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 15,
         // brightness: Brightness.light,
         elevation: 0,
         backgroundColor: dailySelected == true
-            ? Colors.blueGrey[700]
+            ? Theme.of(context).dividerColor
             : Theme.of(context).backgroundColor,
         title: dailySelected == true
             ? Text(
@@ -383,9 +384,9 @@ class _TodayPageState extends State<TodayPage> {
                           value: dailySelected,
                           onChanged: _onChanged,
                           inactiveThumbColor:
-                              Theme.of(context).primaryColorDark,
-                          activeColor: Theme.of(context).primaryColorDark,
-                          activeTrackColor: Theme.of(context).dividerColor,
+                              Theme.of(context).cardColor,
+                          activeColor: Theme.of(context).primaryColor,
+                          activeTrackColor: Theme.of(context).primaryColor,
                           inactiveTrackColor: Theme.of(context).primaryColor,
                         ),
                       ),

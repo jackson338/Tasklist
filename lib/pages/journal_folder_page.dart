@@ -39,6 +39,15 @@ class _JournalYearlyPageState extends State<JournalYearlyPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Theme.of(context).dividerColor,
+          ),
+        ),
         toolbarHeight: MediaQuery.of(context).size.height / 15,
         // brightness: Brightness.light,
         backgroundColor: Theme.of(context).backgroundColor,

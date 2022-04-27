@@ -16,7 +16,7 @@ class FolderItem extends StatelessWidget {
     return ElevatedButton(
       style: ButtonStyle(
         backgroundColor:
-            MaterialStateProperty.all(Theme.of(context).primaryColorDark),
+            MaterialStateProperty.all(Theme.of(context).primaryColor),
       ),
       onPressed: () async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -32,7 +32,7 @@ class FolderItem extends StatelessWidget {
         children: [
           Icon(
             Icons.folder,
-            color: Theme.of(context).dividerColor,
+            color: Theme.of(context).primaryColorLight,
           ),
           Text(
             folderItem.date,

@@ -124,8 +124,8 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
         prefs.setStringList('$gId completed goals', completedGoals);
       }
       prefs.setString('$id Icon Name', 'check_circle');
-      prefs.setString('$id goal finish',
-          DateFormat.yMMMd().format(DateTime.now()).toString());
+      prefs.setString(
+          '$id goal finish', DateFormat.yMMMd().format(DateTime.now()).toString());
       // List<String> goalidList = prefs.getStringList('$gId goal list');
       // if (prefs.getStringList('Journal ID List') != null) {
       //   journalidList = prefs.getStringList('Journal ID List');
@@ -269,7 +269,7 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_outlined,
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).dividerColor,
           ),
           onPressed: () {
             delete = false;
@@ -283,10 +283,12 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
         // ),
         actions: [
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: Icon(
+              Icons.delete,
+              color: Theme.of(context).dividerColor,
+            ),
             onPressed: () {
-              deleteGoal(
-                  gId, index > 0 ? startGoalList.elementAt(index - 1) : gId);
+              deleteGoal(gId, index > 0 ? startGoalList.elementAt(index - 1) : gId);
             },
           ),
         ],
@@ -297,18 +299,19 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
         child: Column(
           children: [
             Container(
-              color: Colors.blueGrey[800],
+              color: Theme.of(context).backgroundColor,
               height: MediaQuery.of(context).size.height / 10,
-                child: Center(
-                  child: ListView(
-                    children: [
-                      Text(title != null ? title : 'no title data',
-                          style: Theme.of(context).textTheme.headline6,
-                          textAlign: TextAlign.center,
-                          ),
-                    ],
-                  ),
+              child: Center(
+                child: ListView(
+                  children: [
+                    Text(
+                      title != null ? title : 'no title data',
+                      style: Theme.of(context).textTheme.headline6,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
+              ),
             ),
             Container(
               height: MediaQuery.of(context).size.height / 1.5,

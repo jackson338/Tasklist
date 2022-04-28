@@ -63,7 +63,9 @@ class _HomePageState extends State<HomePage> {
         weekIds = chartIds;
       }
       String id;
+      int count2 = count;
       for (id in weekIds) {
+        count2 -= 1;
         if (prefs.getStringList('Daily ID List') == null) {
           prefs.setStringList('Daily ID List', ['test']);
         }
@@ -73,7 +75,7 @@ class _HomePageState extends State<HomePage> {
 
         int buildLength = prefs.getInt('$id daily build count');
         int dailyLength = prefs.getInt('$id daily count');
-        print(prefs.getStringList('Daily ID List'));
+        // print(prefs.getStringList('Daily ID List'));
         if (buildLength != null) {
           percentage = ((dailyLength - buildLength) * 100) / dailyLength;
           if (prefs.getStringList('daily percentages') != null) {
@@ -83,8 +85,7 @@ class _HomePageState extends State<HomePage> {
             percentages.add('${(percentage).roundToDouble()}');
             prefs.setStringList('daily percentages', percentages);
           }
-          print(
-              'BuildLength: $buildLength, DailyLength: $dailyLength, percent: $percentage');
+          // print('BuildLength: $buildLength, DailyLength: $dailyLength, percent: $percentage');
         }
         if (prefs.getDouble('$id total completed') == null) {
           prefs.setDouble('$id total completed', 0);
@@ -102,14 +103,26 @@ class _HomePageState extends State<HomePage> {
         if (totalCompleted < 1) {
           totalCompleted = 1;
         }
-        if (totalCompleted >= 75 && dateChange == false) {
+        if (prefs.getBool('streak added today') == null) {
+          prefs.setBool('streak added today', false);
+        }
+        if (totalCompleted >= 75 &&
+            dateChange == false &&
+            prefs.getBool('streak added today') == false) {
           streak += 1;
           prefs.setInt('streak', streak);
+          if (count2 == -1) {
+            prefs.setBool('streak added today', true);
+          }
         }
-        if (totalCompleted < 75 && dateChange == false) {
-          streak = 0;
-          prefs.setInt('streak', streak);
+        if (count2 > -1) {
+          if (totalCompleted < 75 && dateChange == false) {
+            streak = 0;
+            prefs.setInt('streak', streak);
+          }
+          print('count in list: $count2 total complete: $totalCompleted');
         }
+        print('count: $count2 total complete: $totalCompleted');
 
         prefs.setDouble('$id average percentage', totalCompleted);
         if (prefs.getStringList('daily average ids') != null) {
@@ -641,18 +654,15 @@ class _HomePageState extends State<HomePage> {
                                                                           .dividerColor,
                                                                     ),
                                                                     Icon(
-                                                                      Icons
-                                                                          .circle_outlined,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .dividerColor
-                                                                    ),
-                                                                    Icon(
-                                                                      Icons.circle,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .hintColor
-                                                                    ),
+                                                                        Icons
+                                                                            .circle_outlined,
+                                                                        color: Theme.of(
+                                                                                context)
+                                                                            .dividerColor),
+                                                                    Icon(Icons.circle,
+                                                                        color: Theme.of(
+                                                                                context)
+                                                                            .hintColor),
                                                                     Icon(
                                                                       Icons
                                                                           .circle_outlined,
@@ -699,8 +709,7 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                   Icon(
                                                     Icons.circle,
-                                                    color: Theme.of(context)
-                                                        .hintColor,
+                                                    color: Theme.of(context).hintColor,
                                                   ),
                                                   Icon(
                                                     Icons.circle_outlined,

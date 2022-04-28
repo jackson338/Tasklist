@@ -148,6 +148,7 @@ class _TodayPageState extends State<TodayPage> {
       if (prefs.getString('Home Date') != null &&
           prefs.getString('Home Date') != _dateTime) {
             prefs.setBool('dateChange', false);
+            prefs.setBool('streak added today', false);
         //setting daily count max number
         if (prefs.getStringList('Daily ID List') != null) {
           prefs.setInt('$_dateTime daily count',

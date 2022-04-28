@@ -103,17 +103,9 @@ class _HomePageState extends State<HomePage> {
         if (totalCompleted < 1) {
           totalCompleted = 1;
         }
-        if (prefs.getBool('streak added today') == null) {
-          prefs.setBool('streak added today', false);
-        }
-        if (totalCompleted >= 75 &&
-            dateChange == false &&
-            prefs.getBool('streak added today') == false) {
+        if (totalCompleted >= 75 && dateChange == false) {
           streak += 1;
           prefs.setInt('streak', streak);
-          if (count2 == -1) {
-            prefs.setBool('streak added today', true);
-          }
         }
         if (count2 > -1) {
           if (totalCompleted < 75 && dateChange == false) {

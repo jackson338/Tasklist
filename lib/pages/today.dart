@@ -85,6 +85,7 @@ class _TodayPageState extends State<TodayPage> {
 
     setState(() {
       _taskList.removeWhere((taskC) => taskC.id == id);
+      prefs.setBool('dateChange', false);
       // String idc = DateTime.now().toString();
       if (prefs.getStringList('chart ids') != null) {
         chartIds = prefs.getStringList('chart ids');

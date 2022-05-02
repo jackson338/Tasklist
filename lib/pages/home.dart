@@ -103,14 +103,18 @@ class _HomePageState extends State<HomePage> {
         if (totalCompleted < 1) {
           totalCompleted = 1;
         }
-        if (totalCompleted >= 75 && dateChange == false) {
+        if (totalCompleted >= 75 && dateChange == false && count2 == -1) {
           streak += 1;
           prefs.setInt('streak', streak);
+          dateChange = true;
+          prefs.setBool('dateChange', dateChange);
         }
-        if (count2 > -1) {
+        if (count2 == 0) {
           if (totalCompleted < 75 && dateChange == false) {
             streak = 0;
             prefs.setInt('streak', streak);
+            dateChange = true;
+            prefs.setBool('dateChange', dateChange);
           }
           print('count in list: $count2 total complete: $totalCompleted');
         }
@@ -126,8 +130,6 @@ class _HomePageState extends State<HomePage> {
           FlSpot(dayCompleted, totalCompleted),
         );
       }
-      dateChange = true;
-      prefs.setBool('dateChange', dateChange);
       DateTime date = DateTime.now();
       int day = date.day;
       dateLengthD += day;
@@ -850,7 +852,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(20.0),
                         child: Container(
                           height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.of(context).size.width - 40,
                           child: LineChart(
                             LineChartData(
                               backgroundColor: Theme.of(context).backgroundColor,

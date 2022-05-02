@@ -324,15 +324,15 @@ class _TodayPageState extends State<TodayPage> {
     print('tasklist length: ${_taskList.length}');
     return Scaffold(
       backgroundColor: dailySelected == true
-          ? Theme.of(context).dividerColor
-          : Theme.of(context).backgroundColor,
+          ? Theme.of(context).backgroundColor
+          : Theme.of(context).dividerColor,
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 15,
         // brightness: Brightness.light,
         elevation: 0,
         backgroundColor: dailySelected == true
-            ? Theme.of(context).dividerColor
-            : Theme.of(context).backgroundColor,
+            ? Theme.of(context).backgroundColor
+            : Theme.of(context).dividerColor,
         title: dailySelected == true
             ? Text(
                 "Daily Tasks",
@@ -388,7 +388,7 @@ class _TodayPageState extends State<TodayPage> {
                           inactiveThumbColor:
                               Theme.of(context).cardColor,
                           activeColor: Theme.of(context).primaryColor,
-                          activeTrackColor: Theme.of(context).primaryColor,
+                          activeTrackColor: Theme.of(context).cardColor,
                           inactiveTrackColor: Theme.of(context).primaryColor,
                         ),
                       ),

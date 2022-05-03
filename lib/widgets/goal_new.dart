@@ -62,7 +62,7 @@ class _NewGoalState extends State<NewGoal> {
       child: Column(
         children: [
           TextField(
-            style: Theme.of(context).textTheme.subtitle1,
+            style: Theme.of(context).textTheme.subtitle2,
             cursorColor: Theme.of(context).primaryColor,
             decoration: InputDecoration(
               labelText: 'Enter a new task',

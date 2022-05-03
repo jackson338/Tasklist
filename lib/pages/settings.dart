@@ -58,7 +58,7 @@ class _SettingsPageState extends State<SettingsPage> {
               padding: EdgeInsets.all(20.0),
               child: Text(
                 'Restart your app for theme changes to apply',
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
             ElevatedButton(

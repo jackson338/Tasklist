@@ -279,7 +279,7 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
         title: Text(expandedTitle),
         // title: Text(
         //   '$index',
-        //   style: Theme.of(context).textTheme.bodyText2,
+        //   style: Theme.of(context).textTheme.bodyText1,
         // ),
         actions: [
           IconButton(

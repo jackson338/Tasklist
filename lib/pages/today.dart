@@ -416,7 +416,7 @@ class _TodayPageState extends State<TodayPage> {
                   //                     : Theme.of(context).dividerColor),
                   //             Text(
                   //               'Today',
-                  //               style: Theme.of(context).textTheme.bodyText2,
+                  //               style: Theme.of(context).textTheme.bodyText1,
                   //             ),
                   //           ],
                   //         ),
@@ -446,7 +446,7 @@ class _TodayPageState extends State<TodayPage> {
                   //                     : Theme.of(context).dividerColor),
                   //             Text(
                   //               'Daily',
-                  //               style: Theme.of(context).textTheme.bodyText2,
+                  //               style: Theme.of(context).textTheme.bodyText1,
                   //             ),
                   //           ],
                   //         ),

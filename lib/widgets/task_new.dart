@@ -152,8 +152,8 @@ class _NewTaskState extends State<NewTask> {
                     Text(
                       'Calendar',
                       style: calendarSelected
-                          ? Theme.of(context).textTheme.bodyText2
-                          : Theme.of(context).textTheme.bodyText1,
+                          ? Theme.of(context).textTheme.subtitle2
+                          : Theme.of(context).textTheme.subtitle1,
                     ),
                   ],
                 ),
@@ -185,8 +185,8 @@ class _NewTaskState extends State<NewTask> {
                     Text(
                       'Today',
                       style: todaySelected
-                          ? Theme.of(context).textTheme.bodyText2
-                          : Theme.of(context).textTheme.bodyText1,
+                          ? Theme.of(context).textTheme.subtitle2
+                          : Theme.of(context).textTheme.subtitle1,
                     ),
                   ],
                 ),
@@ -219,8 +219,8 @@ class _NewTaskState extends State<NewTask> {
                     Text(
                       'Daily',
                       style: dailySelected
-                          ? Theme.of(context).textTheme.bodyText2
-                          : Theme.of(context).textTheme.bodyText1,
+                          ? Theme.of(context).textTheme.subtitle2
+                          : Theme.of(context).textTheme.subtitle1,
                     ),
                   ],
                 ),
@@ -254,8 +254,8 @@ class _NewTaskState extends State<NewTask> {
                     Text(
                       'Goals',
                       style: goalSelected
-                          ? Theme.of(context).textTheme.bodyText2
-                          : Theme.of(context).textTheme.bodyText1,
+                          ? Theme.of(context).textTheme.subtitle2
+                          : Theme.of(context).textTheme.subtitle1,
                     ),
                   ],
                 ),
@@ -264,7 +264,7 @@ class _NewTaskState extends State<NewTask> {
             ],
           ),
           TextField(
-            style: Theme.of(context).textTheme.subtitle2,
+            style: Theme.of(context).textTheme.bodyText1,
             cursorColor: Theme.of(context).primaryColor,
             decoration: InputDecoration(
               labelText: 'Enter a new task',

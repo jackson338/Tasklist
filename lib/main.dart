@@ -55,9 +55,9 @@ class _MyAppState extends State<MyApp> {
               // brightness: Brightness.dark,
               textTheme: TextTheme(
                 bodyText1: TextStyle(color: Colors.white),
-                bodyText2: TextStyle(color: Colors.white),
-                subtitle2: TextStyle(color: Colors.black54),
+                bodyText2: TextStyle(color: Colors.black),
                 subtitle1: TextStyle(color: Colors.white),
+                subtitle2: TextStyle(color: Colors.black54),
                 headline2: TextStyle(color: Colors.white),
                 headline3: TextStyle(color: Colors.white),
                 headline4: TextStyle(color: Colors.white),
@@ -81,10 +81,10 @@ class _MyAppState extends State<MyApp> {
               // brightness: Brightness.dark,
               hintColor: Colors.black,
               textTheme: TextTheme(
-                bodyText1: TextStyle(color: Colors.white),
-                bodyText2: TextStyle(color: Colors.black),
-                subtitle2: TextStyle(color: Colors.black),
+                bodyText1: TextStyle(color: Colors.black),
+                bodyText2: TextStyle(color: Colors.white),
                 subtitle1: TextStyle(color: Colors.white),
+                subtitle2: TextStyle(color: Colors.black),
                 headline2: TextStyle(color: Colors.black),
                 headline3: TextStyle(color: Colors.black),
                 headline4: TextStyle(color: Colors.black),
@@ -279,7 +279,7 @@ class _ControllerState extends State<Controller> {
         body: TabBarView(
           children: _pages,
         ),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).backgroundColor,
         bottomNavigationBar: Container(
           // color: Theme.of(context).primaryColor,
           height: MediaQuery.of(context).size.height / 15,
@@ -290,31 +290,31 @@ class _ControllerState extends State<Controller> {
               Tab(
                 icon: Icon(
                   Icons.map_outlined,
-                  color: Theme.of(context).primaryColorLight,
+                  color: Theme.of(context).hintColor,
                 ),
                 child: Text(
                   'Goals',
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
               Tab(
                 icon: Icon(
                   Icons.list,
-                  color: Theme.of(context).primaryColorLight,
+                  color: Theme.of(context).hintColor,
                 ),
                 child: Text(
                   'Today',
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
               Tab(
                 icon: Icon(
                   Icons.home,
-                  color: Theme.of(context).primaryColorLight,
+                  color: Theme.of(context).hintColor,
                 ),
                 child: Text(
                   'Home',
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
               // Tab(

@@ -103,18 +103,16 @@ class _HomePageState extends State<HomePage> {
         if (totalCompleted < 1) {
           totalCompleted = 1;
         }
-        if (totalCompleted >= 75 && dateChange == false && count2 == -1) {
+        if (totalCompleted >= 75 && dateChange == false && count2 == 0) {
           streak += 1;
           prefs.setInt('streak', streak);
           dateChange = true;
           prefs.setBool('dateChange', dateChange);
         }
-        if (count2 == 0) {
+        if (count2 == 1) {
           if (totalCompleted < 75 && dateChange == false) {
             streak = 0;
             prefs.setInt('streak', streak);
-            dateChange = true;
-            prefs.setBool('dateChange', dateChange);
           }
           print('count in list: $count2 total complete: $totalCompleted');
         }
@@ -197,13 +195,13 @@ class _HomePageState extends State<HomePage> {
                     actions: [
                       Text(
                         'Welcome to the Home Page! This is where you\'ll see a chart for the percentage of daily tasks you\'ve completed this week.',
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 12.0),
                         child: Text(
                           'You will also be able to navigate to your Calendar, Daily Task, Journal, and Statistics pages!',
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                       Row(
@@ -258,7 +256,7 @@ class _HomePageState extends State<HomePage> {
                                                   'Calendar Task',
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText2,
+                                                      .bodyText1,
                                                 ),
                                               ),
                                               Padding(
@@ -267,7 +265,7 @@ class _HomePageState extends State<HomePage> {
                                                   'Today Task',
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText2,
+                                                      .bodyText1,
                                                 ),
                                               ),
                                               Padding(
@@ -276,7 +274,7 @@ class _HomePageState extends State<HomePage> {
                                                   'Daily Task',
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText2,
+                                                      .bodyText1,
                                                 ),
                                               ),
                                               Padding(
@@ -285,7 +283,7 @@ class _HomePageState extends State<HomePage> {
                                                   'Goal Task',
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText2,
+                                                      .bodyText1,
                                                 ),
                                               ),
                                               Row(
@@ -306,7 +304,7 @@ class _HomePageState extends State<HomePage> {
                                                         'Dismiss',
                                                         style: Theme.of(context)
                                                             .textTheme
-                                                            .bodyText2,
+                                                            .bodyText1,
                                                       ),
                                                     ),
                                                   ),
@@ -336,7 +334,7 @@ class _HomePageState extends State<HomePage> {
                                                                   'Calendar tasks add to your today list automatically on their set date.',
                                                                   style: Theme.of(context)
                                                                       .textTheme
-                                                                      .bodyText2,
+                                                                      .bodyText1,
                                                                 ),
                                                                 Row(
                                                                   children: [
@@ -363,7 +361,7 @@ class _HomePageState extends State<HomePage> {
                                                                           style: Theme.of(
                                                                                   context)
                                                                               .textTheme
-                                                                              .bodyText2,
+                                                                              .bodyText1,
                                                                         ),
                                                                       ),
                                                                     ),
@@ -402,7 +400,7 @@ class _HomePageState extends State<HomePage> {
                                                                                     'Today Tasks add to your Today List. They will stay there until completed or deleted. You shouldn\'t have a today task for more than a couple days. ',
                                                                                     style: Theme.of(context)
                                                                                         .textTheme
-                                                                                        .bodyText2,
+                                                                                        .bodyText1,
                                                                                   ),
                                                                                   Row(
                                                                                     children: [
@@ -417,7 +415,7 @@ class _HomePageState extends State<HomePage> {
                                                                                           },
                                                                                           child: Text(
                                                                                             'Dismiss',
-                                                                                            style: Theme.of(context).textTheme.bodyText2,
+                                                                                            style: Theme.of(context).textTheme.bodyText1,
                                                                                           ),
                                                                                         ),
                                                                                       ),
@@ -439,7 +437,7 @@ class _HomePageState extends State<HomePage> {
                                                                                                   actions: [
                                                                                                     Text(
                                                                                                       'Daily Tasks will add to your Daily Today list. These will repeat every day. Use these to set a routine.',
-                                                                                                      style: Theme.of(context).textTheme.bodyText2,
+                                                                                                      style: Theme.of(context).textTheme.bodyText1,
                                                                                                     ),
                                                                                                     Row(
                                                                                                       children: [
@@ -454,7 +452,7 @@ class _HomePageState extends State<HomePage> {
                                                                                                             },
                                                                                                             child: Text(
                                                                                                               'Dismiss',
-                                                                                                              style: Theme.of(context).textTheme.bodyText2,
+                                                                                                              style: Theme.of(context).textTheme.bodyText1,
                                                                                                             ),
                                                                                                           ),
                                                                                                         ),
@@ -476,7 +474,7 @@ class _HomePageState extends State<HomePage> {
                                                                                                                     actions: [
                                                                                                                       Text(
                                                                                                                         'Goal tasks add to your Goals list. You can go into a Goal Task and add sub-goals through the list icon on the right. You can add and track an infinite amount of sub goals! Use these to help you achieve your goals. To delete a goal or sub goal with all of it\'s sub goals hit the delete icon in the top right of the expanded goal page.',
-                                                                                                                        style: Theme.of(context).textTheme.bodyText2,
+                                                                                                                        style: Theme.of(context).textTheme.bodyText1,
                                                                                                                       ),
                                                                                                                       Row(
                                                                                                                         children: [
@@ -491,7 +489,7 @@ class _HomePageState extends State<HomePage> {
                                                                                                                               },
                                                                                                                               child: Text(
                                                                                                                                 'Dismiss',
-                                                                                                                                style: Theme.of(context).textTheme.bodyText2,
+                                                                                                                                style: Theme.of(context).textTheme.bodyText1,
                                                                                                                               ),
                                                                                                                             ),
                                                                                                                           ),
@@ -506,7 +504,7 @@ class _HomePageState extends State<HomePage> {
                                                                                                                               },
                                                                                                                               child: Text(
                                                                                                                                 'Done',
-                                                                                                                                style: Theme.of(context).textTheme.bodyText2,
+                                                                                                                                style: Theme.of(context).textTheme.bodyText1,
                                                                                                                               ),
                                                                                                                             ),
                                                                                                                           ),
@@ -547,7 +545,7 @@ class _HomePageState extends State<HomePage> {
                                                                                                             },
                                                                                                             child: Text(
                                                                                                               'Next',
-                                                                                                              style: Theme.of(context).textTheme.bodyText2,
+                                                                                                              style: Theme.of(context).textTheme.bodyText1,
                                                                                                             ),
                                                                                                           ),
                                                                                                         ),
@@ -588,7 +586,7 @@ class _HomePageState extends State<HomePage> {
                                                                                           },
                                                                                           child: Text(
                                                                                             'Next',
-                                                                                            style: Theme.of(context).textTheme.bodyText2,
+                                                                                            style: Theme.of(context).textTheme.bodyText1,
                                                                                           ),
                                                                                         ),
                                                                                       ),
@@ -632,7 +630,7 @@ class _HomePageState extends State<HomePage> {
                                                                           style: Theme.of(
                                                                                   context)
                                                                               .textTheme
-                                                                              .bodyText2,
+                                                                              .bodyText1,
                                                                         ),
                                                                       ),
                                                                     ),
@@ -689,7 +687,7 @@ class _HomePageState extends State<HomePage> {
                                                         'Next',
                                                         style: Theme.of(context)
                                                             .textTheme
-                                                            .bodyText2,
+                                                            .bodyText1,
                                                       ),
                                                     ),
                                                   ),
@@ -807,7 +805,7 @@ class _HomePageState extends State<HomePage> {
                                 child: Text(
                                   'Complete 75% or more of your daily tasks to add 1 to your STREAK!',
                                   textAlign: TextAlign.center,
-                                  style: Theme.of(context).textTheme.bodyText2,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
                               Container(

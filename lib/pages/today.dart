@@ -344,32 +344,21 @@ class _TodayPageState extends State<TodayPage> {
               ),
       ),
       body: RefreshIndicator(
-        color: Theme.of(context).dividerColor,
+        color: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).hintColor,
         child: Center(
           child: Column(
             children: [
               Container(
                 padding: EdgeInsets.all(10),
-                child: _dateTime != null ? Text(_dateTime) : Text(''),
+                child: _dateTime != null ? Text(_dateTime,style: Theme.of(context).textTheme.bodyText1,) : Text(''),
               ),
-              // Text(DateFormat.yMMMd().format(DateTime.now()).toString()),
               Container(
                 height: MediaQuery.of(context).size.height / 1.5,
                 child: todaySelected == true
                     ? TaskListWidget(_taskList, _deleteTask, _completeTask)
                     : TaskListWidget(_dailyList, _deleteTask2, _completeTask2),
               ),
-              // Divider(
-              //   height: MediaQuery.of(context).size.height / 50,
-              //   color: Theme.of(context).dividerColor,
-              //   thickness: MediaQuery.of(context).size.height / 50,
-              //   endIndent: 4.0,
-              //   indent: 4.0,
-              // ),
-              // Container(
-              //   height: MediaQuery.of(context).size.height / 3,
-              //   child: TaskListWidget(_dailyList, _deleteTask2, _completeTask2),
-              // ),
               Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height / 15,
@@ -378,7 +367,7 @@ class _TodayPageState extends State<TodayPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 5.0),
-                        child: Text('Today'),
+                        child: Text('Today',style: Theme.of(context).textTheme.bodyText1,),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 5.0),
@@ -394,99 +383,16 @@ class _TodayPageState extends State<TodayPage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 5.0),
-                        child: Text('Daily'),
+                        child: Text('Daily',style: Theme.of(context).textTheme.bodyText1,),
                       ),
                     ],
                   )
-                  // Row(
-                  //   children: [
-                  //     Padding(
-                  //       padding: const EdgeInsets.only(left: 60.0),
-                  //       child: ElevatedButton(
-                  //         style: ButtonStyle(
-                  //           backgroundColor: MaterialStateProperty.all(
-                  //             Theme.of(context).backgroundColor,
-                  //           ),
-                  //         ),
-                  //         child: Column(
-                  //           children: [
-                  //             Icon(Icons.list,
-                  //                 color: todaySelected
-                  //                     ? Theme.of(context).primaryColor
-                  //                     : Theme.of(context).dividerColor),
-                  //             Text(
-                  //               'Today',
-                  //               style: Theme.of(context).textTheme.bodyText1,
-                  //             ),
-                  //           ],
-                  //         ),
-                  //         onPressed: () async {
-                  //           SharedPreferences prefs = await SharedPreferences.getInstance();
-                  //           setState(() {
-                  //             prefs.setBool('today list selected', true);
-                  //             todaySelected = true;
-                  //             dailySelected = false;
-                  //           });
-                  //         },
-                  //       ),
-                  //     ),
-                  //     Padding(
-                  //       padding: const EdgeInsets.only(left: 140.0),
-                  //       child: ElevatedButton(
-                  //         style: ButtonStyle(
-                  //           backgroundColor: MaterialStateProperty.all(
-                  //             Theme.of(context).backgroundColor,
-                  //           ),
-                  //         ),
-                  //         child: Column(
-                  //           children: [
-                  //             Icon(Icons.loop,
-                  //                 color: dailySelected
-                  //                     ? Theme.of(context).primaryColor
-                  //                     : Theme.of(context).dividerColor),
-                  //             Text(
-                  //               'Daily',
-                  //               style: Theme.of(context).textTheme.bodyText1,
-                  //             ),
-                  //           ],
-                  //         ),
-                  //         onPressed: () async {
-                  //           SharedPreferences prefs = await SharedPreferences.getInstance();
-                  //           setState(() {
-                  //             prefs.setBool('today list selected', false);
-                  //             dailySelected = true;
-                  //             todaySelected = false;
-                  //           });
-                  //         },
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                   )
             ],
           ),
         ),
         onRefresh: refreshList,
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   backgroundColor: Theme.of(context).primaryColor,
-      //   splashColor: Theme.of(context).primaryColor,
-      //   onPressed: () async {
-      //     SharedPreferences prefs = await SharedPreferences.getInstance();
-      //     prefs.setInt('page index', 2);
-      //     showModalBottomSheet(
-      //       context: context,
-      //       builder: (_) {
-      //         return GestureDetector(
-      //           onTap: () {},
-      //           child: NewTask(_addNewTask),
-      //           behavior: HitTestBehavior.opaque,
-      //         );
-      //       },
-      //     );
-      //   },
-      // ),
     );
   }
 }

@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   double streakWidthFactor = 0.0;
   Color streakColor = Colors.grey;
   Color streakProgress = Colors.blueGrey;
+  String todayDate = 'today';
 
   void getChartValues() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -41,6 +42,13 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       if (prefs.getInt('streak') != null) {
         streak = prefs.getInt('streak');
+      }
+      if (prefs.getString('today date') != null) {
+        todayDate = prefs.getString('today date');
+      }
+      if (todayDate != DateTime.now().day.toString()) {
+        dateChange = true;
+        prefs.setBool('dateChange', dateChange);
       }
       dateChange = prefs.getBool('dateChange');
       if (prefs.getStringList('chart ids') != null) {
@@ -63,9 +71,11 @@ class _HomePageState extends State<HomePage> {
         weekIds = chartIds;
       }
       String id;
-      int count2 = count;
+      int count2 = 0;
+      int count3 = weekIds.length;
+      print('count3: $count3');
       for (id in weekIds) {
-        count2 -= 1;
+        count2 += 1;
         if (prefs.getStringList('Daily ID List') == null) {
           prefs.setStringList('Daily ID List', ['test']);
         }
@@ -103,13 +113,15 @@ class _HomePageState extends State<HomePage> {
         if (totalCompleted < 1) {
           totalCompleted = 1;
         }
-        if (totalCompleted >= 75 && dateChange == false && count2 == 0) {
+        if (totalCompleted >= 75 && dateChange == true && count2 == weekIds.length) {
           streak += 1;
           prefs.setInt('streak', streak);
-          dateChange = true;
+          dateChange = false;
           prefs.setBool('dateChange', dateChange);
+          todayDate = DateTime.now().day.toString();
+          prefs.setString('today date', todayDate);
         }
-        if (count2 == 1) {
+        if (count2 == (weekIds.length - 1)) {
           if (totalCompleted < 75 && dateChange == false) {
             streak = 0;
             prefs.setInt('streak', streak);
@@ -803,7 +815,7 @@ class _HomePageState extends State<HomePage> {
                               SizedBox(
                                 width: 300,
                                 child: Text(
-                                  'Complete 75% or more of your daily tasks to add 1 to your STREAK!',
+                                  'Complete 75% or more of your daily tasks to add 1 point to your STREAK!',
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),

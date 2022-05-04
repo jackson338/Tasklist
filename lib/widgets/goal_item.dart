@@ -37,22 +37,6 @@ class _GoalItemState extends State<GoalItem> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getStringList('goal id list') != null) {
       setState(() {
-        // if (prefs.getStringList('${widget.goalItem.id} goal list length') !=
-        //     null) {
-        //   listLength =
-        //       prefs.getStringList('${widget.goalItem.id} goal list length');
-        // }
-        // if (prefs.getStringList('${widget.goalItem.id} completed goals') !=
-        //     null) {
-        //   completedListLength =
-        //       prefs.getStringList('${widget.goalItem.id} completed goals');
-        // }
-        // listlengthInt = listLength.length;
-        // completedListLengthInt = completedListLength.length;
-        // if (listlengthInt != 0) {
-        //   percent = completedListLengthInt / (listlengthInt);
-        // }
-        // percent = prefs.getDouble('${widget.goalItem.id} percent');
         if (prefs.getStringList('${widget.goalItem.id} completed goals') !=
             null) {
           completedListLengthInt = prefs
@@ -210,7 +194,7 @@ class _GoalItemState extends State<GoalItem> {
                 : Center(
                     child: Text(
                       widget.goalItem.finish,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
             trailing: IconButton(
@@ -230,7 +214,7 @@ class _GoalItemState extends State<GoalItem> {
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width / 8,
-                  child: Text('$completedListLengthInt/$listlengthInt',style: Theme.of(context).textTheme.bodyText1,),
+                  child: Text('$completedListLengthInt/$listlengthInt',style: TextStyle(color: Colors.white),),
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width / 1.18,

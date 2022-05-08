@@ -338,7 +338,7 @@ class _ControllerState extends State<Controller> {
             ],
             unselectedLabelColor: Colors.black,
             labelColor: Theme.of(context).primaryColor,
-            indicatorColor: Theme.of(context).primaryColorLight,
+            indicatorColor: Theme.of(context).hintColor,
           ),
         ),
         //   floatingActionButton: FloatingActionButton(

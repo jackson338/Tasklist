@@ -36,7 +36,7 @@ class FolderItem extends StatelessWidget {
           ),
           Text(
             folderItem.date,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: TextStyle(color: Colors.white),
           ),
         ],
       ),

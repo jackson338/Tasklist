@@ -97,7 +97,7 @@ class _NewGoalState extends State<NewGoal> {
             onPressed: () => _submitData(),
             child: Text(
               'Add Task',
-              style: Theme.of(context).textTheme.subtitle2,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
             style: ElevatedButton.styleFrom(
               primary: Theme.of(context).primaryColor,

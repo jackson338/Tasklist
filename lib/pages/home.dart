@@ -122,13 +122,11 @@ class _HomePageState extends State<HomePage> {
           prefs.setString('today date', todayDate);
         }
         if (count2 == (weekIds.length - 1)) {
-          if (totalCompleted < 75 && dateChange == false) {
+          if (totalCompleted < 75) {
             streak = 0;
             prefs.setInt('streak', streak);
           }
-          print('count in list: $count2 total complete: $totalCompleted');
         }
-        print('count: $count2 total complete: $totalCompleted');
 
         prefs.setDouble('$id average percentage', totalCompleted);
         if (prefs.getStringList('daily average ids') != null) {

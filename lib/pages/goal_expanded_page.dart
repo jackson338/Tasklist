@@ -157,8 +157,8 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
     );
     prefs.setString('${newGoal.id} goal task', newGoal.task);
     setState(() {
-      _goalsList.add(newGoal);
-      goalsIdList.add(newGoal.id);
+      _goalsList.insert(0, newGoal);
+      goalsIdList.insert(0, newGoal.id);
       prefs.setStringList('$gId goal list', goalsIdList);
     });
   }

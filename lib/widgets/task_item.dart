@@ -152,7 +152,7 @@ class _TaskItemState extends State<TaskItem> {
             : Center(
                 child: Text(
                   widget.taskItem.finish,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
         trailing: IconButton(

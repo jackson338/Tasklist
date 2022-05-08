@@ -258,7 +258,7 @@ class _FuturePageState extends State<FuturePage> {
             children: [
               Container(
                 padding: EdgeInsets.all(10),
-                child: Text(_dateTime),
+                child: Text(_dateTime, style: Theme.of(context).textTheme.bodyText1,),
               ),
               Container(
                 height: MediaQuery.of(context).size.height / 1.35,

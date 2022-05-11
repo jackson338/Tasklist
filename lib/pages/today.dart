@@ -66,10 +66,10 @@ class _TodayPageState extends State<TodayPage> {
         journalidList = prefs.getStringList('Journal ID List');
       }
       prefs.setString('$id Icon Name', 'check_circle');
-      prefs.setString('$id Date Finished',
-          DateFormat.yMMMd().format(DateTime.now()).toString());
-      prefs.setString('$id Time Finished',
-          DateFormat.jm().format(DateTime.now()).toString());
+      prefs.setString(
+          '$id Date Finished', DateFormat.yMMMd().format(DateTime.now()).toString());
+      prefs.setString(
+          '$id Time Finished', DateFormat.jm().format(DateTime.now()).toString());
       journalidList.add(id);
       prefs.setStringList('Journal ID List', journalidList);
       taskidList.remove(id);
@@ -105,8 +105,8 @@ class _TodayPageState extends State<TodayPage> {
         totalCompleted = 0;
         totalCompleted += totalCompletedInt;
       }
-      prefs.setInt('$_dateTime daily build count',
-          prefs.getStringList('Daily Build List').length);
+      prefs.setInt(
+          '$_dateTime daily build count', prefs.getStringList('Daily Build List').length);
       prefs.setDouble('$_dateTime total completed', totalCompleted);
       List<String> dailybuildList = prefs.getStringList('Daily Build List');
       if (prefs.getStringList('Journal ID List') != null) {
@@ -115,10 +115,10 @@ class _TodayPageState extends State<TodayPage> {
       String newId = DateTime.now().toString();
       prefs.setString('$newId Daily Task', prefs.getString('$id Daily Task'));
       // prefs.setString('$id Icon Name', 'check_circle');
-      prefs.setString('$newId Date Finished',
-          DateFormat.yMMMd().format(DateTime.now()).toString());
-      prefs.setString('$newId Time Finished',
-          DateFormat.jm().format(DateTime.now()).toString());
+      prefs.setString(
+          '$newId Date Finished', DateFormat.yMMMd().format(DateTime.now()).toString());
+      prefs.setString(
+          '$newId Time Finished', DateFormat.jm().format(DateTime.now()).toString());
       journalidList.add(newId);
       prefs.setStringList('Journal ID List', journalidList);
       dailybuildList.remove(id);
@@ -147,12 +147,12 @@ class _TodayPageState extends State<TodayPage> {
       _dateTime = DateFormat.yMMMEd().format(DateTime.now()).toString();
       if (prefs.getString('Home Date') != null &&
           prefs.getString('Home Date') != _dateTime) {
-            prefs.setBool('dateChange', false);
-            prefs.setBool('streak added today', false);
+        prefs.setBool('dateChange', false);
+        prefs.setBool('streak added today', false);
         //setting daily count max number
         if (prefs.getStringList('Daily ID List') != null) {
-          prefs.setInt('$_dateTime daily count',
-              prefs.getStringList('Daily ID List').length);
+          prefs.setInt(
+              '$_dateTime daily count', prefs.getStringList('Daily ID List').length);
         }
         if (prefs.getStringList('Daily Build List') != null) {
           prefs.setInt('$_dateTime daily build count',
@@ -212,12 +212,11 @@ class _TodayPageState extends State<TodayPage> {
     buildCalled = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getStringList('Daily Build List') != null) {
-      prefs.setInt('$_dateTime daily build count',
-          prefs.getStringList('Daily Build List').length);
+      prefs.setInt(
+          '$_dateTime daily build count', prefs.getStringList('Daily Build List').length);
     }
     if (prefs.getStringList('Daily ID List') != null) {
-      prefs.setInt('$_dateTime daily count',
-          prefs.getStringList('Daily ID List').length);
+      prefs.setInt('$_dateTime daily count', prefs.getStringList('Daily ID List').length);
     }
     List<String> calendarIdList = [];
     List<String> calendarIdList2 = [];
@@ -323,9 +322,7 @@ class _TodayPageState extends State<TodayPage> {
     print('id list length: ${idList.length}');
     print('tasklist length: ${_taskList.length}');
     return Scaffold(
-      backgroundColor: dailySelected == true
-          ? Theme.of(context).backgroundColor
-          : Theme.of(context).dividerColor,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height / 15,
         // brightness: Brightness.light,
@@ -351,7 +348,12 @@ class _TodayPageState extends State<TodayPage> {
             children: [
               Container(
                 padding: EdgeInsets.all(10),
-                child: _dateTime != null ? Text(_dateTime,style: Theme.of(context).textTheme.bodyText1,) : Text(''),
+                child: _dateTime != null
+                    ? Text(
+                        _dateTime,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      )
+                    : Text(''),
               ),
               Container(
                 height: MediaQuery.of(context).size.height / 1.5,
@@ -367,15 +369,17 @@ class _TodayPageState extends State<TodayPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 5.0),
-                        child: Text('Today',style: Theme.of(context).textTheme.bodyText1,),
+                        child: Text(
+                          'Today',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 5.0),
                         child: Switch(
                           value: dailySelected,
                           onChanged: _onChanged,
-                          inactiveThumbColor:
-                              Theme.of(context).cardColor,
+                          inactiveThumbColor: Theme.of(context).cardColor,
                           activeColor: Theme.of(context).primaryColor,
                           activeTrackColor: Theme.of(context).cardColor,
                           inactiveTrackColor: Theme.of(context).primaryColor,
@@ -383,11 +387,13 @@ class _TodayPageState extends State<TodayPage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 5.0),
-                        child: Text('Daily',style: Theme.of(context).textTheme.bodyText1,),
+                        child: Text(
+                          'Daily',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
                     ],
-                  )
-                  )
+                  ))
             ],
           ),
         ),

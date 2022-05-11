@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasklist_app/pages/goal_page.dart';
 import 'package:tasklist_app/pages/home.dart';
-import 'package:tasklist_app/pages/journal_folder_page.dart';
 import 'package:tasklist_app/widgets/task_new.dart';
-import './pages/daily.dart';
-import 'pages/calendar_page.dart';
 import './pages/today.dart';
 import 'package:tasklist_app/models/task_mod.dart';
 

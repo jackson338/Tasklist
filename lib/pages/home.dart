@@ -18,6 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool buildCalled = false;
   bool dateChange = false;
+  bool resetDateChange = false;
   int listD = 0;
   int streak = 0;
   List<FlSpot> points = [];
@@ -26,7 +27,6 @@ class _HomePageState extends State<HomePage> {
   List<String> percentages = [];
   List<String> allIds = [];
   List<Color> chartColors = [];
-  String _dateTime;
   double totalCompleted = 0.0;
   double dayCompleted = 0;
   double percentage = 0.0;
@@ -35,6 +35,8 @@ class _HomePageState extends State<HomePage> {
   Color streakColor = Colors.grey;
   Color streakProgress = Colors.blueGrey;
   String todayDate = 'today';
+  String resetTodayDate = 'today';
+  String _dateTime;
 
   void getChartValues() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -46,11 +48,19 @@ class _HomePageState extends State<HomePage> {
       if (prefs.getString('today date') != null) {
         todayDate = prefs.getString('today date');
       }
+        if (prefs.getString('reset today date') != null) {
+        resetTodayDate = prefs.getString('reset today date');
+      }
       if (todayDate != DateTime.now().day.toString()) {
         dateChange = true;
         prefs.setBool('dateChange', dateChange);
       }
+      if (resetTodayDate != DateTime.now().day.toString()) {
+        resetDateChange = true;
+        prefs.setBool('reset date change', resetDateChange);
+      }
       dateChange = prefs.getBool('dateChange');
+      resetDateChange = prefs.getBool('reset date change');
       if (prefs.getStringList('chart ids') != null) {
         chartIds = prefs.getStringList('chart ids');
       }
@@ -121,10 +131,14 @@ class _HomePageState extends State<HomePage> {
           todayDate = DateTime.now().day.toString();
           prefs.setString('today date', todayDate);
         }
-        if (count2 == (weekIds.length - 1)) {
+        if (count2 == (weekIds.length - 1) && resetDateChange == true) {
           if (totalCompleted < 75) {
             streak = 0;
             prefs.setInt('streak', streak);
+            resetDateChange = false;
+            prefs.setBool('reset date change', resetDateChange);
+            resetTodayDate = DateTime.now().day.toString();
+            prefs.setString('reset today date', resetTodayDate);
           }
         }
 

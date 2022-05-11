@@ -56,6 +56,18 @@ class _NewTaskState extends State<NewTask> {
 
   void _presentDatePicker() {
     showDatePicker(
+            builder: (BuildContext context, Widget child) {
+              return Theme(
+                data: ThemeData.light().copyWith(
+                  colorScheme: ColorScheme.fromSeed(
+                    seedColor: Theme.of(context).hintColor,
+                    primary: Theme.of(context).primaryColor,
+                  ),
+                  buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                ),
+                child: child,
+              );
+            },
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime.now(),
@@ -285,6 +297,7 @@ class _NewTaskState extends State<NewTask> {
                           _selectedDate == null
                               ? 'No Date Chosen'
                               : 'Selected Date: ${DateFormat.yMMMEd().format(pickDate)}',
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                       // ElevatedButton(

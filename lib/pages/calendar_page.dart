@@ -22,6 +22,7 @@ class _FuturePageState extends State<FuturePage> {
   String _iconName = 'check_circle_outline';
   String _dateTime = DateFormat.yMMMEd().format(DateTime.now()).toString();
   bool buildCalled = false;
+  bool initialRefresh = false;
 
   void _deleteTask(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -185,46 +186,48 @@ class _FuturePageState extends State<FuturePage> {
 
   void reorderTasks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> newList = calendarIDlist;
-    for (String sortingTask in newList) {
-      if (prefs.getInt('$sortingTask year') != null) {
-        int index = 0;
-        int yearCount = prefs.getInt('$sortingTask year');
-        int monthCount = prefs.getInt('$sortingTask month');
-        int dayCount = prefs.getInt('$sortingTask day');
-        bool moved = false;
-        for (String comparingTask in calendarIDlist) {
-          if (prefs.getInt('$comparingTask year') != null) {
-            if (yearCount < prefs.getInt('$comparingTask year') && moved == false) {
-              int newInd =
-                  calendarIDlist.indexWhere((element) => element == comparingTask);
-              calendarIDlist.remove(sortingTask);
-              calendarIDlist.insert(newInd == 0 ? newInd : newInd - 1, sortingTask);
-              moved = true;
-            } else if (yearCount == prefs.getInt('$comparingTask year') &&
-                moved == false) {
-              if (monthCount < prefs.getInt('$comparingTask month')) {
+    int i = 0;
+    while (i < (calendarIDlist.length)) {
+      i++;
+      List<String> newList = calendarIDlist;
+      for (String sortingTask in newList) {
+        if (prefs.getInt('$sortingTask year') != null) {
+          int yearCount = prefs.getInt('$sortingTask year');
+          int monthCount = prefs.getInt('$sortingTask month');
+          int dayCount = prefs.getInt('$sortingTask day');
+          bool moved = false;
+          for (String comparingTask in calendarIDlist) {
+            if (prefs.getInt('$comparingTask year') != null) {
+              if (yearCount < prefs.getInt('$comparingTask year') && moved == false) {
                 int newInd =
                     calendarIDlist.indexWhere((element) => element == comparingTask);
                 calendarIDlist.remove(sortingTask);
                 calendarIDlist.insert(newInd == 0 ? newInd : newInd - 1, sortingTask);
                 moved = true;
-              } else if (monthCount == prefs.getInt('$comparingTask month') &&
+              } else if (yearCount == prefs.getInt('$comparingTask year') &&
                   moved == false) {
-                // print('dayCount: $dayCount');
-                // print('compareDayCount: ${prefs.getInt('$comparingTask day')}');
-                if (dayCount < prefs.getInt('$comparingTask day')) {
+                if (monthCount < prefs.getInt('$comparingTask month')) {
                   int newInd =
                       calendarIDlist.indexWhere((element) => element == comparingTask);
                   calendarIDlist.remove(sortingTask);
                   calendarIDlist.insert(newInd == 0 ? newInd : newInd - 1, sortingTask);
-                  // print('day inserted at index: $newInd day val: ${prefs.getInt('${calendarIDlist[newInd -1]} day')}');
                   moved = true;
+                } else if (monthCount == prefs.getInt('$comparingTask month') &&
+                    moved == false) {
+                  // print('dayCount: $dayCount');
+                  // print('compareDayCount: ${prefs.getInt('$comparingTask day')}');
+                  if (dayCount < prefs.getInt('$comparingTask day')) {
+                    int newInd =
+                        calendarIDlist.indexWhere((element) => element == comparingTask);
+                    calendarIDlist.remove(sortingTask);
+                    calendarIDlist.insert(newInd == 0 ? newInd : newInd - 1, sortingTask);
+                    // print('day inserted at index: $newInd day val: ${prefs.getInt('${calendarIDlist[newInd -1]} day')}');
+                    moved = true;
+                  }
                 }
               }
             }
           }
-          index++;
         }
       }
     }
@@ -276,7 +279,6 @@ class _FuturePageState extends State<FuturePage> {
       buildCalled = false;
       // _buildTasks();
     });
-    print('refreshed');
     return null;
   }
 
@@ -284,6 +286,10 @@ class _FuturePageState extends State<FuturePage> {
   Widget build(BuildContext context) {
     if (buildCalled == false) {
       _buildCalendarTasks();
+      if (initialRefresh == false) {
+      refreshList();
+      initialRefresh = true;
+      }
     }
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,

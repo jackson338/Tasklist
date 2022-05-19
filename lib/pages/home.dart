@@ -83,7 +83,6 @@ class _HomePageState extends State<HomePage> {
       String id;
       int count2 = 0;
       int count3 = weekIds.length;
-      print('count3: $count3');
       for (id in weekIds) {
         count2 += 1;
         if (prefs.getStringList('Daily ID List') == null) {

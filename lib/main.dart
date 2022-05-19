@@ -124,7 +124,6 @@ class _ControllerState extends State<Controller> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       String selectedList = prefs.getString('selected list');
-      print(selectedList);
       if (selectedList == null) {
         setState(() {
           selectedList = "today";

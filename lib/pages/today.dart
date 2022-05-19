@@ -128,7 +128,6 @@ class _TodayPageState extends State<TodayPage> {
   }
 
   void datePrefs() async {
-    print('date prefs called');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       if (prefs.getBool('today list selected') == true) {
@@ -208,7 +207,6 @@ class _TodayPageState extends State<TodayPage> {
   }
 
   void _buildTasks() async {
-    print('build Tasks Called');
     buildCalled = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getStringList('Daily Build List') != null) {
@@ -291,7 +289,6 @@ class _TodayPageState extends State<TodayPage> {
       buildCalled = false;
       // _buildTasks();
     });
-    print('refreshed');
     return null;
   }
 
@@ -319,8 +316,6 @@ class _TodayPageState extends State<TodayPage> {
       _buildTasks();
       buildDailyListFunc();
     }
-    print('id list length: ${idList.length}');
-    print('tasklist length: ${_taskList.length}');
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(

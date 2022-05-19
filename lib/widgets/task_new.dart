@@ -28,19 +28,21 @@ class _NewTaskState extends State<NewTask> {
       return;
     }
     final _enteredName = _nameController.text;
-    final _enteredDate = _selectedDate.toString();
+    final _enteredDate = _selectedDate;
     final _currentDate = DateFormat.yMMMd().format(DateTime.now()).toString();
 
     if (pageIndex == 3) {
       widget.addTaskFunc(
         _enteredName,
         _enteredDate,
+        pickDate,
       );
       Navigator.of(context).pop();
     } else {
       widget.addTaskFunc(
         _enteredName,
         _selectedDate == null ? _currentDate : _selectedDate,
+        pickDate,
       );
       Navigator.of(context).pop();
     }

@@ -120,7 +120,7 @@ class _ControllerState extends State<Controller> {
   List<String> calendarIDlist = [];
   String _iconName = 'check_circle_outline';
 
-  void _addNewTask(String _task, String _date) async {
+  void _addNewTask(String _task, String _date, DateTime pickDate) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       String selectedList = prefs.getString('selected list');
@@ -133,7 +133,7 @@ class _ControllerState extends State<Controller> {
       }
       if (selectedList == 'calendar') {
         prefs.setInt('page index', 3);
-        _addNewCalendarTask(_task, _date);
+        _addNewCalendarTask(_task, _date, pickDate);
       }
       if (selectedList == 'today') {
         prefs.setInt('page index', 2);
@@ -172,26 +172,34 @@ class _ControllerState extends State<Controller> {
   void _addNewCalendarTask(
     String calendarTask,
     String date,
+    DateTime _dateTime,
   ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getStringList('Calendar ID List') != null) {
       calendarIDlist = prefs.getStringList('Calendar ID List');
     }
-    // if (prefs.getInt('page index') == 3) {
+    final int _year = _dateTime.year;
+    final int _month = _dateTime.month;
+    final int _day = _dateTime.day;
     final newCalendarTask = TaskMod(
       task: calendarTask,
       iconName: _iconName,
       finish: date,
       id: DateTime.now().toString(),
+      year: _year,
+      month: _month,
+      day: _day,
     );
     prefs.setString('${newCalendarTask.id} Calendar Task', newCalendarTask.task);
     prefs.setString('${newCalendarTask.id} Calendar Date', newCalendarTask.finish);
+    prefs.setInt('${newCalendarTask.id} year', _year);
+    prefs.setInt('${newCalendarTask.id} month', _month);
+    prefs.setInt('${newCalendarTask.id} day', _day);
     setState(() {
       // calendarList.add(newCalendarTask);
       calendarIDlist.add(newCalendarTask.id);
       prefs.setStringList('Calendar ID List', calendarIDlist);
     });
-    // }
   }
 
   void _addNewDailyTask(

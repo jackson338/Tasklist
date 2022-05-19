@@ -882,7 +882,7 @@ class _HomePageState extends State<HomePage> {
                                 enabled: true,
                                 touchTooltipData: LineTouchTooltipData(
                                   tooltipRoundedRadius: 30.0,
-                                  tooltipBgColor: Theme.of(context).primaryColor,
+                                  tooltipBgColor: Colors.white,
                                 ),
                               ),
                               axisTitleData: FlAxisTitleData(

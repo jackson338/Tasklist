@@ -45,10 +45,10 @@ class _FuturePageState extends State<FuturePage> {
           journalidList = prefs.getStringList('Journal ID List');
         }
         prefs.setString('$id Icon Name', 'check_circle');
-        prefs.setString('$id Date Finished',
-            DateFormat.yMMMd().format(DateTime.now()).toString());
-        prefs.setString('$id Time Finished',
-            DateFormat.jm().format(DateTime.now()).toString());
+        prefs.setString(
+            '$id Date Finished', DateFormat.yMMMd().format(DateTime.now()).toString());
+        prefs.setString(
+            '$id Time Finished', DateFormat.jm().format(DateTime.now()).toString());
         journalidList.add(id);
         prefs.setStringList('Journal ID List', journalidList);
         calendaridList.remove(id);
@@ -57,13 +57,13 @@ class _FuturePageState extends State<FuturePage> {
     }
   }
 
-  void _addNewTask(String _task, String _date) async {
+  void _addNewTask(String _task, String _date, DateTime pickDate) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       String selectedList = prefs.getString('selected list');
       if (selectedList == 'calendar') {
         prefs.setInt('page index', 3);
-        _addNewCalendarTask(_task, _date);
+        _addNewCalendarTask(_task, _date, pickDate);
       }
       if (selectedList == 'today') {
         prefs.setInt('page index', 2);
@@ -102,28 +102,35 @@ class _FuturePageState extends State<FuturePage> {
   void _addNewCalendarTask(
     String calendarTask,
     String date,
+    DateTime _dateTime,
   ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getStringList('Calendar ID List') != null) {
       calendarIDlist = prefs.getStringList('Calendar ID List');
     }
-    // if (prefs.getInt('page index') == 3) {
+    final int _year = _dateTime.year;
+    final int _month = _dateTime.month;
+    final int _day = _dateTime.day;
+    // print(_dateTime.day);
     final newCalendarTask = TaskMod(
       task: calendarTask,
       iconName: _iconName,
       finish: date,
       id: DateTime.now().toString(),
+      year: _year,
+      month: _month,
+      day: _day,
     );
-    prefs.setString(
-        '${newCalendarTask.id} Calendar Task', newCalendarTask.task);
-    prefs.setString(
-        '${newCalendarTask.id} Calendar Date', newCalendarTask.finish);
+    prefs.setString('${newCalendarTask.id} Calendar Task', newCalendarTask.task);
+    prefs.setString('${newCalendarTask.id} Calendar Date', newCalendarTask.finish);
+    prefs.setInt('${newCalendarTask.id} year', _year);
+    prefs.setInt('${newCalendarTask.id} month', _month);
+    prefs.setInt('${newCalendarTask.id} day', _day);
     setState(() {
       // calendarList.add(newCalendarTask);
       calendarIDlist.add(newCalendarTask.id);
       prefs.setStringList('Calendar ID List', calendarIDlist);
     });
-    // }
   }
 
   void _addNewDailyTask(
@@ -176,20 +183,68 @@ class _FuturePageState extends State<FuturePage> {
     }
   }
 
+  void reorderTasks() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> newList = calendarIDlist;
+    for (String sortingTask in newList) {
+      if (prefs.getInt('$sortingTask year') != null) {
+        int index = 0;
+        int yearCount = prefs.getInt('$sortingTask year');
+        int monthCount = prefs.getInt('$sortingTask month');
+        int dayCount = prefs.getInt('$sortingTask day');
+        bool moved = false;
+        for (String comparingTask in calendarIDlist) {
+          if (prefs.getInt('$comparingTask year') != null) {
+            if (yearCount < prefs.getInt('$comparingTask year') && moved == false) {
+              int newInd =
+                  calendarIDlist.indexWhere((element) => element == comparingTask);
+              calendarIDlist.remove(sortingTask);
+              calendarIDlist.insert(newInd == 0 ? newInd : newInd - 1, sortingTask);
+              moved = true;
+            } else if (yearCount == prefs.getInt('$comparingTask year') &&
+                moved == false) {
+              if (monthCount < prefs.getInt('$comparingTask month')) {
+                int newInd =
+                    calendarIDlist.indexWhere((element) => element == comparingTask);
+                calendarIDlist.remove(sortingTask);
+                calendarIDlist.insert(newInd == 0 ? newInd : newInd - 1, sortingTask);
+                moved = true;
+              } else if (monthCount == prefs.getInt('$comparingTask month') &&
+                  moved == false) {
+                // print('dayCount: $dayCount');
+                // print('compareDayCount: ${prefs.getInt('$comparingTask day')}');
+                if (dayCount < prefs.getInt('$comparingTask day')) {
+                  int newInd =
+                      calendarIDlist.indexWhere((element) => element == comparingTask);
+                  calendarIDlist.remove(sortingTask);
+                  calendarIDlist.insert(newInd == 0 ? newInd : newInd - 1, sortingTask);
+                  // print('day inserted at index: $newInd day val: ${prefs.getInt('${calendarIDlist[newInd -1]} day')}');
+                  moved = true;
+                }
+              }
+            }
+          }
+          index++;
+        }
+      }
+    }
+    prefs.setStringList('Calendar ID List', calendarIDlist);
+  }
+
   void _buildCalendarTasks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('page index', 3);
-    print(prefs.getInt('page index'));
     if (prefs.getStringList('Calendar ID List') != null) {
-      String id;
       calendarIDlist = prefs.getStringList('Calendar ID List');
-      for (id in calendarIDlist) {
+      reorderTasks();
+      for (String id in calendarIDlist) {
         if (prefs.getString('$id Icon Name') != 'check_circle') {
           final newCalendarTask = TaskMod(
             task: prefs.getString('$id Calendar Task'),
             iconName: _iconName,
             finish: prefs.getString('$id Calendar Date'),
             id: id,
+            year: prefs.getInt('$id year') != null ? prefs.getInt('$id year') : 0,
           );
           setState(() {
             // _dateTime = DateFormat.yMMMd().format(DateTime.now()).toString();
@@ -258,12 +313,14 @@ class _FuturePageState extends State<FuturePage> {
             children: [
               Container(
                 padding: EdgeInsets.all(10),
-                child: Text(_dateTime, style: Theme.of(context).textTheme.bodyText1,),
+                child: Text(
+                  _dateTime,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
               ),
               Container(
                 height: MediaQuery.of(context).size.height / 1.35,
-                child: TaskListWidget(
-                    calendarList, _deleteTask, _completeCalendarTask),
+                child: TaskListWidget(calendarList, _deleteTask, _completeCalendarTask),
               ),
             ],
           ),

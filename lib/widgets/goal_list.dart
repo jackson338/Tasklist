@@ -14,7 +14,10 @@ class GoalListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return goalItems.isEmpty
         ? LayoutBuilder(builder: (ctx, constraints) {
-            return Text('No Goals');
+            return Text(
+              'No Goals',
+              style: Theme.of(context).textTheme.bodyText1,
+            );
           })
         : ListView.builder(
             itemBuilder: (ctx, index) {

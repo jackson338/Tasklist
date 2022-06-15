@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:tasklist_app/models/folder_mod.dart';
-import 'package:tasklist_app/widgets/folder_item.dart';
+import 'package:tasklist_app/widgets/goal_folder_item.dart';
 
-class FolderList extends StatelessWidget {
-  final List<FolderMod> folderItems;
+class GoalFolderList extends StatelessWidget {
+  final List<FolderMod> goalFolderItems;
 
-  FolderList(this.folderItems);
+  GoalFolderList(this.goalFolderItems);
   @override
   Widget build(BuildContext context) {
-    return folderItems.isEmpty
+    return goalFolderItems.isEmpty
         ? Text(
             'No Folders',
             style: Theme.of(context).textTheme.bodyText1,
           )
         : ListView.builder(
             itemBuilder: (ctx, index) {
-              return FolderItem(
-                folderItem: folderItems[index],
+              return GoalFolder(
+                goalFolder: goalFolderItems[index],
               );
             },
-            itemCount: folderItems.length,
+            itemCount: goalFolderItems.length,
           );
   }
 }

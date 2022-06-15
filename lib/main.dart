@@ -321,34 +321,12 @@ class _ControllerState extends State<Controller> {
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
-              // Tab(
-              //   icon: Icon(
-              //     Icons.event_note_outlined,
-              //     color: Theme.of(context).primaryColor,
-              //   ),
-              // ),
-              // Tab(
-              //   icon: Icon(
-              //     Icons.loop,
-              //     color: Theme.of(context).primaryColor,
-              //   ),
-              // ),
-              // Tab(
-              //   icon: Icon(
-              //     Icons.sticky_note_2_outlined,
-              //     color: Theme.of(context).primaryColor,
-              //   ),
-              // ),
             ],
             unselectedLabelColor: Colors.black,
             labelColor: Theme.of(context).primaryColor,
             indicatorColor: Theme.of(context).hintColor,
           ),
         ),
-        //   floatingActionButton: FloatingActionButton(
-        //   child: Icon(Icons.add),
-        //   onPressed: (){},
-        // ),
       ),
     );
   }

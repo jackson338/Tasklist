@@ -143,7 +143,6 @@ class _GoalItemState extends State<GoalItem> {
                       HapticFeedback.mediumImpact();
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
-                      // print(prefs.getStringList('Folder Names'));
 
                       if (prefs.getStringList('Home Date List') == null) {
                         dateList.add(DateFormat.yMMMd()

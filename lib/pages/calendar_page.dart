@@ -223,6 +223,14 @@ class _FuturePageState extends State<FuturePage> {
                     calendarIDlist.insert(newInd == 0 ? newInd : newInd - 1, sortingTask);
                     // print('day inserted at index: $newInd day val: ${prefs.getInt('${calendarIDlist[newInd -1]} day')}');
                     moved = true;
+                  } else if (dayCount == prefs.getInt('$comparingTask day') &&
+                      moved == false) {
+                    int newInd =
+                        calendarIDlist.indexWhere((element) => element == comparingTask);
+                    calendarIDlist.remove(sortingTask);
+                    calendarIDlist.insert(newInd, sortingTask);
+                    // print('day inserted at index: $newInd day val: ${prefs.getInt('${calendarIDlist[newInd -1]} day')}');
+                    moved = true;
                   }
                 }
               }
@@ -287,8 +295,8 @@ class _FuturePageState extends State<FuturePage> {
     if (buildCalled == false) {
       _buildCalendarTasks();
       if (initialRefresh == false) {
-      refreshList();
-      initialRefresh = true;
+        refreshList();
+        initialRefresh = true;
       }
     }
     return Scaffold(

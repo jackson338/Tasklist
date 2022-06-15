@@ -14,7 +14,10 @@ class TaskListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return taskItems.isEmpty
         ? LayoutBuilder(builder: (ctx, constraints) {
-            return Text('No Tasks');
+            return Text(
+              'No Tasks',
+              style: Theme.of(context).textTheme.bodyText1,
+            );
           })
         : ListView.builder(
             itemBuilder: (ctx, index) {

@@ -165,7 +165,6 @@ class _GoalPageState extends State<GoalPage> {
       buildCalled = false;
       // _buildTasks();
     });
-    print('refreshed');
     return null;
   }
 

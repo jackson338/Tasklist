@@ -44,7 +44,6 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
         startGoalList.add(gId);
         prefs.setStringList('$startId start goal list', startGoalList);
       }
-      print('start goal list: $startGoalList');
       getIndex();
       title = prefs.getString('$gId Goal Task') == null
           ? prefs.getString('$gId goal task')
@@ -201,7 +200,6 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
       goalsIdList = [];
       buildCalled = false;
     });
-    print('refreshed');
     return null;
   }
 
@@ -215,14 +213,12 @@ class _GoalExpandedPageState extends State<GoalExpandedPage> {
           if (id != gId) {
             if (stopAdding == false) {
               indexLength.add(id);
-              print('index list: $indexLength');
             }
           } else {
             stopAdding = true;
           }
         }
         index = indexLength.length;
-        // print('index: $index');
       }
     });
   }

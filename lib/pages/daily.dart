@@ -35,7 +35,6 @@ class _DailyPageState extends State<DailyPage> {
   }
 
   void _completeTask(String id) async {
-    print('daily complete task');
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     // setState(() {
     //   _dailyList.removeWhere((taskR) => taskR.id == id);
@@ -169,7 +168,6 @@ class _DailyPageState extends State<DailyPage> {
   void _buildTasks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('page index', 4);
-    print(prefs.getInt('page index'));
     if (prefs.getStringList('Daily Build List') != null) {
       dailyBuildList = prefs.getStringList('Daily Build List');
     }
@@ -213,7 +211,6 @@ class _DailyPageState extends State<DailyPage> {
       buildCalled = false;
       // _buildTasks();
     });
-    print('refreshed');
     return null;
   }
 

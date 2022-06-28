@@ -165,32 +165,30 @@ class _HomePageState extends State<HomePage> {
       colorStreak = prefs.getInt('streak');
     }
     if (colorStreak >= 7) {
-      stars = 1;
       streakColor = Colors.blueGrey;
       streakProgress = Colors.teal;
     } else {
       streakWidthFactor = ((streak * 100) / 7) / 100;
     }
     if (colorStreak >= 21) {
-      stars = 2;
+      stars = 1;
       streakColor = Colors.teal;
       streakProgress = Colors.tealAccent;
     } else if (colorStreak >= 7) {
       streakWidthFactor = ((streak * 100) / 21) / 100;
     }
     if (colorStreak >= 42) {
-      stars = 3;
       streakColor = Colors.tealAccent;
       streakProgress = Colors.amber;
     } else if (colorStreak >= 21) {
       streakWidthFactor = ((streak * 100) / 42) / 100;
     }
     if (colorStreak >= 100) {
-      stars = 4;
+      stars = 2;
       streakColor = Colors.amber;
       streakProgress = Colors.orange;
     } else if (colorStreak >= 42) {
-      streakWidthFactor = 1.0;
+      streakWidthFactor = ((streak * 100) / 100) / 100;
     }
   }
 
@@ -227,19 +225,22 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: MediaQuery.of(context).size.height / 15,
         backgroundColor: Theme.of(context).backgroundColor,
         elevation: 0,
-        leading: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: 20,
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              return Icon(
-                Icons.star,
-                color: Theme.of(context).hintColor,
-              );
-            },
-            itemCount: stars,
-            scrollDirection: Axis.horizontal,
-          ),
+        leading: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return Icon(
+                    Icons.star,
+                    color: Theme.of(context).hintColor,
+                  );
+                },
+                itemCount: stars,
+                scrollDirection: Axis.horizontal,
+              ),
+            ),
+          ],
         ),
         title: Text(
           "Home",

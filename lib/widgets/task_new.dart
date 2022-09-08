@@ -283,6 +283,7 @@ class _NewTaskState extends State<NewTask> {
             decoration: InputDecoration(
               labelText: 'Enter a new task',
               labelStyle: TextStyle(color: Theme.of(context).primaryColor),
+              focusColor: Theme.of(context).primaryColor
               // hintStyle: TextStyle(color: Theme.of(context).dividerColor),
             ),
             controller: _nameController,

@@ -15,7 +15,7 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       runApp(MyApp());
-      prefs.setBool('theme bool', true);
+      prefs.setString('theme', 'dark');
     });
   }
 
@@ -24,7 +24,17 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(
       () {
-        prefs.setBool('theme bool', false);
+        prefs.setString('theme', 'light');
+      },
+    );
+  }
+
+   /// [setPurple] is a function that sets the theme to light theme.
+  void setPurple() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(
+      () {
+        prefs.setString('theme', 'purple');
       },
     );
   }
@@ -76,6 +86,14 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               child: Text('Light Theme'),
               onPressed: setLight,
+            ),
+             ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Theme.of(context).primaryColor),
+              ),
+              child: Text('Purple and Pink Theme'),
+              onPressed: setPurple,
             ),
           ],
         ),

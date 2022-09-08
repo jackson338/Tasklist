@@ -16,16 +16,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool darkTheme = false;
+  String themeString = 'dark';
   bool buildCalled = false;
 
   void getTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      if (prefs.getBool('theme bool') != null) {
-        darkTheme = prefs.getBool('theme bool');
-      } else {
-        darkTheme = false;
+      if (prefs.getString('theme') != null) {
+        themeString = prefs.getString('theme');
       }
     });
   }
@@ -37,8 +35,8 @@ class _MyAppState extends State<MyApp> {
       buildCalled = true;
     }
 
-    return darkTheme
-    //dark theme.
+    return themeString == 'dark'
+        //dark theme.
         ? MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Tasklist App Dark',
@@ -64,29 +62,56 @@ class _MyAppState extends State<MyApp> {
             ),
             home: Controller(title: 'tasklist home'),
           )
-        : 
-        //light theme
-        MaterialApp(
+        : themeString == 'light'
+            ?
+            //light theme
+            MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Tasklist App Light',
+                theme: ThemeData(
+                  cardColor: Colors.grey,
+                  primaryColor: Colors.black,
+                  primaryColorLight: Colors.white,
+                  backgroundColor: Colors.white,
+                  dividerColor: Colors.grey,
+                  // brightness: Brightness.dark,
+                  hintColor: Colors.black,
+                  textTheme: TextTheme(
+                    bodyText1: TextStyle(color: Colors.black),
+                    bodyText2: TextStyle(color: Colors.white),
+                    subtitle1: TextStyle(color: Colors.white),
+                    subtitle2: TextStyle(color: Colors.black),
+                    headline2: TextStyle(color: Colors.black),
+                    headline3: TextStyle(color: Colors.black),
+                    headline4: TextStyle(color: Colors.black),
+                    headline5: TextStyle(color: Colors.black),
+                    headline6: TextStyle(color: Colors.black),
+                  ),
+                ),
+                home: Controller(title: 'tasklist home'),
+              )
+            : //purple theme
+           MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Tasklist App Light',
+            title: 'Tasklist App Dark',
             theme: ThemeData(
-              cardColor: Colors.grey,
-              primaryColor: Colors.black,
-              primaryColorLight: Colors.white,
-              backgroundColor: Colors.white,
-              dividerColor: Colors.grey,
+              primaryColor: Colors.pink[100],
+              cardColor: Colors.pink[200],
+              primaryColorLight: Colors.pink[300],
+              backgroundColor: Colors.grey,
+              dividerColor: Colors.pinkAccent[100],
+              hintColor: Colors.pinkAccent[100],
               // brightness: Brightness.dark,
-              hintColor: Colors.black,
               textTheme: TextTheme(
-                bodyText1: TextStyle(color: Colors.black),
-                bodyText2: TextStyle(color: Colors.white),
+                bodyText1: TextStyle(color: Colors.pink[100]),
+                bodyText2: TextStyle(color: Colors.pink[100]),
                 subtitle1: TextStyle(color: Colors.white),
-                subtitle2: TextStyle(color: Colors.black),
-                headline2: TextStyle(color: Colors.black),
-                headline3: TextStyle(color: Colors.black),
-                headline4: TextStyle(color: Colors.black),
-                headline5: TextStyle(color: Colors.black),
-                headline6: TextStyle(color: Colors.black),
+                subtitle2: TextStyle(color: Colors.pink[100]),
+                headline2: TextStyle(color: Colors.white),
+                headline3: TextStyle(color: Colors.white),
+                headline4: TextStyle(color: Colors.white),
+                headline5: TextStyle(color: Colors.white),
+                headline6: TextStyle(color: Colors.white),
               ),
             ),
             home: Controller(title: 'tasklist home'),

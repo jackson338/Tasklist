@@ -124,14 +124,15 @@ class _GoalPageState extends State<GoalPage> {
       prefs.setString('$id Icon Name', 'check_circle');
       prefs.setString(
           '$id Goal finish', DateFormat.yMMMd().format(DateTime.now()).toString());
+          
       //   prefs.setString('$id Date Finished',
       //       DateFormat.yMMMd().format(DateTime.now()).toString());
       //   prefs.setString('$id Time Finished',
       //       DateFormat.jm().format(DateTime.now()).toString());
       //   journalidList.add(id);
       //   prefs.setStringList('Journal ID List', journalidList);
-      //   goalidList.remove(id);
-      //   prefs.setStringList('Goal ID List', goalidList);
+        // goalsIdList.remove(id);
+        prefs.setStringList('Goal ID List', goalsIdList);
     });
   }
 
